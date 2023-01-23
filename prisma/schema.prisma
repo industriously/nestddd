@@ -1,0 +1,19 @@
+generator client {
+  provider = "prisma-client-js"
+  output   = "../db"
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+}
+
+model accounts {
+  id         String   @id
+  sub        String   @unique
+  email      String   @unique
+  username   String
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  is_deleted Boolean  @default(false)
+}
