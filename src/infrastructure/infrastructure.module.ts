@@ -7,7 +7,7 @@ import { ConfigModule } from './config/config.module';
 import { PrismaModule } from './DB/prisma.module';
 
 @Module({
-  imports: [PrismaModule],
+  imports: [PrismaModule, ConfigModule],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionFilter }, // last filter
     { provide: APP_FILTER, useClass: HttpExceptionFilter },

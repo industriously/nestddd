@@ -9,7 +9,6 @@ module.exports = {
       { diagnostics: false, tsconfig: '<rootDir>/tsconfig.json' },
     ],
   },
-  testMatch: ['**/*.(t|j)s'],
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
     '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
