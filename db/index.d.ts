@@ -19,6 +19,9 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 export type accounts = {
   id: string
   sub: string
+  /**
+   * @format email
+   */
   email: string
   username: string
   created_at: Date

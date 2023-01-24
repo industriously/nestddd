@@ -1,7 +1,7 @@
 import session from 'express-session';
 
 export const sessionConfig: session.SessionOptions = {
-  secret: 'secret',
+  secret: process.env.SESSION_SECRET ?? 'secret',
   resave: false,
   saveUninitialized: false,
   name: 'REFRESH_TOKEN',

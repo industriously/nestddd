@@ -7,6 +7,9 @@
     "^.+\\.(t|j)s$": "ts-jest"
   },
   "moduleNameMapper": {
-    "^src/(.*)$": "<rootDir>/src/$1"
+    "^src/(.*)$": "<rootDir>/src/$1",
+    "@INTERFACE/(.*)$": "<rootDir>/src/interface/$1",
+    "@PRISMA": "<rootDir>/db",
+    "@COMMON/(.*)$": "<rootDir>/src/api/common/$1"
   }
 }

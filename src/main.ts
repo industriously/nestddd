@@ -4,6 +4,7 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import session from 'express-session';
 import { sessionConfig } from './session.config';
+import { PrismaService } from './infrastructure/DB/prisma.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, { cors: true });
@@ -11,7 +12,9 @@ async function bootstrap() {
   app.use(cookieParser());
   app.use(session(sessionConfig));
 
-  await app.listen(4000, () => {
+  app.get(PrismaService).enableShutdownHooks(app);
+
+  await app.listen(process.env.PORT, () => {
     process.send ? process.send('ready') : undefined;
   });
 }
