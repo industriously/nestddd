@@ -1,14 +1,9 @@
-import { AccountController } from './presentation/account.controller';
+import { SignInController } from './presentation/sign-in.controller';
 import { Module } from '@nestjs/common';
-import { GOOGLEOAUTH, GoogleStrategy } from './infrastructure/google.strategy';
+import { GithubProvider, GoogleProvider } from './guard';
 
 @Module({
-  providers: [
-    {
-      provide: GOOGLEOAUTH,
-      useClass: GoogleStrategy,
-    },
-  ],
-  controllers: [AccountController],
+  providers: [GoogleProvider, GithubProvider],
+  controllers: [SignInController],
 })
 export class AccountModule {}

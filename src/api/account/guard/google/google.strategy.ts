@@ -1,23 +1,22 @@
 import { HttpExceptionMessage } from '@COMMON/exception';
 import { Google, StrategyException } from '@devts/nestjs-auth';
+import { IProfile, ProfileKey } from '@INTERFACE/common';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
 
-export const GOOGLEOAUTH = Symbol('GoogleStrategy');
-
 @Injectable()
 export class GoogleStrategy extends Google.AbstractStrategy<
-  'oauth',
+  ProfileKey,
   'email' | 'profile',
-  { username: string; email: string }
+  IProfile
 > {
-  constructor(configService: ConfigService<IEnv, true>) {
+  constructor(config: ConfigService<IEnv, true>) {
     super({
-      key: 'oauth',
-      client_id: configService.get('GOOGLE_CLIENT_ID'),
-      client_secret: configService.get('GOOGLE_CLIENT_SECRET'),
-      redirect_uri: configService.get('GOOGLE_OAUTH_CALLBACK'),
+      key: 'profile',
+      client_id: config.get('GOOGLE_CLIENT_ID'),
+      client_secret: config.get('GOOGLE_CLIENT_SECRET'),
+      redirect_uri: config.get('GOOGLE_OAUTH_CALLBACK'),
       access_type: 'offline',
       prompt: 'select_account',
       scope: ['email', 'profile'],
@@ -29,18 +28,11 @@ export class GoogleStrategy extends Google.AbstractStrategy<
       statusCode ?? HttpStatus.UNAUTHORIZED,
     );
   }
-  validate(
-    identity: Google.IdToken<'email' | 'profile'>,
-    credentials: Google.Credentials,
-  ): boolean {
-    console.log(identity);
+  validate(identity: Google.IdToken<'email' | 'profile'>): boolean {
     typia.assert(identity);
     return true;
   }
-  transform(identity: Google.IdToken<'email' | 'profile'>): {
-    username: string;
-    email: string;
-  } {
+  transform(identity: Google.IdToken<'email' | 'profile'>): IProfile {
     const { name, email } = identity;
     return { username: name, email };
   }
