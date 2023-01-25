@@ -1,13 +1,14 @@
+import { PROFILEKEY } from '@COMMON/constant';
 import { HttpExceptionMessage } from '@COMMON/exception';
 import { Github, StrategyException } from '@devts/nestjs-auth';
-import { IProfile, ProfileKey } from '@INTERFACE/common';
+import { IProfile } from '@INTERFACE/common';
 import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
 
 @Injectable()
 export class GithubStrategy extends Github.AbstractStrategy<
-  ProfileKey,
+  PROFILEKEY,
   IProfile
 > {
   constructor(config: ConfigService<IEnv, true>) {
@@ -30,7 +31,7 @@ export class GithubStrategy extends Github.AbstractStrategy<
     return true;
   }
   transform(identity: Github.User & { email: string }): IProfile {
-    const { login, email } = identity;
-    return { username: login, email };
+    const { login: username, email, node_id: sub } = identity;
+    return { username, email, sub, oauth_type: 'github' };
   }
 }

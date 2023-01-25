@@ -1,13 +1,14 @@
+import { PROFILEKEY } from '@COMMON/constant';
 import { HttpExceptionMessage } from '@COMMON/exception';
 import { Google, StrategyException } from '@devts/nestjs-auth';
-import { IProfile, ProfileKey } from '@INTERFACE/common';
+import { IProfile } from '@INTERFACE/common';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
 
 @Injectable()
 export class GoogleStrategy extends Google.AbstractStrategy<
-  ProfileKey,
+  PROFILEKEY,
   'email' | 'profile',
   IProfile
 > {
@@ -33,7 +34,7 @@ export class GoogleStrategy extends Google.AbstractStrategy<
     return true;
   }
   transform(identity: Google.IdToken<'email' | 'profile'>): IProfile {
-    const { name, email } = identity;
-    return { username: name, email };
+    const { name: username, email, sub } = identity;
+    return { username, email, sub, oauth_type: 'google' };
   }
 }

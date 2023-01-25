@@ -1,10 +1,9 @@
 export interface IProfile {
-  username: string;
+  readonly sub: string;
+  readonly oauth_type: 'github' | 'google';
+  readonly username: string;
   /**
    * @format email
    */
-  email: string;
+  readonly email: string;
 }
-
-export const ProfileKey = 'profile';
-export type ProfileKey = typeof ProfileKey;

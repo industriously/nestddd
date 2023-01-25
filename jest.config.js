@@ -11,8 +11,9 @@ module.exports = {
   },
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
-    '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
     '@PRISMA': '<rootDir>/db',
+    '@PRISMA/service': '<rootDir>/src/infrastructure/DB/prisma.service.ts',
+    '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
     '@COMMON/(.*)$': '<rootDir>/src/api/common/$1',
   },
   collectCoverageFrom: ['src/**/*.(t|j)s'],

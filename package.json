@@ -45,6 +45,7 @@
     "@nestjs/common": "^9.2.1",
     "@nestjs/config": "^2.2.0",
     "@nestjs/core": "^9.2.1",
+    "@nestjs/jwt": "^10.0.1",
     "@nestjs/platform-express": "^9.2.1",
     "cookie-parser": "^1.4.6",
     "express-session": "^1.17.3",
@@ -56,7 +57,7 @@
     "typia": "^3.4.22"
   },
   "devDependencies": {
-    "@nestia/sdk": "^1.0.3",
+    "@nestia/sdk": "^1.0.4",
     "@nestjs/cli": "^9.1.8",
     "@nestjs/schematics": "^9.0.4",
     "@nestjs/testing": "^9.2.1",
