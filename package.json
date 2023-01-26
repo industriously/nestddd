@@ -54,7 +54,8 @@
     "mysql2": "^3.0.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "typia": "^3.4.22"
+    "typia": "^3.4.22",
+    "winston": "^3.8.2"
   },
   "devDependencies": {
     "@nestia/sdk": "^1.0.4",
