@@ -11,6 +11,10 @@ type IEnv = {
   GITHUB_CLIENT_ID: string;
   GITHUB_CLIENT_SECRET: string;
   GITHUB_OAUTH_CALLBACK: string;
+
+  ACCESS_TOKEN_PUBLICKEY: string;
+  ACCESS_TOKEN_PRIVATEKEY: string;
+  ACCESS_TOKEN_EXPIRESIN: string;
 };
 
 declare namespace NodeJS {

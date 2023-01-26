@@ -92,6 +92,7 @@ function makeEnum(x) { return x; }
 exports.Prisma.AccountsScalarFieldEnum = makeEnum({
   id: 'id',
   sub: 'sub',
+  oauth_type: 'oauth_type',
   email: 'email',
   username: 'username',
   created_at: 'created_at',

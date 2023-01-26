@@ -16,6 +16,10 @@ const validationSchema = Joi.object<any, false, IEnv>({
   GITHUB_CLIENT_ID: Joi.string().required(),
   GITHUB_CLIENT_SECRET: Joi.string().required(),
   GITHUB_OAUTH_CALLBACK: Joi.string().required(),
+
+  ACCESS_TOKEN_EXPIRESIN: Joi.string().required(),
+  ACCESS_TOKEN_PUBLICKEY: Joi.string().required(),
+  ACCESS_TOKEN_PRIVATEKEY: Joi.string().required(),
 });
 
 export const ConfigModule = OriginalConfigModule.forRoot({
