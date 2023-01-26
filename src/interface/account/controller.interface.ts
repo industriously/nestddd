@@ -1,7 +1,8 @@
+import { accounts } from '@PRISMA';
 import { Session } from 'express-session';
 
 export namespace AccountAPI {
-  type Account = { id: string };
+  type Account = Pick<accounts, 'id'>;
   export type ISession = Session & {
     account: Account;
   };

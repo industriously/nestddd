@@ -17,8 +17,12 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
  * 
  */
 export type accounts = {
+  /**
+   * @format uuid
+   */
   id: string
   sub: string
+  oauth_type: string
   /**
    * @format email
    */
@@ -816,6 +820,7 @@ export namespace Prisma {
   export type AccountsMinAggregateOutputType = {
     id: string | null
     sub: string | null
+    oauth_type: string | null
     email: string | null
     username: string | null
     created_at: Date | null
@@ -826,6 +831,7 @@ export namespace Prisma {
   export type AccountsMaxAggregateOutputType = {
     id: string | null
     sub: string | null
+    oauth_type: string | null
     email: string | null
     username: string | null
     created_at: Date | null
@@ -836,6 +842,7 @@ export namespace Prisma {
   export type AccountsCountAggregateOutputType = {
     id: number
     sub: number
+    oauth_type: number
     email: number
     username: number
     created_at: number
@@ -848,6 +855,7 @@ export namespace Prisma {
   export type AccountsMinAggregateInputType = {
     id?: true
     sub?: true
+    oauth_type?: true
     email?: true
     username?: true
     created_at?: true
@@ -858,6 +866,7 @@ export namespace Prisma {
   export type AccountsMaxAggregateInputType = {
     id?: true
     sub?: true
+    oauth_type?: true
     email?: true
     username?: true
     created_at?: true
@@ -868,6 +877,7 @@ export namespace Prisma {
   export type AccountsCountAggregateInputType = {
     id?: true
     sub?: true
+    oauth_type?: true
     email?: true
     username?: true
     created_at?: true
@@ -952,6 +962,7 @@ export namespace Prisma {
   export type AccountsGroupByOutputType = {
     id: string
     sub: string
+    oauth_type: string
     email: string
     username: string
     created_at: Date
@@ -979,6 +990,7 @@ export namespace Prisma {
   export type accountsSelect = {
     id?: boolean
     sub?: boolean
+    oauth_type?: boolean
     email?: boolean
     username?: boolean
     created_at?: boolean
@@ -1712,6 +1724,7 @@ export namespace Prisma {
   export const AccountsScalarFieldEnum: {
     id: 'id',
     sub: 'sub',
+    oauth_type: 'oauth_type',
     email: 'email',
     username: 'username',
     created_at: 'created_at',
@@ -1751,6 +1764,7 @@ export namespace Prisma {
     NOT?: Enumerable<accountsWhereInput>
     id?: StringFilter | string
     sub?: StringFilter | string
+    oauth_type?: StringFilter | string
     email?: StringFilter | string
     username?: StringFilter | string
     created_at?: DateTimeFilter | Date | string
@@ -1761,6 +1775,7 @@ export namespace Prisma {
   export type accountsOrderByWithRelationInput = {
     id?: SortOrder
     sub?: SortOrder
+    oauth_type?: SortOrder
     email?: SortOrder
     username?: SortOrder
     created_at?: SortOrder
@@ -1777,6 +1792,7 @@ export namespace Prisma {
   export type accountsOrderByWithAggregationInput = {
     id?: SortOrder
     sub?: SortOrder
+    oauth_type?: SortOrder
     email?: SortOrder
     username?: SortOrder
     created_at?: SortOrder
@@ -1793,6 +1809,7 @@ export namespace Prisma {
     NOT?: Enumerable<accountsScalarWhereWithAggregatesInput>
     id?: StringWithAggregatesFilter | string
     sub?: StringWithAggregatesFilter | string
+    oauth_type?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
     username?: StringWithAggregatesFilter | string
     created_at?: DateTimeWithAggregatesFilter | Date | string
@@ -1801,8 +1818,9 @@ export namespace Prisma {
   }
 
   export type accountsCreateInput = {
-    id: string
+    id?: string
     sub: string
+    oauth_type: string
     email: string
     username: string
     created_at?: Date | string
@@ -1811,8 +1829,9 @@ export namespace Prisma {
   }
 
   export type accountsUncheckedCreateInput = {
-    id: string
+    id?: string
     sub: string
+    oauth_type: string
     email: string
     username: string
     created_at?: Date | string
@@ -1823,6 +1842,7 @@ export namespace Prisma {
   export type accountsUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -1833,6 +1853,7 @@ export namespace Prisma {
   export type accountsUncheckedUpdateInput = {
     id?: StringFieldUpdateOperationsInput | string
     sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -1841,8 +1862,9 @@ export namespace Prisma {
   }
 
   export type accountsCreateManyInput = {
-    id: string
+    id?: string
     sub: string
+    oauth_type: string
     email: string
     username: string
     created_at?: Date | string
@@ -1853,6 +1875,7 @@ export namespace Prisma {
   export type accountsUpdateManyMutationInput = {
     id?: StringFieldUpdateOperationsInput | string
     sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -1863,6 +1886,7 @@ export namespace Prisma {
   export type accountsUncheckedUpdateManyInput = {
     id?: StringFieldUpdateOperationsInput | string
     sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
@@ -1903,6 +1927,7 @@ export namespace Prisma {
   export type accountsCountOrderByAggregateInput = {
     id?: SortOrder
     sub?: SortOrder
+    oauth_type?: SortOrder
     email?: SortOrder
     username?: SortOrder
     created_at?: SortOrder
@@ -1913,6 +1938,7 @@ export namespace Prisma {
   export type accountsMaxOrderByAggregateInput = {
     id?: SortOrder
     sub?: SortOrder
+    oauth_type?: SortOrder
     email?: SortOrder
     username?: SortOrder
     created_at?: SortOrder
@@ -1923,6 +1949,7 @@ export namespace Prisma {
   export type accountsMinOrderByAggregateInput = {
     id?: SortOrder
     sub?: SortOrder
+    oauth_type?: SortOrder
     email?: SortOrder
     username?: SortOrder
     created_at?: SortOrder

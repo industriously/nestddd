@@ -1,7 +1,7 @@
 import { SignInController } from './presentation/sign-in.controller';
 import { Module } from '@nestjs/common';
 import { GithubProvider, GoogleProvider } from './guard';
-import { AccountUsecaseProvider } from './application';
+import { AccountServiceProvider, AccountUsecaseProvider } from './application';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
 
@@ -20,7 +20,12 @@ import { ConfigService } from '@nestjs/config';
       },
     }),
   ],
-  providers: [GoogleProvider, GithubProvider, AccountUsecaseProvider],
+  providers: [
+    GoogleProvider,
+    GithubProvider,
+    AccountServiceProvider,
+    AccountUsecaseProvider,
+  ],
   controllers: [SignInController],
 })
 export class AccountModule {}

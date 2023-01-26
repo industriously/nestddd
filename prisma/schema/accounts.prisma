@@ -1,6 +1,8 @@
 model accounts {
-  id         String   @id
+  /// @format uuid
+  id         String   @id @default(uuid())
   sub        String   @unique
+  oauth_type String
   /// @format email
   email      String   @unique
   username   String

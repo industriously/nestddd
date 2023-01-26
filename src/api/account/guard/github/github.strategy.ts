@@ -31,7 +31,7 @@ export class GithubStrategy extends Github.AbstractStrategy<
     return true;
   }
   transform(identity: Github.User & { email: string }): IProfile {
-    const { login: username, email, node_id: sub } = identity;
-    return { username, email, sub, oauth_type: 'github' };
+    const { login: username, email, id } = identity;
+    return { username, email, sub: id + '', oauth_type: 'github' };
   }
 }
