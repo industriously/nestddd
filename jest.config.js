@@ -13,6 +13,7 @@ module.exports = {
     '^src/(.*)$': '<rootDir>/src/$1',
     '@PRISMA': '<rootDir>/db',
     '@PRISMA/service': '<rootDir>/src/infrastructure/DB/prisma.service.ts',
+    '@LOGGER/service': '<rootDir>/src/infrastructure/logger/injection.token.ts',
     '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
     '@COMMON/(.*)$': '<rootDir>/src/api/common/$1',
   },

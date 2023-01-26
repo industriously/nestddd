@@ -5,9 +5,10 @@ import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule } from './config/config.module';
 import { PrismaModule } from './DB/prisma.module';
+import { LoggerModule } from './logger/logger.module';
 
 @Module({
-  imports: [PrismaModule, ConfigModule],
+  imports: [LoggerModule, PrismaModule, ConfigModule],
   providers: [
     { provide: APP_FILTER, useClass: AllExceptionFilter }, // last filter
     { provide: APP_FILTER, useClass: HttpExceptionFilter },

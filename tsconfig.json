@@ -30,6 +30,7 @@
     "paths": {
       "@PRISMA":["db"],
       "@PRISMA/service":["src/infrastructure/DB/prisma.service.ts"],
+      "@LOGGER/service":["src/infrastructure/logger/injection.token.ts"],
       "@INTERFACE/*":["src/interface/*"],
       "@COMMON/*":["src/api/common/*"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
