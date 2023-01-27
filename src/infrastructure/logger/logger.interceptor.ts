@@ -1,6 +1,6 @@
+import { LoggerService } from '@nestjs/common';
 import {
   CallHandler,
-  ConsoleLogger,
   ExecutionContext,
   Inject,
   Injectable,
@@ -13,7 +13,7 @@ import { LoggerServiceToken } from './injection.token';
 export class LoggerInterceptor implements NestInterceptor {
   constructor(
     @Inject(LoggerServiceToken)
-    private readonly logger: ConsoleLogger,
+    private readonly logger: LoggerService,
   ) {}
 
   intercept(context: ExecutionContext, next: CallHandler): Observable<unknown> {
