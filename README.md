@@ -13,4 +13,4 @@
 
 ## API 문서
 
-- [View in the `Swagger Editor`](https://editor.swagger.io/?url=https://raw.githubusercontent.com/industriously/account-server/logging/swagger.json)
+- [View in the `Swagger Editor`](https://editor.swagger.io/?url=https://raw.githubusercontent.com/industriously/account-server/main/swagger.json)
