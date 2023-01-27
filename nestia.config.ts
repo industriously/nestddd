@@ -6,7 +6,7 @@ const NESTIA_CONFIG: nestia.INestiaConfig = {
   json: true,
   primitive: false,
   swagger: {
-    output: 'doc/swagger.json',
+    output: 'swagger.json',
   },
 };
 

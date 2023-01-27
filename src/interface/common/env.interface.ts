@@ -1,4 +1,4 @@
-type IEnv = {
+export interface IEnv {
   NODE_ENV: 'development' | 'production' | 'test';
   PORT: string;
 
@@ -15,10 +15,12 @@ type IEnv = {
   ACCESS_TOKEN_PUBLICKEY: string;
   ACCESS_TOKEN_PRIVATEKEY: string;
   ACCESS_TOKEN_EXPIRESIN: string;
-};
+}
 
-declare namespace NodeJS {
-  interface ProcessEnv extends IEnv {
-    [key: string]: string | undefined;
+declare global {
+  namespace NodeJS {
+    interface ProcessEnv extends IEnv {
+      [key: string]: string | undefined;
+    }
   }
 }
