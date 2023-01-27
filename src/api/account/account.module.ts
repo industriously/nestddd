@@ -4,6 +4,7 @@ import { GithubProvider, GoogleProvider } from './guard';
 import { AccountServiceProvider, AccountUsecaseProvider } from './application';
 import { JwtModule } from '@nestjs/jwt';
 import { ConfigService } from '@nestjs/config';
+import { IEnv } from '@INTERFACE/common';
 
 @Module({
   imports: [

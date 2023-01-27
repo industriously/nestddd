@@ -1,7 +1,7 @@
 import { PROFILEKEY } from '@COMMON/constant';
 import { HttpExceptionMessage } from '@COMMON/exception';
 import { Google, StrategyException } from '@devts/nestjs-auth';
-import { IProfile } from '@INTERFACE/common';
+import { IEnv, IProfile } from '@INTERFACE/common';
 import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
@@ -23,7 +23,7 @@ export class GoogleStrategy extends Google.AbstractStrategy<
       scope: ['email', 'profile'],
     });
   }
-  protected throw({ statusCode, message }: StrategyException): never {
+  protected override throw({ statusCode, message }: StrategyException): never {
     throw new HttpException(
       message ?? HttpExceptionMessage.UAE,
       statusCode ?? HttpStatus.UNAUTHORIZED,

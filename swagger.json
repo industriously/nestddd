@@ -1,0 +1,129 @@
+{
+  "openapi": "3.0.1",
+  "servers": [
+    {
+      "url": "https://github.com/industriously/account-server",
+      "description": "authentication & authorization server"
+    }
+  ],
+  "info": {
+    "version": "1.0.0",
+    "title": "Account Server"
+  },
+  "paths": {
+    "/sign-in/google": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "sign-in.google.signInGoogle",
+        "x-nestia-jsDocTags": []
+      }
+    },
+    "/sign-in/github": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "sign-in.github.signInGithub",
+        "x-nestia-jsDocTags": []
+      }
+    },
+    "/oauth/google": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/AccountAPI.SignInResponse"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "oauth.google.googlecb",
+        "x-nestia-jsDocTags": []
+      }
+    },
+    "/oauth/github": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/__object"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "oauth.github.githubcb",
+        "x-nestia-jsDocTags": []
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "AccountAPI.SignInResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          },
+          "refresh_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "access_token",
+          "refresh_token"
+        ],
+        "x-typia-jsDocTags": []
+      },
+      "__object": {
+        "type": "object",
+        "properties": {
+          "refresh_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "refresh_token"
+        ],
+        "x-typia-jsDocTags": []
+      }
+    }
+  }
+}

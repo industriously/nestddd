@@ -1,3 +1,4 @@
+import { IEnv } from '@INTERFACE/common';
 import { ConfigModule as OriginalConfigModule } from '@nestjs/config';
 import Joi from 'joi';
 
