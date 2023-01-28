@@ -10,7 +10,7 @@ import { LoggerServiceToken } from '@LOGGER/service';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     bufferLogs: true,
-    cors: true,
+    cors: { origin: ['http://localhost:3000', 'https://accounts.google.com'] },
   });
   app.useLogger(app.get(LoggerServiceToken));
   app.get(PrismaService).enableShutdownHooks(app);

@@ -1,11 +1,8 @@
 import { IProfile } from '@INTERFACE/common';
-import { accounts } from '@PRISMA';
+import { Account } from './domain.interface';
 
 export namespace IAccountUsecase {
-  export interface SignInResponse {
-    readonly access_token: string;
-    readonly account_id: accounts['id'];
-  }
+  export type SignInResponse = Pick<Account.State, 'id'>;
 }
 
 export interface IAccountUsecase {

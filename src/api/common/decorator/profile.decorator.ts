@@ -1,5 +1,5 @@
+import type { IProfile } from '@INTERFACE/common';
 import { PROFILEKEY } from '@COMMON/constant';
-import { IProfile } from '@INTERFACE/common';
 import { createParamDecorator, ExecutionContext } from '@nestjs/common';
 import typia from 'typia';
 

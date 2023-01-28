@@ -1,15 +1,13 @@
 import { IProfile } from '@INTERFACE/common';
-import { accounts } from '@PRISMA';
+import { Account } from './domain.interface';
 
 export namespace IAccountService {
-  export type FindOneFilter =
-    | Pick<accounts, 'id'>
-    | Pick<accounts, 'sub' | 'oauth_type'>;
+  export type FindOneFilter = Pick<Account.State, 'id'>;
 }
 
 export interface IAccountService {
   readonly findOne: (
     filter: IAccountService.FindOneFilter,
-  ) => Promise<accounts>;
-  readonly findOneOrCreate: (profile: IProfile) => Promise<accounts>;
+  ) => Promise<Account.State>;
+  readonly findOneOrCreate: (profile: IProfile) => Promise<Account.State>;
 }

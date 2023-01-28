@@ -1,8 +1,7 @@
+import type { IEnv, IProfile } from '@INTERFACE/common';
 import { PROFILEKEY } from '@COMMON/constant';
-import { HttpExceptionMessage } from '@COMMON/exception';
-import { Github, StrategyException } from '@devts/nestjs-auth';
-import { IEnv, IProfile } from '@INTERFACE/common';
-import { HttpException, Injectable, HttpStatus } from '@nestjs/common';
+import { AuthException, Github } from '@devts/nestjs-auth';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
 
@@ -20,16 +19,14 @@ export class GithubStrategy extends Github.AbstractStrategy<
       scope: ['read:user', 'user:email'],
     });
   }
-  protected override throw({ statusCode, message }: StrategyException): never {
-    throw new HttpException(
-      message ?? HttpExceptionMessage.UAE,
-      statusCode ?? HttpStatus.UNAUTHORIZED,
-    );
-  }
+
   validate(identity: Github.User): boolean {
-    typia.assert<Github.User & { email: string }>(identity);
+    if (!typia.is<Github.User & { email: string }>(identity)) {
+      throw new AuthException(400, '사용자 정보가 충분하지 않습니다.');
+    }
     return true;
   }
+
   transform(identity: Github.User & { email: string }): IProfile {
     const { login: username, email, id } = identity;
     return { username, email, sub: id + '', oauth_type: 'github' };

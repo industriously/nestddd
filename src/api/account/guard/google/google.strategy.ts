@@ -1,8 +1,7 @@
+import type { IEnv, IProfile } from '@INTERFACE/common';
 import { PROFILEKEY } from '@COMMON/constant';
-import { HttpExceptionMessage } from '@COMMON/exception';
-import { Google, StrategyException } from '@devts/nestjs-auth';
-import { IEnv, IProfile } from '@INTERFACE/common';
-import { Injectable, HttpException, HttpStatus } from '@nestjs/common';
+import { AuthException, Google } from '@devts/nestjs-auth';
+import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
 
@@ -23,16 +22,14 @@ export class GoogleStrategy extends Google.AbstractStrategy<
       scope: ['email', 'profile'],
     });
   }
-  protected override throw({ statusCode, message }: StrategyException): never {
-    throw new HttpException(
-      message ?? HttpExceptionMessage.UAE,
-      statusCode ?? HttpStatus.UNAUTHORIZED,
-    );
-  }
+
   validate(identity: Google.IdToken<'email' | 'profile'>): boolean {
-    typia.assert(identity);
+    if (!typia.is(identity)) {
+      throw new AuthException(400, '사용자 정보가 충분하지 않습니다.');
+    }
     return true;
   }
+
   transform(identity: Google.IdToken<'email' | 'profile'>): IProfile {
     const { name: username, email, sub } = identity;
     return { username, email, sub, oauth_type: 'google' };

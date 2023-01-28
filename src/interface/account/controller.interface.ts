@@ -1,10 +1,9 @@
-import { accounts } from '@PRISMA';
 import { Session } from 'express-session';
+import { Account } from './domain.interface';
 
 export namespace AccountAPI {
-  type Account = Pick<accounts, 'id'>;
   export type ISession = Session & {
-    account: Account;
+    account: Pick<Account.State, 'id'>;
   };
 
   export interface SignInResponse {

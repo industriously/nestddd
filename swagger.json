@@ -2,7 +2,7 @@
   "openapi": "3.0.1",
   "servers": [
     {
-      "url": "https://github.com/industriously/account-server",
+      "url": "http://localhost:4000",
       "description": "authentication & authorization server"
     }
   ],
@@ -13,7 +13,9 @@
   "paths": {
     "/sign-in/google": {
       "get": {
-        "tags": [],
+        "tags": [
+          "authentication"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -21,14 +23,26 @@
             "x-nestia-encrypted": false
           }
         },
-        "description": "",
+        "description": "구글 oauth 인증 API\n\n인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.\n\n인증 실패시 로그인 실패 페이지로 이동합니다.",
         "x-nestia-namespace": "sign-in.google.signInGoogle",
-        "x-nestia-jsDocTags": []
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "authentication",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
       }
     },
     "/sign-in/github": {
       "get": {
-        "tags": [],
+        "tags": [
+          "authentication"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -36,94 +50,23 @@
             "x-nestia-encrypted": false
           }
         },
-        "description": "",
+        "description": "깃헙 oauth 인증 API\n\n인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.\n\n인증 실패시 로그인 실패 페이지로 이동합니다.",
         "x-nestia-namespace": "sign-in.github.signInGithub",
-        "x-nestia-jsDocTags": []
-      }
-    },
-    "/oauth/google": {
-      "get": {
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/AccountAPI.SignInResponse"
-                }
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "authentication",
+                "kind": "text"
               }
-            },
-            "x-nestia-encrypted": false
+            ]
           }
-        },
-        "description": "",
-        "x-nestia-namespace": "oauth.google.googlecb",
-        "x-nestia-jsDocTags": []
-      }
-    },
-    "/oauth/github": {
-      "get": {
-        "tags": [],
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "",
-            "content": {
-              "application/json": {
-                "schema": {
-                  "$ref": "#/components/schemas/__object"
-                }
-              }
-            },
-            "x-nestia-encrypted": false
-          }
-        },
-        "description": "",
-        "x-nestia-namespace": "oauth.github.githubcb",
-        "x-nestia-jsDocTags": []
+        ]
       }
     }
   },
   "components": {
-    "schemas": {
-      "AccountAPI.SignInResponse": {
-        "type": "object",
-        "properties": {
-          "access_token": {
-            "type": "string",
-            "nullable": false,
-            "x-typia-required": true
-          },
-          "refresh_token": {
-            "type": "string",
-            "nullable": false,
-            "x-typia-required": true
-          }
-        },
-        "nullable": false,
-        "required": [
-          "access_token",
-          "refresh_token"
-        ],
-        "x-typia-jsDocTags": []
-      },
-      "__object": {
-        "type": "object",
-        "properties": {
-          "refresh_token": {
-            "type": "string",
-            "nullable": false,
-            "x-typia-required": true
-          }
-        },
-        "nullable": false,
-        "required": [
-          "refresh_token"
-        ],
-        "x-typia-jsDocTags": []
-      }
-    }
+    "schemas": {}
   }
 }

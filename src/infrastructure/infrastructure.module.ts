@@ -1,6 +1,7 @@
 import { AllExceptionFilter } from './filter/all-exception.filter';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { TypeGuardErrorFilter } from './filter/typia-exception.filter';
+import { AuthExceptionFilter } from './filter/auth-exception.filter';
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
 import { ConfigModule } from './config/config.module';
@@ -13,6 +14,7 @@ import { LoggerModule } from './logger/logger.module';
     { provide: APP_FILTER, useClass: AllExceptionFilter }, // last filter
     { provide: APP_FILTER, useClass: HttpExceptionFilter },
     { provide: APP_FILTER, useClass: TypeGuardErrorFilter }, // first filter.
+    { provide: APP_FILTER, useClass: AuthExceptionFilter },
   ],
 })
 export class InfrastructureModule {}
