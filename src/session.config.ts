@@ -7,7 +7,6 @@ export const sessionConfig: session.SessionOptions = {
   saveUninitialized: false,
   name: SESSION_KEY,
   cookie: {
-    httpOnly: true,
     maxAge: 1000 * 100,
   },
   rolling: true,

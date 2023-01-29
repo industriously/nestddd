@@ -7,6 +7,12 @@ const NESTIA_CONFIG: nestia.INestiaConfig = {
   primitive: false,
   swagger: {
     output: 'swagger.json',
+    security: {
+      bearer: {
+        type: 'http',
+        scheme: 'bearer',
+      },
+    },
   },
 };
 

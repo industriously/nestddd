@@ -1,5 +1,5 @@
-import type { AccountAPI, IAccountUsecase } from '@INTERFACE/account';
-import type { IProfile } from '@INTERFACE/common';
+import type { IAccountUsecase } from '@INTERFACE/account';
+import type { IProfile, ISession } from '@INTERFACE/common';
 import type { Response } from 'express';
 import { Profile } from '@COMMON/decorator';
 import { SIGN_IN_SUCCESS_URL } from '@COMMON/constant';
@@ -24,7 +24,7 @@ export class OauthCallback {
   @Get('google')
   async googlecb(
     @Profile() profile: IProfile,
-    @Session() session: AccountAPI.ISession,
+    @Session() session: ISession,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const { id } = await this.usecase.signIn(profile);
@@ -36,7 +36,7 @@ export class OauthCallback {
   @Get('github')
   async githubcb(
     @Profile() profile: IProfile,
-    @Session() session: AccountAPI.ISession,
+    @Session() session: ISession,
     @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const { id } = await this.usecase.signIn(profile);
