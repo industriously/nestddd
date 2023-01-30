@@ -1,8 +1,11 @@
-import { TokenAPI } from '@INTERFACE/token';
-import { Controller, Post } from '@nestjs/common';
+import { Authorization } from '@COMMON/decorator';
+import { ISession } from '@INTERFACE/common';
+import { ITokenUsecase, TokenAPI } from '@INTERFACE/token';
+import { Controller, Post, Session } from '@nestjs/common';
 
 @Controller('token')
 export class TokenController {
+  constructor(private readonly usecase: ITokenUsecase) {}
   /**
    * 사용자 토큰 생성 API
    *
@@ -15,10 +18,8 @@ export class TokenController {
    * @throw 403 사용자 권한 인증 실패
    */
   @Post()
-  async getCredentials(): Promise<TokenAPI.Credentials> {
-    // authorize code  - 로그인 상태, 현재 활성화된 계정인지
-    // command code - 토큰 생성 코드
-    throw Error('Function is not implemented.');
+  getCredentials(@Session() session: ISession): Promise<TokenAPI.Credentials> {
+    return this.usecase.getCredentials(session.account);
   }
 
   /**
@@ -31,9 +32,10 @@ export class TokenController {
    * @throw 403 사용자 권한 인증 실패
    */
   @Post('refresh')
-  async refreshToken(): Promise<TokenAPI.AccessToken> {
-    // authorize code  - refresh token 유무, 활성화된 계정인지
-    // command code - 토큰 생성 코드
-    throw Error('Function is not implemented.');
+  async refreshToken(
+    @Session() session: ISession,
+    @Authorization('bearer') token: string,
+  ): Promise<TokenAPI.AccessToken> {
+    return this.usecase.refreshToken(session.account, token);
   }
 }
