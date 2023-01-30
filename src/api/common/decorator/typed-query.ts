@@ -96,8 +96,8 @@ export const query_typecast = (
  * @author jiwon ro - https://github.com/rojiwon0325
  */
 export const TypedQuery = (key: string, options?: TypedQueryOptions) =>
-  createParamDecorator(({}: any, ctx: ExecutionContext) => {
+  createParamDecorator((_key: string, ctx: ExecutionContext) => {
     const request: express.Request = ctx.switchToHttp().getRequest();
-    const value = request.query[key];
-    return query_typecast(key, value, options);
+    const value = request.query[_key];
+    return query_typecast(_key, value, options);
   })(key);

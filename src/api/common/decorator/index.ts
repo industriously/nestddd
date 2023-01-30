@@ -1,2 +1,3 @@
 export { TypedQuery } from './typed-query';
-export { Profile } from './profile.decorator';
+export { Profile } from './profile';
+export { Authorization } from './authorization';
