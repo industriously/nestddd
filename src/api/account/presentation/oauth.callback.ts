@@ -1,6 +1,5 @@
 import type { IAccountUsecase } from '@INTERFACE/account';
 import type { IProfile, ISession } from '@INTERFACE/common';
-import type { Response } from 'express';
 import { Profile } from '@COMMON/decorator';
 import { SIGN_IN_SUCCESS_URL } from '@COMMON/constant';
 import {
@@ -8,8 +7,9 @@ import {
   Inject,
   Session,
   UseGuards,
-  Res,
   Controller,
+  Redirect,
+  HttpStatus,
 } from '@nestjs/common';
 import { AccountUsecaseToken } from '../application';
 import { GithubGuard, GoogleGuard } from '../guard';
@@ -21,26 +21,24 @@ export class OauthCallback {
   ) {}
 
   @UseGuards(GoogleGuard)
+  @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
   @Get('google')
   async googlecb(
     @Profile() profile: IProfile,
     @Session() session: ISession,
-    @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const { id } = await this.usecase.signIn(profile);
     session.account = { id }; // 로그인 세션 생성
-    return res.redirect(SIGN_IN_SUCCESS_URL);
   }
 
   @UseGuards(GithubGuard)
+  @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
   @Get('github')
   async githubcb(
     @Profile() profile: IProfile,
     @Session() session: ISession,
-    @Res({ passthrough: true }) res: Response,
   ): Promise<void> {
     const { id } = await this.usecase.signIn(profile);
     session.account = { id };
-    return res.redirect(SIGN_IN_SUCCESS_URL);
   }
 }
