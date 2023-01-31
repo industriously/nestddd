@@ -1,10 +1,16 @@
 import { Provider } from '@nestjs/common';
 import { TokenUsecase } from './token.usecase';
-import { TokenUsecaseToken } from './constant';
+import { TokenUsecaseToken, TokenServiceToken } from './constant';
+import { TokenService } from './token.service';
 
 export const TokenUsecaseProvider: Provider<TokenUsecase> = {
   provide: TokenUsecaseToken,
   useClass: TokenUsecase,
 };
 
-export { TokenUsecaseToken };
+export const TokenServiceProvider: Provider<TokenService> = {
+  provide: TokenServiceToken,
+  useClass: TokenService,
+};
+
+export { TokenUsecaseToken, TokenServiceToken };

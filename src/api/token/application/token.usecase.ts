@@ -4,10 +4,12 @@ import { throw_if_null } from '@COMMON/util';
 import { IAccountService } from '@INTERFACE/account';
 import { ITokenService, ITokenUsecase, TokenAPI } from '@INTERFACE/token';
 import { Inject, Injectable } from '@nestjs/common';
+import { TokenServiceToken } from './constant';
 
 @Injectable()
 export class TokenUsecase implements ITokenUsecase {
   constructor(
+    @Inject(TokenServiceToken)
     private readonly tokenService: ITokenService,
     @Inject(AccountServiceToken)
     private readonly accountService: IAccountService,
@@ -29,7 +31,7 @@ export class TokenUsecase implements ITokenUsecase {
     _account: ITokenUsecase.SignInAccount | undefined,
     refresh_token: string,
   ): Promise<TokenAPI.AccessToken> {
-    const payload = this.tokenService.verifyToken(refresh_token, 'refresh');
+    const payload = this.tokenService.verifyToken<'refresh'>(refresh_token);
     const { id } = throw_if_null(
       _account,
       HttpExceptionFactory('UnAuthorized'),

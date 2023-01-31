@@ -4,12 +4,9 @@ export namespace ITokenService {
   export type AccessTokenPayload = Pick<Account.State, 'id'>;
   export type RefreshTokenPayload = Pick<Account.State, 'id'>;
   export type IdTokenPayload = Pick<Account.State, 'id' | 'email' | 'username'>;
-  export type TokenPayload<T extends 'access' | 'refresh' | 'id'> =
-    T extends 'access'
-      ? AccessTokenPayload
-      : T extends 'refresh'
-      ? RefreshTokenPayload
-      : IdTokenPayload;
+  export type TokenPayload<T extends 'access' | 'refresh'> = T extends 'access'
+    ? AccessTokenPayload
+    : RefreshTokenPayload;
 }
 
 export interface ITokenService {
@@ -20,8 +17,7 @@ export interface ITokenService {
     payload: ITokenService.RefreshTokenPayload,
   ) => string;
   readonly getIdToken: (payload: ITokenService.IdTokenPayload) => string;
-  readonly verifyToken: <T extends 'access' | 'refresh' | 'id'>(
+  readonly verifyToken: <T extends 'access' | 'refresh'>(
     token: string,
-    type: T,
   ) => ITokenService.TokenPayload<T>;
 }
