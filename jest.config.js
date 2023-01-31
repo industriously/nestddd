@@ -16,6 +16,8 @@ module.exports = {
     '@LOGGER/service': '<rootDir>/src/infrastructure/logger/injection.token.ts',
     '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
     '@COMMON/(.*)$': '<rootDir>/src/api/common/$1',
+    '@ACCOUNT/(.*)$': '<rootDir>/src/api/account/$1',
+    '@TOKEN/(.*)$': '<rootDir>/src/api/token/$1',
   },
   collectCoverageFrom: ['src/**/*.(t|j)s'],
   coveragePathIgnorePatterns: [],

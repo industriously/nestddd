@@ -12,5 +12,6 @@ import { OauthCallback } from './presentation/oauth.callback';
     AccountUsecaseProvider,
   ],
   controllers: [SignInController, OauthCallback],
+  exports: [AccountServiceProvider],
 })
 export class AccountModule {}
