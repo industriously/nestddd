@@ -7,9 +7,6 @@ describe('TokenUsecase', () => {
     getAccessToken(payload) {
       return `access_token: ${payload.id}`;
     },
-    getRefreshToken(payload) {
-      return `refresh_token: ${payload.id}`;
-    },
     getIdToken({ id, email, username }) {
       return `id_token: ${id} ${email} ${username}`;
     },
@@ -50,5 +47,22 @@ describe('TokenUsecase', () => {
 
   it('should be defined', () => {
     expect(usecase).toBeDefined();
+  });
+
+  it('if oidc false, get only access_token.', async () => {
+    const id = 'dsfso';
+    const account = await accountService.findOne({ id });
+    const token = await usecase.getToken(account, false);
+    expect(token).toEqual({ access_token: `access_token: ${id}` });
+  });
+
+  it('if oidc true, get access_token with id_token', async () => {
+    const id = 'dsfadfeaf';
+    const account = await accountService.findOne({ id });
+    const token = await usecase.getToken(account, true);
+    expect(token).toEqual({
+      access_token: `access_token: ${account.id}`,
+      id_token: `id_token: ${account.id} ${account.email} ${account.username}`,
+    });
   });
 });

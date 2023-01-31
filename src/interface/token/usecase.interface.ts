@@ -6,11 +6,8 @@ export namespace ITokenUsecase {
 }
 
 export interface ITokenUsecase {
-  readonly getCredentials: (
+  readonly getToken: (
     account: ITokenUsecase.SignInAccount | undefined,
-  ) => Promise<TokenAPI.Credentials>;
-  readonly refreshToken: (
-    account: ITokenUsecase.SignInAccount | undefined,
-    refresh_token: string,
-  ) => Promise<TokenAPI.AccessToken>;
+    oidc: boolean,
+  ) => Promise<TokenAPI.Tokens>;
 }

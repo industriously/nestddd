@@ -9,15 +9,12 @@ export class TokenService implements ITokenService {
   getAccessToken({ id }: ITokenService.AccessTokenPayload): string {
     return this.jwtService.sign({ id }, { expiresIn: '8h' });
   }
-  getRefreshToken({ id }: ITokenService.RefreshTokenPayload): string {
-    return this.jwtService.sign({ id }, { expiresIn: '0.5y' });
-  }
   getIdToken({ id, email, username }: ITokenService.IdTokenPayload): string {
     return this.jwtService.sign({ id, email, username }, { expiresIn: '1d' });
   }
-  verifyToken<T extends 'access' | 'refresh'>(
+  verifyToken(
     token: string,
-  ): ITokenService.TokenPayload<T> {
+  ): ITokenService.AccessTokenPayload | ITokenService.IdTokenPayload {
     return this.jwtService.verify(token);
   }
 }

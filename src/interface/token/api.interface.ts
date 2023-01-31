@@ -1,10 +1,6 @@
 export namespace TokenAPI {
-  export interface Credentials {
+  export interface Tokens {
     readonly access_token: string;
-    readonly refresh_token: string;
-    readonly id_token: string;
-  }
-  export interface AccessToken {
-    readonly access_token: string;
+    readonly id_token?: string;
   }
 }

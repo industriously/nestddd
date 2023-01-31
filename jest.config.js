@@ -4,7 +4,7 @@ module.exports = {
   testRegex: '.*\\.spec\\.ts$',
   testEnvironment: 'node',
   transform: {
-    '^.+\\.(t|j)s$': [
+    '^.+\\.ts$': [
       'ts-jest',
       { diagnostics: false, tsconfig: '<rootDir>/tsconfig.json' },
     ],
@@ -20,5 +20,13 @@ module.exports = {
     '@TOKEN/(.*)$': '<rootDir>/src/api/token/$1',
   },
   collectCoverageFrom: ['src/**/*.(t|j)s'],
-  coveragePathIgnorePatterns: [],
+  coveragePathIgnorePatterns: [
+    'main.ts',
+    'index.ts',
+    'constant.ts',
+    'constant/*',
+    '.module.ts',
+    '.config.ts',
+    'src/sdk/*',
+  ],
 };
