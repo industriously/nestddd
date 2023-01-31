@@ -45,10 +45,6 @@ describe('TokenUsecase', () => {
 
   const usecase: ITokenUsecase = new TokenUsecase(tokenService, accountService);
 
-  it('should be defined', () => {
-    expect(usecase).toBeDefined();
-  });
-
   it('if oidc false, get only access_token.', async () => {
     const id = 'dsfso';
     const account = await accountService.findOne({ id });

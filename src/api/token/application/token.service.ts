@@ -12,9 +12,7 @@ export class TokenService implements ITokenService {
   getIdToken({ id, email, username }: ITokenService.IdTokenPayload): string {
     return this.jwtService.sign({ id, email, username }, { expiresIn: '1d' });
   }
-  verifyToken(
-    token: string,
-  ): ITokenService.AccessTokenPayload | ITokenService.IdTokenPayload {
+  verifyToken(token: string): ITokenService.VerifyTokenResponse {
     return this.jwtService.verify(token);
   }
 }

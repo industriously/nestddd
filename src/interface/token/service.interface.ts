@@ -1,8 +1,12 @@
 import { Account } from '@INTERFACE/account';
 
 export namespace ITokenService {
+  type JwtPayload = { readonly exp: number; readonly iat: number };
   export type AccessTokenPayload = Pick<Account.State, 'id'>;
   export type IdTokenPayload = Pick<Account.State, 'id' | 'email' | 'username'>;
+
+  export type VerifyTokenResponse = JwtPayload &
+    (AccessTokenPayload | IdTokenPayload);
 }
 
 export interface ITokenService {
@@ -10,7 +14,5 @@ export interface ITokenService {
     payload: ITokenService.AccessTokenPayload,
   ) => string;
   readonly getIdToken: (payload: ITokenService.IdTokenPayload) => string;
-  readonly verifyToken: (
-    token: string,
-  ) => ITokenService.AccessTokenPayload | ITokenService.IdTokenPayload;
+  readonly verifyToken: (token: string) => ITokenService.VerifyTokenResponse;
 }
