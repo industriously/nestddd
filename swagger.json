@@ -64,9 +64,175 @@
           }
         ]
       }
+    },
+    "/token": {
+      "post": {
+        "tags": [
+          "token"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "생성된 사용자 토큰을 포함한 JSON 데이터",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenAPI.Tokens"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          },
+          "401": {
+            "description": "사용자 인증 실패"
+          },
+          "403": {
+            "description": "권힌 없음"
+          }
+        },
+        "description": "사용자 토큰 생성 API\n\n* access_token - api 요청시 사용자 인증에 사용\n* id_token - 사용자 프로필 정보를 포함",
+        "x-nestia-namespace": "token.getTokens",
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "token",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "returns",
+            "text": [
+              {
+                "text": "생성된 사용자 토큰을 포함한 JSON 데이터",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "throw",
+            "text": [
+              {
+                "text": "401 사용자 인증 실패",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "throw",
+            "text": [
+              {
+                "text": "403 권힌 없음",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "/token/access_token": {
+      "post": {
+        "tags": [
+          "token"
+        ],
+        "parameters": [],
+        "responses": {
+          "201": {
+            "description": "재발급된 사용자 토큰을 포함한 포함한 JSON 데이터",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/TokenAPI.Tokens"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          },
+          "401": {
+            "description": "사용자 인증 실패"
+          },
+          "403": {
+            "description": "권한 없음"
+          }
+        },
+        "description": "사용자 인증 토큰 생성 API\n\n* access_token - api 요청시 사용자 인증에 사용",
+        "x-nestia-namespace": "token.access_token.getAccessToken",
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "token",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "returns",
+            "text": [
+              {
+                "text": "재발급된 사용자 토큰을 포함한 포함한 JSON 데이터",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "throw",
+            "text": [
+              {
+                "text": "401 사용자 인증 실패",
+                "kind": "text"
+              }
+            ]
+          },
+          {
+            "name": "throw",
+            "text": [
+              {
+                "text": "403 권한 없음",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
+      }
     }
   },
   "components": {
-    "schemas": {}
-  }
+    "schemas": {
+      "TokenAPI.Tokens": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          },
+          "id_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": false
+          }
+        },
+        "nullable": false,
+        "required": [
+          "access_token"
+        ],
+        "x-typia-jsDocTags": []
+      }
+    },
+    "securitySchemes": {
+      "bearer": {
+        "type": "http",
+        "scheme": "bearer"
+      }
+    }
+  },
+  "security": [
+    {
+      "bearer": []
+    }
+  ]
 }
