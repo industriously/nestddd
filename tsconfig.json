@@ -30,9 +30,11 @@
     "paths": {
       "@PRISMA":["db"],
       "@PRISMA/service":["src/infrastructure/DB/prisma.service.ts"],
-      "@LOGGER/service":["src/infrastructure/logger/injection.token.ts"],
+      "@LOGGER/service":["src/infrastructure/logger/constant.ts"],
       "@INTERFACE/*":["src/interface/*"],
-      "@COMMON/*":["src/api/common/*"]
+      "@COMMON/*":["src/api/common/*"],
+      "@ACCOUNT/*":["src/api/account/*"],
+      "@TOKEN/*":["src/api/token/*"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

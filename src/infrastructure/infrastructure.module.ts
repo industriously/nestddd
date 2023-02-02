@@ -1,4 +1,3 @@
-import { AllExceptionFilter } from './filter/all-exception.filter';
 import { HttpExceptionFilter } from './filter/http-exception.filter';
 import { TypeGuardErrorFilter } from './filter/typia-exception.filter';
 import { AuthExceptionFilter } from './filter/auth-exception.filter';
@@ -11,10 +10,9 @@ import { LoggerModule } from './logger/logger.module';
 @Module({
   imports: [LoggerModule, PrismaModule, ConfigModule],
   providers: [
-    { provide: APP_FILTER, useClass: AllExceptionFilter }, // last filter
-    { provide: APP_FILTER, useClass: HttpExceptionFilter },
-    { provide: APP_FILTER, useClass: TypeGuardErrorFilter }, // first filter.
-    { provide: APP_FILTER, useClass: AuthExceptionFilter },
+    { provide: APP_FILTER, useClass: HttpExceptionFilter }, // last filter
+    { provide: APP_FILTER, useClass: TypeGuardErrorFilter },
+    { provide: APP_FILTER, useClass: AuthExceptionFilter }, // first filter.
   ],
 })
 export class InfrastructureModule {}
