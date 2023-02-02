@@ -1,6 +1,8 @@
 export namespace TokenAPI {
-  export interface Tokens {
+  export interface AccessToken {
     readonly access_token: string;
-    readonly id_token?: string;
+  }
+  export interface Tokens extends AccessToken {
+    readonly id_token: string;
   }
 }

@@ -144,7 +144,7 @@
             "content": {
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/TokenAPI.Tokens"
+                  "$ref": "#/components/schemas/TokenAPI.AccessToken"
                 }
               }
             },
@@ -205,15 +205,31 @@
       "TokenAPI.Tokens": {
         "type": "object",
         "properties": {
-          "access_token": {
+          "id_token": {
             "type": "string",
             "nullable": false,
             "x-typia-required": true
           },
-          "id_token": {
+          "access_token": {
             "type": "string",
             "nullable": false,
-            "x-typia-required": false
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "id_token",
+          "access_token"
+        ],
+        "x-typia-jsDocTags": []
+      },
+      "TokenAPI.AccessToken": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
           }
         },
         "nullable": false,

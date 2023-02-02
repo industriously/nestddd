@@ -11,7 +11,7 @@ describe('TokenUsecase', () => {
       return `id_token: ${id} ${email} ${username}`;
     },
     verifyToken(token) {
-      return { id: token };
+      return { id: token, exp: 0, iat: 0 };
     },
   };
   const accountService: IAccountService = {
@@ -45,17 +45,17 @@ describe('TokenUsecase', () => {
 
   const usecase: ITokenUsecase = new TokenUsecase(tokenService, accountService);
 
-  it('if oidc false, get only access_token.', async () => {
+  it('get only access_token.', async () => {
     const id = 'dsfso';
     const account = await accountService.findOne({ id });
-    const token = await usecase.getToken(account, false);
+    const token = await usecase.getAccessToken(account);
     expect(token).toEqual({ access_token: `access_token: ${id}` });
   });
 
-  it('if oidc true, get access_token with id_token', async () => {
+  it('get access_token with id_token', async () => {
     const id = 'dsfadfeaf';
     const account = await accountService.findOne({ id });
-    const token = await usecase.getToken(account, true);
+    const token = await usecase.getTokens(account);
     expect(token).toEqual({
       access_token: `access_token: ${account.id}`,
       id_token: `id_token: ${account.id} ${account.email} ${account.username}`,

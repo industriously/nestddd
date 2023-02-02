@@ -39,7 +39,7 @@ export function getAccessToken
 }
 export namespace getAccessToken
 {
-    export type Output = TokenAPI.Tokens;
+    export type Output = TokenAPI.AccessToken;
 
     export const METHOD = "POST" as const;
     export const PATH: string = "/token/access_token";

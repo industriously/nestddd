@@ -20,7 +20,7 @@ export class TokenController {
    */
   @Post()
   getTokens(@Session() session: ISession): Promise<TokenAPI.Tokens> {
-    return this.usecase.getToken(session.account, true);
+    return this.usecase.getTokens(session.account);
   }
 
   /**
@@ -33,7 +33,7 @@ export class TokenController {
    * @throw 403 권한 없음
    */
   @Post('access_token')
-  getAccessToken(@Session() session: ISession): Promise<TokenAPI.Tokens> {
-    return this.usecase.getToken(session.account, false);
+  getAccessToken(@Session() session: ISession): Promise<TokenAPI.AccessToken> {
+    return this.usecase.getAccessToken(session.account);
   }
 }
