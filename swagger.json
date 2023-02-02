@@ -238,17 +238,6 @@
         ],
         "x-typia-jsDocTags": []
       }
-    },
-    "securitySchemes": {
-      "bearer": {
-        "type": "http",
-        "scheme": "bearer"
-      }
     }
-  },
-  "security": [
-    {
-      "bearer": []
-    }
-  ]
+  }
 }
