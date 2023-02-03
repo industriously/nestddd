@@ -28,5 +28,6 @@ module.exports = {
     '.module.ts',
     '.config.ts',
     'src/sdk/*',
+    'presentation/*',
   ],
 };
