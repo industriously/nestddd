@@ -16,14 +16,13 @@ export class AccountService implements IAccountService {
     );
   }
 
-  async findOneOrCreate(profile: IProfile): Promise<Account.State> {
-    const { sub, oauth_type, email } = profile;
-    return this.prisma.$transaction(async (tx) => {
-      const delegate = tx.accounts;
-      const account = await delegate.findFirst({
+  findOneOrCreate(profile: IProfile): Promise<Account.State> {
+    return this.prisma.$transaction(async ({ accounts }) => {
+      const { sub, oauth_type, email } = profile;
+      const exist = await accounts.findFirst({
         where: { OR: [{ sub, oauth_type }, { email }] },
       });
-      return account ?? delegate.create({ data: profile });
+      return exist ?? accounts.create({ data: profile });
     });
   }
 }
