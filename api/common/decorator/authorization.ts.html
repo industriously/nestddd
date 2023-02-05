@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for account/application/account.service.ts</title>
+    <title>Code coverage report for api/common/decorator/authorization.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../../../prettify.css" />
+    <link rel="stylesheet" href="../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,7 +19,7 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">account/application</a> account.service.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api/common/decorator</a> authorization.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>2/2</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>11/11</span>
+                <span class='fraction'>12/12</span>
             </div>
         
             
@@ -87,66 +87,54 @@
 <a name='L22'></a><a href='#L22'>22</a>
 <a name='L23'></a><a href='#L23'>23</a>
 <a name='L24'></a><a href='#L24'>24</a>
-<a name='L25'></a><a href='#L25'>25</a>
-<a name='L26'></a><a href='#L26'>26</a>
-<a name='L27'></a><a href='#L27'>27</a>
-<a name='L28'></a><a href='#L28'>28</a>
-<a name='L29'></a><a href='#L29'>29</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
+<a name='L25'></a><a href='#L25'>25</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-yes">8x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { Account, IAccountService } from '@INTERFACE/account';
-import type { IProfile } from '@INTERFACE/common';
-import { HttpExceptionFactory } from '@COMMON/exception';
-import { throw_if_null } from '@COMMON/util';
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@PRISMA/service';
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HttpExceptionFactory } from '@COMMON/exception';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { Request } from 'express';
 &nbsp;
-@Injectable()
-export class AccountService implements IAccountService {
-  constructor(private readonly prisma: PrismaService) {}
+type TOKEN_TYPE = 'basic' | 'bearer';
 &nbsp;
-  async findOne({ id }: IAccountService.FindOneFilter): Promise&lt;Account.State&gt; {
-    return throw_if_null(
-      await this.prisma.accounts.findFirst({ where: { id } }),
-      HttpExceptionFactory('UnAuthorized'),
-    );
-  }
-&nbsp;
-  findOneOrCreate(profile: IProfile): Promise&lt;Account.State&gt; {
-    return this.prisma.$transaction(async ({ accounts }) =&gt; {
-      const { sub, oauth_type, email } = profile;
-      const exist = await accounts.findFirst({
-        where: { OR: [{ sub, oauth_type }, { email }] },
-      });
-      return exist ?? accounts.create({ data: profile });
-    });
-  }
-}
+export const Authorization = (token_type: TOKEN_TYPE) =&gt;
+  createParamDecorator((type: TOKEN_TYPE, ctx: ExecutionContext) =&gt; {
+    const authorization = ctx.switchToHttp().getRequest&lt;Request&gt;().headers[
+      'authorization'
+    ];
+    if (authorization == undefined) {
+      throw HttpExceptionFactory(
+        'Forbidden',
+        'Authorization header is required.',
+      );
+    }
+    const regex = new RegExp(`^${type}\\s+\\S+`, 'i');
+    const token = authorization.match(regex);
+    if (token == undefined) {
+      throw HttpExceptionFactory('Forbidden', `${type} token is invalid.`);
+    }
+    return token[0].split(/\s+/)[1];
+  })(token_type);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -154,16 +142,16 @@ export class AccountService implements IAccountService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-04T17:43:31.880Z
+                at 2023-02-05T13:57:53.966Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../../../sorter.js"></script>
+        <script src="../../../block-navigation.js"></script>
     </body>
 </html>
     
