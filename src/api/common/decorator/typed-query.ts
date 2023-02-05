@@ -3,23 +3,28 @@ import {
   ExecutionContext,
   createParamDecorator,
 } from '@nestjs/common';
-import type express from 'express';
+import type { Request } from 'express';
 import { throw_if_null } from '../util';
 
 type QueryType = 'boolean' | 'number' | 'string' | 'string' | 'uuid';
 
 interface TypedQueryOptions {
+  /**
+   * QueryType : 'boolean' | 'number' | 'string' | 'string' | 'uuid'
+   */
   type?: QueryType;
+  /**
+   * If multiple is true, query value is array. default is false.
+   */
   multiple?: boolean;
+  /**
+   * If nullable is true, query value can null or undefined, default is false.
+   */
   nullable?: boolean;
 }
 
 const UUID_PATTERN =
   /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
-
-const isStringArray = (list: unknown[]): list is string[] => {
-  return typeof list[0] === 'string';
-};
 
 export const type_cast = (val: string, type: QueryType) => {
   if (type === 'boolean') {
@@ -32,7 +37,7 @@ export const type_cast = (val: string, type: QueryType) => {
   }
   if (type === 'number') {
     const num = Number(val);
-    if (!isNaN(num)) return num;
+    if (!isNaN(num) && val !== '') return num;
   }
   if (type === 'uuid' && UUID_PATTERN.test(val)) {
     return val;
@@ -45,13 +50,14 @@ export const type_cast = (val: string, type: QueryType) => {
 
 export const query_typecast = (
   key: string,
-  value: string | object | string[] | undefined,
+  value: string | string[] | undefined,
   options?: TypedQueryOptions,
 ) => {
   const { type = 'string', multiple = false, nullable = false } = options ?? {};
   const typecast_exception = new BadRequestException(
     `Value of the URL query '${key}' is not a ${type}.`,
   );
+
   if (value == undefined) {
     if (nullable) {
       return undefined;
@@ -61,25 +67,20 @@ export const query_typecast = (
       );
     }
   }
-  if (typeof value === 'string') {
-    const casted = throw_if_null(type_cast(value, type), typecast_exception);
-    return multiple ? [casted] : casted;
-  }
+
   if (Array.isArray(value)) {
     if (!multiple) {
       throw new BadRequestException(
         `Value of the URL query '${key}' is not a single.`,
       );
     }
-    if (!isStringArray(value)) {
-      throw typecast_exception;
-    }
-
     return value.map((item) =>
       throw_if_null(type_cast(item, type), typecast_exception),
     );
   }
-  throw typecast_exception;
+
+  const casted = throw_if_null(type_cast(value, type), typecast_exception);
+  return multiple ? [casted] : casted;
 };
 
 /**
@@ -90,13 +91,26 @@ export const query_typecast = (
  *
  * @param key URL Query name
  * @param options query type option
+ *
+ * * type - 'boolean' | 'number' | 'string' | 'string' | 'uuid', default is string
+ * * multiple - If multiple is true, query value is array type, default is false.
+ * * nullale - If nullable is true, query value can be undefined, default is false.
  * @returns Parameter decorator
  *
  * @author jiwon ro - https://github.com/rojiwon0325
  */
 export const TypedQuery = (key: string, options?: TypedQueryOptions) =>
   createParamDecorator((_key: string, ctx: ExecutionContext) => {
-    const request: express.Request = ctx.switchToHttp().getRequest();
+    const request = ctx.switchToHttp().getRequest<
+      Request<
+        {
+          [key: string]: string;
+        },
+        any,
+        any,
+        { [key: string]: string | string[] | undefined }
+      >
+    >();
     const value = request.query[_key];
     return query_typecast(_key, value, options);
   })(key);
