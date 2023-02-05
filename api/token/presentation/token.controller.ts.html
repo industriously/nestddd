@@ -23,9 +23,9 @@
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/10</span>
+                <span class='fraction'>10/10</span>
             </div>
         
             
@@ -37,16 +37,16 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/3</span>
+                <span class='fraction'>3/3</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">0% </span>
+                <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/8</span>
+                <span class='fraction'>8/8</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line low'></div>
+    <div class='status-line high'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -104,27 +104,13 @@
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -136,20 +122,34 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ISession } from '@INTERFACE/common';
 import { ITokenUsecase, TokenAPI } from '@INTERFACE/token';
-<span class="cstat-no" title="statement not covered" >import { Controller, Inject, Post, Session } from '@nestjs/common';</span>
-<span class="cstat-no" title="statement not covered" >import { TokenUsecaseToken } from '@TOKEN/application';</span>
+import { Controller, Inject, Post, Session } from '@nestjs/common';
+import { TokenUsecaseToken } from '@TOKEN/application';
 &nbsp;
 @Controller('token')
-export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >TokenController </span>{</span></span>
-<span class="fstat-no" title="function not covered" >  constructor(</span>
-    @Inject(TokenUsecaseToken) private readonly <span class="cstat-no" title="statement not covered" >usecase: ITokenUsecase,</span>
+export class TokenController {
+  constructor(
+    @Inject(TokenUsecaseToken) private readonly usecase: ITokenUsecase,
   ) {}
   /**
    * 사용자 토큰 생성 API
@@ -161,9 +161,9 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
    * @throw 401 사용자 인증 실패
    * @throw 403 권힌 없음
    */
-<span class="cstat-no" title="statement not covered" >  @Post()</span>
-<span class="fstat-no" title="function not covered" >  getTokens(</span>@Session() session: ISession): Promise&lt;TokenAPI.Tokens&gt; {
-<span class="cstat-no" title="statement not covered" >    return this.usecase.getTokens(session.account);</span>
+  @Post()
+  getTokens(@Session() session: ISession): Promise&lt;TokenAPI.Tokens&gt; {
+    return this.usecase.getTokens(session.account);
   }
 &nbsp;
   /**
@@ -175,9 +175,9 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
    * @throw 401 사용자 인증 실패
    * @throw 403 권한 없음
    */
-<span class="cstat-no" title="statement not covered" >  @Post('access_token')</span>
-<span class="fstat-no" title="function not covered" >  getAccessToken(</span>@Session() session: ISession): Promise&lt;TokenAPI.AccessToken&gt; {
-<span class="cstat-no" title="statement not covered" >    return this.usecase.getAccessToken(session.account);</span>
+  @Post('access_token')
+  getAccessToken(@Session() session: ISession): Promise&lt;TokenAPI.AccessToken&gt; {
+    return this.usecase.getAccessToken(session.account);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -187,7 +187,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-05T18:48:21.865Z
+                at 2023-02-05T20:24:04.666Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
