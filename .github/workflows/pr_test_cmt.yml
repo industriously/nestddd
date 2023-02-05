@@ -14,7 +14,7 @@ jobs:
         run: npm ci
 
       - name: Test
-        run: npx jest --coverage --coverageReporters json-summary
+        run: npm run test:cov -- --coverageReporters json-summary
 
 
       - name: Comment

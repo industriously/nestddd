@@ -1,3 +1,4 @@
+import { HttpExceptionMessage } from '@COMMON/exception';
 import { ExceptionResponse } from '@INTERFACE/common';
 import {
   ExceptionFilter,
@@ -16,7 +17,7 @@ export class AllExceptionFilter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const body: ExceptionResponse = {
       statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: 'INTERNAL_SERVER_ERROR',
+      message: HttpExceptionMessage.ISE,
     };
     httpAdapter.reply(ctx.getResponse(), body, body.statusCode);
   }

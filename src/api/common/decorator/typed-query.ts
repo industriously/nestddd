@@ -54,7 +54,7 @@ export const query_typecast = (
   );
   if (value == undefined) {
     if (nullable) {
-      return null;
+      return undefined;
     } else {
       throw new BadRequestException(
         `Value of the URL query '${key}' is required.`,
@@ -86,8 +86,7 @@ export const query_typecast = (
  * URL parameter decorator with type.
  *
  * `TypedQuery` is a decorator function getting specific typed query from the HTTP
- * request URL. It's almost same with the {@link nest.Query}, but `TypedQuery` can specify
- * the query type manually.
+ * request URL.
  *
  * @param key URL Query name
  * @param options query type option

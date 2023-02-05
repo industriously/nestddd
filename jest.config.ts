@@ -1,7 +1,9 @@
-module.exports = {
+import type { Config } from 'jest';
+
+const config: Config = {
   roots: ['<rootDir>'],
   coverageDirectory: '<rootDir>/coverage',
-  testRegex: '.*\\.spec\\.ts$',
+  testRegex: '.spec.ts$',
   testEnvironment: 'node',
   transform: {
     '^.+\\.ts$': [
@@ -19,18 +21,18 @@ module.exports = {
     '@ACCOUNT/(.*)$': '<rootDir>/src/api/account/$1',
     '@TOKEN/(.*)$': '<rootDir>/src/api/token/$1',
   },
-  collectCoverageFrom: ['src/**/*.(t|j)s'],
+  collectCoverageFrom: ['src/**/*.ts'],
   coveragePathIgnorePatterns: [
-    'main.ts',
     'index.ts',
-    'constant.ts',
+    'main.ts',
     '.module.ts',
     '.config.ts',
     'constant',
-    'presentation',
+    'constant.ts',
     'src/sdk',
-    'src/infrastructure',
-    'guard',
-    'decorator',
+    'src/infrastructure/DB',
+    'src/infrastructure/config',
   ],
 };
+
+export default config;

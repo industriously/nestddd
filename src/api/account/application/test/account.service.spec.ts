@@ -5,7 +5,7 @@ import { PrismaService } from '@PRISMA/service';
 import { IProfile } from '@INTERFACE/common';
 import { Prisma } from '@PRISMA';
 
-describe('AccountService', () => {
+describe('AccountService Test', () => {
   const prisma = mockDeep<PrismaService>();
   const transaction = mockDeep<Prisma.TransactionClient>();
   const service: IAccountService = new AccountService(prisma);

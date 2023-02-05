@@ -2,7 +2,7 @@ import { AuthException } from '@devts/nestjs-auth';
 import { IAccountService, IAccountUsecase } from '@INTERFACE/account';
 import { AccountUsecase } from '../account.usecase';
 
-describe('AccountUsecase', () => {
+describe('AccountUsecase Test', () => {
   const accountService: Record<keyof IAccountService, jest.Mock> = {
     findOne: jest.fn(),
     findOneOrCreate: jest.fn(),

@@ -29,7 +29,7 @@ export class LoggerInterceptor implements NestInterceptor {
         ) {
           return throwError(() => err);
         } else {
-          this.logger.error(err.message ?? err, context.getClass().name);
+          this.logger.error(err, context.getClass().name);
           return throwError(() => HttpExceptionFactory('ISE'));
         }
       }),
