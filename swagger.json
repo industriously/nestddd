@@ -24,7 +24,7 @@
           }
         },
         "description": "구글 oauth 인증 API\n\n인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.\n\n인증 실패시 로그인 실패 페이지로 이동합니다.",
-        "x-nestia-namespace": "sign-in.google.signInGoogle",
+        "x-nestia-namespace": "sign-in.google.signInByGoogle",
         "x-nestia-jsDocTags": [
           {
             "name": "tag",
@@ -51,7 +51,7 @@
           }
         },
         "description": "깃헙 oauth 인증 API\n\n인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.\n\n인증 실패시 로그인 실패 페이지로 이동합니다.",
-        "x-nestia-namespace": "sign-in.github.signInGithub",
+        "x-nestia-namespace": "sign-in.github.signInByGithub",
         "x-nestia-jsDocTags": [
           {
             "name": "tag",
