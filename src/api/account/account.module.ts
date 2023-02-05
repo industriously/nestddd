@@ -1,7 +1,12 @@
 import { SignInController } from './presentation/sign-in.controller';
 import { Module } from '@nestjs/common';
 import { GithubProvider, GoogleProvider } from './guard';
-import { AccountServiceProvider, AccountUsecaseProvider } from './application';
+import {
+  AccountServiceProvider,
+  AccountServiceToken,
+  AccountUsecaseProvider,
+  AccountUsecaseToken,
+} from './application';
 import { OauthCallback } from './presentation/oauth.callback';
 
 @Module({
@@ -12,6 +17,6 @@ import { OauthCallback } from './presentation/oauth.callback';
     AccountUsecaseProvider,
   ],
   controllers: [SignInController, OauthCallback],
-  exports: [AccountServiceProvider],
+  exports: [AccountServiceToken, AccountUsecaseToken],
 })
 export class AccountModule {}

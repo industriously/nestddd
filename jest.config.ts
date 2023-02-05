@@ -27,6 +27,7 @@ const config: Config = {
     'main.ts',
     '.module.ts',
     '.config.ts',
+    '.strategy.ts',
     'constant',
     'constant.ts',
     'src/sdk',

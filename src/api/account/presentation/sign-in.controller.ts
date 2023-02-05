@@ -13,7 +13,7 @@ export class SignInController {
    */
   @UseGuards(GoogleGuard)
   @Get('google')
-  signInGoogle(): void {
+  signInByGoogle() {
     return;
   }
 
@@ -27,7 +27,7 @@ export class SignInController {
    */
   @UseGuards(GithubGuard)
   @Get('github')
-  signInGithub(): void {
+  signInByGithub() {
     return;
   }
 }

@@ -23,7 +23,7 @@ export class OauthCallback {
   @UseGuards(GoogleGuard)
   @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
   @Get('google')
-  async googlecb(
+  async callbackFromGoogle(
     @Profile() profile: IProfile,
     @Session() session: ISession,
   ): Promise<void> {
@@ -34,7 +34,7 @@ export class OauthCallback {
   @UseGuards(GithubGuard)
   @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
   @Get('github')
-  async githubcb(
+  async callbackFromGithub(
     @Profile() profile: IProfile,
     @Session() session: ISession,
   ): Promise<void> {
