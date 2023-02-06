@@ -1785,8 +1785,8 @@ export namespace Prisma {
 
   export type accountsWhereUniqueInput = {
     id?: string
-    sub?: string
     email?: string
+    sub_oauth_type?: accountsSubOauth_typeCompoundUniqueInput
   }
 
   export type accountsOrderByWithAggregationInput = {
@@ -1922,6 +1922,11 @@ export namespace Prisma {
   export type BoolFilter = {
     equals?: boolean
     not?: NestedBoolFilter | boolean
+  }
+
+  export type accountsSubOauth_typeCompoundUniqueInput = {
+    sub: string
+    oauth_type: string
   }
 
   export type accountsCountOrderByAggregateInput = {

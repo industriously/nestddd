@@ -10,7 +10,7 @@ datasource db {
 model accounts {
   /// @format uuid
   id         String   @id @default(uuid())
-  sub        String   @unique
+  sub        String
   oauth_type String
   /// @format email
   email      String   @unique
@@ -18,4 +18,6 @@ model accounts {
   created_at DateTime @default(now())
   updated_at DateTime @default(now())
   is_deleted Boolean  @default(false)
+
+  @@unique([sub, oauth_type])
 }

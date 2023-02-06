@@ -11,18 +11,31 @@ export class AccountService implements IAccountService {
 
   async findOne({ id }: IAccountService.FindOneFilter): Promise<Account.State> {
     return throw_if_null(
-      await this.prisma.accounts.findFirst({ where: { id } }),
+      await this.prisma.accounts.findFirst({
+        where: { id, is_deleted: false },
+      }),
       HttpExceptionFactory('UnAuthorized'),
     );
   }
 
   findOneOrCreate(profile: IProfile): Promise<Account.State> {
     return this.prisma.$transaction(async ({ accounts }) => {
-      const { sub, oauth_type, email } = profile;
+      const { sub, oauth_type, email, username } = profile;
       const exist = await accounts.findFirst({
         where: { OR: [{ sub, oauth_type }, { email }] },
       });
-      return exist ?? accounts.create({ data: profile });
+      if (exist) {
+        if (exist.is_deleted) {
+          return accounts.update({
+            data: { is_deleted: false },
+            where: { id: exist.id },
+          });
+        }
+        return exist;
+      }
+      return accounts.create({
+        data: { sub, oauth_type, email, username },
+      });
     });
   }
 }

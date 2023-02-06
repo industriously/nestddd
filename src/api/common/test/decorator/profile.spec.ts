@@ -12,7 +12,7 @@ import { Test } from '@nestjs/testing';
 import supertest from 'supertest';
 
 jest.mock('typia', () => ({
-  assert: <T>(val: T) => val,
+  assertEquals: <T>(val: T) => val,
 }));
 
 class TestGuard implements CanActivate {

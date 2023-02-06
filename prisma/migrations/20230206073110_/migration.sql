@@ -9,7 +9,7 @@ CREATE TABLE `accounts` (
     `updated_at` DATETIME(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3) ON UPDATE CURRENT_TIMESTAMP(3),
     `is_deleted` BOOLEAN NOT NULL DEFAULT false,
 
-    UNIQUE INDEX `accounts_sub_key`(`sub`),
     UNIQUE INDEX `accounts_email_key`(`email`),
+    UNIQUE INDEX `accounts_sub_oauth_type_key`(`sub`, `oauth_type`),
     PRIMARY KEY (`id`)
 ) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
