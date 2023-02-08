@@ -1,9 +1,11 @@
-export interface IRepository<Aggregate, Id> {
+import { IEntity } from './entity.interface';
+
+export interface IRepository<Aggregate extends IEntity<IId>, IId = unknown> {
   readonly findOne: (
-    id: Id,
+    id: IId,
     include_deleted: boolean,
   ) => Promise<Aggregate | null>;
   readonly findMany: (filter: any, option: any) => Promise<Aggregate[]>;
   readonly save: (aggregate: Aggregate) => Promise<void>;
-  readonly remove: (id: Id, soft_delete: boolean) => Promise<void>;
+  readonly remove: (id: IId) => Promise<void>;
 }
