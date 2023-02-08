@@ -6,11 +6,15 @@ import type {
 import type { IProfile } from '@INTERFACE/common';
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { throw_if_null } from '@COMMON/util';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { AccountRepositoryToken } from '@ACCOUNT/infrastructure';
 
 @Injectable()
 export class AccountService implements IAccountService {
-  constructor(private readonly repository: IAccountRepository) {}
+  constructor(
+    @Inject(AccountRepositoryToken)
+    private readonly repository: IAccountRepository,
+  ) {}
 
   async findOne({ id }: IAccountService.FindOneFilter): Promise<Account.State> {
     return throw_if_null(

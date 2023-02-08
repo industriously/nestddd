@@ -2,16 +2,14 @@ import { map } from '@COMMON/util';
 import { Account, IAccountRepository } from '@INTERFACE/account';
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from '@PRISMA/service';
-import { AccountMapper } from './account.mapper';
+import { toAccountState } from './account.mapper';
 
 @Injectable()
 export class AccountRepository implements IAccountRepository {
   constructor(private readonly prisma: PrismaService) {}
 
   async create(data: IAccountRepository.CreateData): Promise<Account.State> {
-    return AccountMapper.toAggregate(
-      await this.prisma.accounts.create({ data }),
-    );
+    return toAccountState(await this.prisma.accounts.create({ data }));
   }
 
   async findOne(
@@ -22,7 +20,7 @@ export class AccountRepository implements IAccountRepository {
       await this.prisma.accounts.findFirst({
         where: { id, ...(include_deleted ? {} : { is_deleted: false }) },
       }),
-      AccountMapper.toAggregate,
+      toAccountState,
     );
   }
 
@@ -43,9 +41,9 @@ export class AccountRepository implements IAccountRepository {
             data: { is_deleted: false },
           });
         }
-        return AccountMapper.toAggregate(exist);
+        return toAccountState(exist);
       }
-      return AccountMapper.toAggregate(
+      return toAccountState(
         await accounts.create({ data: { sub, oauth_type, email, username } }),
       );
     });
@@ -59,14 +57,14 @@ export class AccountRepository implements IAccountRepository {
     const accounts = await this.prisma.accounts.findMany({
       where: { oauth_type, ...(include_deleted ? {} : { is_deleted: false }) },
     });
-    return accounts.map(AccountMapper.toAggregate);
+    return accounts.map(toAccountState);
   }
 
   async update(
     id: string,
     data: IAccountRepository.UpdateData,
   ): Promise<Account.State> {
-    return AccountMapper.toAggregate(
+    return toAccountState(
       await this.prisma.accounts.update({
         where: { id },
         data,
