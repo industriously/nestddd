@@ -1,33 +1,32 @@
 import { AuthException } from '@devts/nestjs-auth';
-import { IAccountService, IAccountUsecase } from '@INTERFACE/account';
+import { Service, Usecase } from '@INTERFACE/account';
+import { mockDeep, mockReset } from 'jest-mock-extended';
 import { AccountUsecase } from '../account.usecase';
+import { factory } from './mock-factory';
 
-describe('AccountUsecase Test', () => {
-  const accountService: Record<keyof IAccountService, jest.Mock> = {
-    findOne: jest.fn(),
-    findOneOrCreate: jest.fn(),
-  };
-  const usecase: IAccountUsecase = new AccountUsecase(accountService);
+describe('AccountUsecase', () => {
+  const service = mockDeep<Service>();
+  const usecase: Usecase = new AccountUsecase(service);
 
   afterEach(() => {
-    accountService.findOne.mockClear();
-    accountService.findOneOrCreate.mockClear();
+    mockReset(service);
   });
 
-  it('signIn success', async () => {
-    accountService.findOneOrCreate.mockResolvedValueOnce({ id: 'id' });
-    const received = await usecase.signIn({} as any);
-    expect(received).toEqual({ id: 'id' });
-  });
+  describe('AccountUsecase', () => {
+    it('success', async () => {
+      service.findOneOrCreate.mockResolvedValueOnce(factory.account);
+      const received = await usecase.signIn(factory.profile);
+      expect(received).toEqual({ id: factory.account.id });
+      return;
+    });
 
-  it('signIn fail', async () => {
-    accountService.findOneOrCreate.mockRejectedValueOnce(
-      new Error('test error'),
-    );
-    const received = usecase.signIn({} as any);
-
-    await expect(received).rejects.toEqual(
-      new AuthException(401, '회원 인증에 실패했습니다.'),
-    );
+    it('fail', async () => {
+      service.findOneOrCreate.mockRejectedValueOnce(Error('Test Error'));
+      const received = usecase.signIn(factory.profile);
+      await expect(received).rejects.toEqual(
+        new AuthException(401, '회원 인증에 실패했습니다.'),
+      );
+      return;
+    });
   });
 });

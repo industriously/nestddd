@@ -1,6 +1,6 @@
 import { AccountModule } from '@ACCOUNT/account.module';
-import { AccountServiceToken, AccountUsecaseToken } from '@ACCOUNT/application';
-import { IAccountService, IAccountUsecase } from '@INTERFACE/account';
+import { AccountToken } from '@ACCOUNT/constant';
+import { Service, Usecase } from '@INTERFACE/account';
 import { IEnv } from '@INTERFACE/common';
 import { Global, HttpStatus, INestApplication, Module } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
@@ -9,18 +9,16 @@ import { mockDeep } from 'jest-mock-extended';
 import supertest from 'supertest';
 import { SignInController } from '../sign-in.controller';
 
-describe('SignInController Test', () => {
+describe('SignInController', () => {
   let app: INestApplication;
-  const usecase = mockDeep<IAccountUsecase>();
-
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [ConfigModule, AccountModule],
     })
-      .overrideProvider(AccountServiceToken)
-      .useValue(mockDeep<IAccountService>())
-      .overrideProvider(AccountUsecaseToken)
-      .useValue(usecase)
+      .overrideProvider(AccountToken.Service)
+      .useValue(mockDeep<Service>())
+      .overrideProvider(AccountToken.Usecase)
+      .useValue(mockDeep<Usecase>())
       .compile();
     app = moduleRef.createNestApplication();
     await app.init();

@@ -1,4 +1,3 @@
-import type { IAccountUsecase } from '@INTERFACE/account';
 import type { IProfile, ISession } from '@INTERFACE/common';
 import { Profile } from '@COMMON/decorator';
 import { SIGN_IN_SUCCESS_URL } from '@COMMON/constant';
@@ -11,13 +10,14 @@ import {
   Redirect,
   HttpStatus,
 } from '@nestjs/common';
-import { AccountUsecaseToken } from '../application';
 import { GithubGuard, GoogleGuard } from '../guard';
+import { AccountToken } from '@ACCOUNT/constant';
+import { Usecase } from '@INTERFACE/account';
 
 @Controller('oauth')
 export class OauthCallback {
   constructor(
-    @Inject(AccountUsecaseToken) private readonly usecase: IAccountUsecase,
+    @Inject(AccountToken.Usecase) private readonly usecase: Usecase,
   ) {}
 
   @UseGuards(GoogleGuard)

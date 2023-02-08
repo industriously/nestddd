@@ -1,9 +1,9 @@
-import { Account } from '@INTERFACE/account';
+import { Domain } from '@INTERFACE/account';
 
 export namespace ITokenService {
   type JwtPayload = { readonly exp: number; readonly iat: number };
-  export type AccessTokenPayload = Pick<Account.State, 'id'>;
-  export type IdTokenPayload = Pick<Account.State, 'id' | 'email' | 'username'>;
+  export type AccessTokenPayload = Pick<Domain.State, 'id'>;
+  export type IdTokenPayload = Pick<Domain.State, 'id' | 'email' | 'username'>;
 
   export type VerifyTokenResponse = JwtPayload &
     (AccessTokenPayload | IdTokenPayload);

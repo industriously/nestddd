@@ -1,17 +1,16 @@
+import { AccountToken } from '@ACCOUNT/constant';
 import { AuthException } from '@devts/nestjs-auth';
-import { IAccountService, IAccountUsecase } from '@INTERFACE/account';
+import { Service, Usecase } from '@INTERFACE/account';
 import { IProfile } from '@INTERFACE/common';
 import { Inject, Injectable } from '@nestjs/common';
-import { AccountServiceToken } from './constant';
 
 @Injectable()
-export class AccountUsecase implements IAccountUsecase {
+export class AccountUsecase implements Usecase {
   constructor(
-    @Inject(AccountServiceToken)
-    private readonly accountService: IAccountService,
+    @Inject(AccountToken.Service) private readonly accountService: Service,
   ) {}
 
-  async signIn(profile: IProfile): Promise<IAccountUsecase.SignInResponse> {
+  async signIn(profile: IProfile): Promise<Usecase.SignInResponse> {
     try {
       const { id } = await this.accountService.findOneOrCreate(profile);
       return { id };

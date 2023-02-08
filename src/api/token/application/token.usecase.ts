@@ -1,7 +1,7 @@
-import { AccountServiceToken } from '@ACCOUNT/application';
+import { AccountToken } from '@ACCOUNT/constant';
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { throw_if_null } from '@COMMON/util';
-import { IAccountService } from '@INTERFACE/account';
+import * as Account from '@INTERFACE/account';
 import { ITokenService, ITokenUsecase, TokenAPI } from '@INTERFACE/token';
 import { Inject, Injectable } from '@nestjs/common';
 import { TokenServiceToken } from './constant';
@@ -11,8 +11,8 @@ export class TokenUsecase implements ITokenUsecase {
   constructor(
     @Inject(TokenServiceToken)
     private readonly tokenService: ITokenService,
-    @Inject(AccountServiceToken)
-    private readonly accountService: IAccountService,
+    @Inject(AccountToken.Service)
+    private readonly accountService: Account.Service,
   ) {}
 
   private getAccount(account: ITokenUsecase.SignInAccount | undefined) {

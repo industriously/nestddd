@@ -1,11 +1,11 @@
-import { Account } from '@INTERFACE/account';
+import { Domain } from '@INTERFACE/account';
 
 export interface IProfile {
-  readonly sub: Account.State['sub'];
+  readonly sub: Domain.State['sub'];
   readonly oauth_type: 'github' | 'google';
-  readonly username: Account.State['username'];
+  readonly username: Domain.State['username'];
   /**
    * @format email
    */
-  readonly email: Account.State['email'];
+  readonly email: Domain.State['email'];
 }

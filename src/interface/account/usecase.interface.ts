@@ -1,12 +1,10 @@
 import { IProfile } from '@INTERFACE/common';
-import { Account } from './domain.interface';
+import { Domain } from './domain.interface';
 
-export namespace IAccountUsecase {
-  export type SignInResponse = Pick<Account.State, 'id'>;
+export namespace Usecase {
+  export type SignInResponse = Pick<Domain.State, 'id'>;
 }
 
-export interface IAccountUsecase {
-  readonly signIn: (
-    profile: IProfile,
-  ) => Promise<IAccountUsecase.SignInResponse>;
+export interface Usecase {
+  readonly signIn: (profile: IProfile) => Promise<Usecase.SignInResponse>;
 }

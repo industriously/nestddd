@@ -1,4 +1,4 @@
-import { IAccountService } from '@INTERFACE/account';
+import * as Account from '@INTERFACE/account';
 import { ITokenService, ITokenUsecase } from '@INTERFACE/token';
 import { TokenUsecase } from '../token.usecase';
 
@@ -14,7 +14,7 @@ describe('TokenUsecase', () => {
       return { id: token, exp: 0, iat: 0 };
     },
   };
-  const accountService: IAccountService = {
+  const accountService: Account.Service = {
     async findOne({ id }) {
       const now = new Date();
       return {

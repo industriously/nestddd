@@ -1,9 +1,9 @@
-import { IAccountUsecase } from '@INTERFACE/account';
+import { Usecase } from '@INTERFACE/account';
 import { IProfile, ISession } from '@INTERFACE/common';
 import { OauthCallback } from '../oauth.callback';
 
-describe('OauthCallback Test', () => {
-  const usecase: IAccountUsecase = {
+describe('OauthCallback', () => {
+  const usecase: Usecase = {
     async signIn({ sub }) {
       return { id: sub };
     },

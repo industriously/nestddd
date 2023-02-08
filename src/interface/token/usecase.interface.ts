@@ -1,8 +1,8 @@
 import { TokenAPI } from '@INTERFACE/token';
-import { Account } from '@INTERFACE/account';
+import { Domain } from '@INTERFACE/account';
 
 export namespace ITokenUsecase {
-  export type SignInAccount = Pick<Account.State, 'id'>;
+  export type SignInAccount = Pick<Domain.State, 'id'>;
 }
 
 export interface ITokenUsecase {

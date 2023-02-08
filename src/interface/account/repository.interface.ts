@@ -1,35 +1,33 @@
 import { IRepository } from '@INTERFACE/common';
-import { Account } from './domain.interface';
+import { Domain } from './domain.interface';
 
-export namespace IAccountRepository {
+export namespace Repository {
   export type CreateData = Readonly<
-    Pick<Account.State, 'email' | 'oauth_type' | 'sub' | 'username'>
+    Pick<Domain.State, 'email' | 'oauth_type' | 'sub' | 'username'>
   >;
   export type FindManyFilter = Readonly<{
-    oauth_type: Account.State['oauth_type'];
+    oauth_type: Domain.State['oauth_type'];
   }>;
   export type FindOneOrCreateFilter = Readonly<
-    Pick<Account.State, 'sub' | 'oauth_type' | 'email'>
+    Pick<Domain.State, 'sub' | 'oauth_type' | 'email'>
   >;
-  export type FindOneOrCreateData = Readonly<Pick<Account.State, 'username'>>;
-  export type UpdateData = Readonly<Pick<Account.State, 'username'>>;
+  export type FindOneOrCreateData = Readonly<Pick<Domain.State, 'username'>>;
+  export type UpdateData = Readonly<Pick<Domain.State, 'username'>>;
 }
 
-export interface IAccountRepository
-  extends IRepository<Account.State, Account.State['id']> {
-  readonly create: (
-    data: IAccountRepository.CreateData,
-  ) => Promise<Account.State>;
+export interface Repository
+  extends IRepository<Domain.State, Domain.State['id']> {
+  readonly create: (data: Repository.CreateData) => Promise<Domain.State>;
   readonly findOneOrCreate: (
-    filter: IAccountRepository.FindOneOrCreateFilter,
-    data: IAccountRepository.FindOneOrCreateData,
-  ) => Promise<Account.State>;
+    filter: Repository.FindOneOrCreateFilter,
+    data: Repository.FindOneOrCreateData,
+  ) => Promise<Domain.State>;
   readonly findMany: (
-    filter: IAccountRepository.FindManyFilter,
+    filter: Repository.FindManyFilter,
     include_deleted: boolean,
-  ) => Promise<Account.State[]>;
+  ) => Promise<Domain.State[]>;
   readonly update: (
-    id: Account.State['id'],
-    data: IAccountRepository.UpdateData,
-  ) => Promise<Account.State>;
+    id: Domain.State['id'],
+    data: Repository.UpdateData,
+  ) => Promise<Domain.State>;
 }

@@ -1,16 +1,15 @@
+import { AccountToken } from '@ACCOUNT/constant';
+import { Service, Usecase } from '@INTERFACE/account';
 import { Provider } from '@nestjs/common';
 import { AccountService } from './account.service';
 import { AccountUsecase } from './account.usecase';
-import { AccountServiceToken, AccountUsecaseToken } from './constant';
 
-export const AccountUsecaseProvider: Provider<AccountUsecase> = {
-  provide: AccountUsecaseToken,
+export const AccountUsecaseProvider: Provider<Usecase> = {
+  provide: AccountToken.Usecase,
   useClass: AccountUsecase,
 };
 
-export const AccountServiceProvider: Provider<AccountService> = {
-  provide: AccountServiceToken,
+export const AccountServiceProvider: Provider<Service> = {
+  provide: AccountToken.Service,
   useClass: AccountService,
 };
-
-export { AccountUsecaseToken, AccountServiceToken };
