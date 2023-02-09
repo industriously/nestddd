@@ -1,9 +1,9 @@
 import { ISession } from '@INTERFACE/common';
-import { ITokenUsecase } from '@INTERFACE/token';
+import { Usecase } from '@INTERFACE/token';
 import { TokenController } from '../token.controller';
 
 describe('TokenController Test', () => {
-  const usecase: ITokenUsecase = {
+  const usecase: Usecase = {
     async getTokens(account) {
       return { access_token: 'access_token', id_token: account?.id ?? '' };
     },

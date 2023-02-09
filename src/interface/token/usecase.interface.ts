@@ -1,15 +1,15 @@
-import { TokenAPI } from '@INTERFACE/token';
-import { Domain } from '@INTERFACE/account';
+import * as Account from '@INTERFACE/account';
+import { API } from '@INTERFACE/token';
 
-export namespace ITokenUsecase {
-  export type SignInAccount = Pick<Domain.State, 'id'>;
+export namespace Usecase {
+  export type SignInAccount = Pick<Account.Domain.State, 'id'>;
 }
 
-export interface ITokenUsecase {
+export interface Usecase {
   readonly getTokens: (
-    account: ITokenUsecase.SignInAccount | undefined,
-  ) => Promise<TokenAPI.Tokens>;
+    account: Usecase.SignInAccount | undefined,
+  ) => Promise<API.Tokens>;
   readonly getAccessToken: (
-    account: ITokenUsecase.SignInAccount | undefined,
-  ) => Promise<TokenAPI.AccessToken>;
+    account: Usecase.SignInAccount | undefined,
+  ) => Promise<API.AccessToken>;
 }

@@ -2,28 +2,27 @@ import { AccountToken } from '@ACCOUNT/constant';
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { throw_if_null } from '@COMMON/util';
 import * as Account from '@INTERFACE/account';
-import { ITokenService, ITokenUsecase, TokenAPI } from '@INTERFACE/token';
+import { Service, Usecase, API } from '@INTERFACE/token';
 import { Inject, Injectable } from '@nestjs/common';
 import { TokenServiceToken } from './constant';
 
 @Injectable()
-export class TokenUsecase implements ITokenUsecase {
+export class TokenUsecase implements Usecase {
   constructor(
     @Inject(TokenServiceToken)
-    private readonly tokenService: ITokenService,
+    private readonly tokenService: Service,
     @Inject(AccountToken.Service)
     private readonly accountService: Account.Service,
   ) {}
 
-  private getAccount(account: ITokenUsecase.SignInAccount | undefined) {
-    return this.accountService.findOne({
-      id: throw_if_null(account, HttpExceptionFactory('UnAuthorized')).id,
-    });
+  private getAccount(account: Usecase.SignInAccount | undefined) {
+    const { id } = throw_if_null(account, HttpExceptionFactory('UnAuthorized'));
+    return this.accountService.findOne(id);
   }
 
   async getTokens(
-    _account: ITokenUsecase.SignInAccount | undefined,
-  ): Promise<TokenAPI.Tokens> {
+    _account: Usecase.SignInAccount | undefined,
+  ): Promise<API.Tokens> {
     const account = await this.getAccount(_account);
     return {
       access_token: this.tokenService.getAccessToken(account),
@@ -32,8 +31,8 @@ export class TokenUsecase implements ITokenUsecase {
   }
 
   async getAccessToken(
-    _account: ITokenUsecase.SignInAccount | undefined,
-  ): Promise<TokenAPI.AccessToken> {
+    _account: Usecase.SignInAccount | undefined,
+  ): Promise<API.AccessToken> {
     const account = await this.getAccount(_account);
     return {
       access_token: this.tokenService.getAccessToken(account),

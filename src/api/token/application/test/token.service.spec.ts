@@ -1,11 +1,11 @@
-import { ITokenService } from '@INTERFACE/token';
+import { Service } from '@INTERFACE/token';
 import { JwtService } from '@nestjs/jwt';
 import { TokenService } from '../token.service';
 
 describe('TokenUsecase', () => {
   const secret = 'test_secret';
   const jwtService = new JwtService({ secret });
-  const service: ITokenService = new TokenService(jwtService);
+  const service: Service = new TokenService(jwtService);
 
   const account = {
     id: 'safsd',

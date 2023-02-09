@@ -12,7 +12,7 @@ export class AccountService implements Service {
     private readonly repository: Repository,
   ) {}
 
-  async findOne({ id }: Service.FindOneFilter): Promise<Domain.State> {
+  async findOne(id: Domain.State['id']): Promise<Domain.State> {
     return throw_if_null(
       await this.repository.findOne(id, false),
       HttpExceptionFactory('UnAuthorized'),

@@ -1,9 +1,9 @@
 import * as Account from '@INTERFACE/account';
-import { ITokenService, ITokenUsecase } from '@INTERFACE/token';
+import { Service, Usecase } from '@INTERFACE/token';
 import { TokenUsecase } from '../token.usecase';
 
 describe('TokenUsecase', () => {
-  const tokenService: ITokenService = {
+  const tokenService: Service = {
     getAccessToken(payload) {
       return `access_token: ${payload.id}`;
     },
@@ -15,7 +15,7 @@ describe('TokenUsecase', () => {
     },
   };
   const accountService: Account.Service = {
-    async findOne({ id }) {
+    async findOne(id) {
       const now = new Date();
       return {
         id,
@@ -23,7 +23,6 @@ describe('TokenUsecase', () => {
         username: 'testuser',
         sub: 'sfew',
         oauth_type: 'google',
-        is_deleted: false,
         created_at: now,
         updated_at: now,
       };
@@ -36,25 +35,24 @@ describe('TokenUsecase', () => {
         username,
         sub,
         oauth_type,
-        is_deleted: false,
         created_at: now,
         updated_at: now,
       };
     },
   };
 
-  const usecase: ITokenUsecase = new TokenUsecase(tokenService, accountService);
+  const usecase: Usecase = new TokenUsecase(tokenService, accountService);
 
   it('get only access_token.', async () => {
     const id = 'dsfso';
-    const account = await accountService.findOne({ id });
+    const account = await accountService.findOne(id);
     const token = await usecase.getAccessToken(account);
     expect(token).toEqual({ access_token: `access_token: ${id}` });
   });
 
   it('get access_token with id_token', async () => {
     const id = 'dsfadfeaf';
-    const account = await accountService.findOne({ id });
+    const account = await accountService.findOne(id);
     const token = await usecase.getTokens(account);
     expect(token).toEqual({
       access_token: `access_token: ${account.id}`,

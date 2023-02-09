@@ -8,7 +8,7 @@ import { Fetcher } from "@nestia/fetcher";
 import type { IConnection } from "@nestia/fetcher";
 import typia from "typia";
 
-import type { TokenAPI } from "./../../../../interface/token/api.interface";
+import type { TokenAPI } from "../../../../interface/token/api.interface";
 
 /**
  * 사용자 인증 토큰 생성 API

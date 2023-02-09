@@ -14,7 +14,6 @@ export const factory = {
     oauth_type: 'google',
     email: 'test@test.com',
     username: 'testuser',
-    is_deleted: false,
     created_at: new Date(),
     updated_at: new Date(),
   } satisfies Domain.State,

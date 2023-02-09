@@ -1,4 +1,4 @@
-export namespace TokenAPI {
+export namespace API {
   export interface AccessToken {
     readonly access_token: string;
   }

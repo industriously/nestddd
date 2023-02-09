@@ -27,7 +27,7 @@ export class AccountRepository implements Repository {
   async findOneOrCreate(
     filter: Repository.FindOneOrCreateFilter,
     data: Repository.FindOneOrCreateData,
-  ) {
+  ): Promise<Domain.State> {
     return this.prisma.$transaction(async ({ accounts }) => {
       const { sub, oauth_type, email } = filter;
       const { username } = data;

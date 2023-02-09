@@ -13,9 +13,7 @@ describe('AccountService', () => {
 
   it('findOne', () => {
     repository.findOne.mockResolvedValueOnce(factory.account);
-    return expect(service.findOne({ id: '' })).resolves.toEqual(
-      factory.account,
-    );
+    return expect(service.findOne('')).resolves.toEqual(factory.account);
   });
 
   it('findOneOrCreate', () => {

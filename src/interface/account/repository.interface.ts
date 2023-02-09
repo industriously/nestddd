@@ -2,17 +2,20 @@ import { IRepository } from '@INTERFACE/common';
 import { Domain } from './domain.interface';
 
 export namespace Repository {
-  export type CreateData = Readonly<
-    Pick<Domain.State, 'email' | 'oauth_type' | 'sub' | 'username'>
+  type OauthType = { readonly oauth_type: Domain.OauthType };
+
+  export type CreateData = Pick<
+    Domain.State,
+    'email' | 'sub' | 'oauth_type' | 'username'
   >;
-  export type FindManyFilter = Readonly<{
-    oauth_type: Domain.State['oauth_type'];
-  }>;
-  export type FindOneOrCreateFilter = Readonly<
-    Pick<Domain.State, 'sub' | 'oauth_type' | 'email'>
-  >;
-  export type FindOneOrCreateData = Readonly<Pick<Domain.State, 'username'>>;
-  export type UpdateData = Readonly<Pick<Domain.State, 'username'>>;
+
+  export type FindManyFilter = OauthType;
+
+  export type FindOneOrCreateFilter = Pick<Domain.State, 'sub' | 'email'> &
+    OauthType;
+
+  export type FindOneOrCreateData = Pick<Domain.State, 'username'>;
+  export type UpdateData = Pick<Domain.State, 'username'>;
 }
 
 export interface Repository

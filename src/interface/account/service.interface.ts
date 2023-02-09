@@ -1,11 +1,9 @@
 import { IProfile } from '@INTERFACE/common';
 import { Domain } from './domain.interface';
 
-export namespace Service {
-  export type FindOneFilter = Pick<Domain.State, 'id'>;
-}
+export namespace Service {}
 
 export interface Service {
-  readonly findOne: (filter: Service.FindOneFilter) => Promise<Domain.State>;
+  readonly findOne: (id: Domain.State['id']) => Promise<Domain.State>;
   readonly findOneOrCreate: (profile: IProfile) => Promise<Domain.State>;
 }
