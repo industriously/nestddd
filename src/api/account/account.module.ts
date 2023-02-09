@@ -4,11 +4,13 @@ import { GithubProvider, GoogleProvider } from './guard';
 import { AccountServiceProvider, AccountUsecaseProvider } from './application';
 import { OauthCallback } from './presentation/oauth.callback';
 import { AccountToken } from './constant';
+import { AccountRepositoryProvider } from './infrastructure';
 
 @Module({
   providers: [
     GoogleProvider,
     GithubProvider,
+    AccountRepositoryProvider,
     AccountServiceProvider,
     AccountUsecaseProvider,
   ],

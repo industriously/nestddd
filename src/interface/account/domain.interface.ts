@@ -12,6 +12,4 @@ export namespace Domain {
     readonly updated_at: Date;
   }
   export type OauthType = 'google' | 'github';
-  export type Public = Pick<State, 'id' | 'email' | 'username'>;
-  export type Detail = State;
 }

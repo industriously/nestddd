@@ -1,5 +1,5 @@
 import { ISession } from '@INTERFACE/common';
-import { Usecase, API } from '@INTERFACE/token';
+import { Usecase } from '@INTERFACE/token';
 import { Controller, Inject, Post, Session } from '@nestjs/common';
 import { TokenUsecaseToken } from '@TOKEN/application';
 
@@ -17,7 +17,7 @@ export class TokenController {
    * @throw 403 권힌 없음
    */
   @Post()
-  getTokens(@Session() session: ISession): Promise<API.Tokens> {
+  getTokens(@Session() session: ISession): Promise<Usecase.Tokens> {
     return this.usecase.getTokens(session.account);
   }
 
@@ -31,7 +31,7 @@ export class TokenController {
    * @throw 403 권한 없음
    */
   @Post('access_token')
-  getAccessToken(@Session() session: ISession): Promise<API.AccessToken> {
+  getAccessToken(@Session() session: ISession): Promise<Usecase.AccessToken> {
     return this.usecase.getAccessToken(session.account);
   }
 }
