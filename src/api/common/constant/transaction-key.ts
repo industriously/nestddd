@@ -1,0 +1,1 @@
+export const TRANSACTION_DECORATOR_KEY = Symbol('TRANSACTION');

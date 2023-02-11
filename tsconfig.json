@@ -28,13 +28,14 @@
     // "moduleResolution": "node",                       /* Specify how TypeScript looks up a file from a given module specifier. */
     "baseUrl": "./",                                  /* Specify the base directory to resolve non-relative module names. */
     "paths": {
+      "@toss/nestjs-aop":["src/infrastructure/aop"],
       "@PRISMA":["db"],
-      "@PRISMA/service":["src/infrastructure/DB/prisma.service.ts"],
       "@LOGGER/service":["src/infrastructure/logger/constant.ts"],
       "@INTERFACE/*":["src/interface/*"],
+      "@INFRA/*":["src/infrastructure/*"],
       "@COMMON/*":["src/api/common/*"],
       "@ACCOUNT/*":["src/api/account/*"],
-      "@TOKEN/*":["src/api/token/*"]
+      "@TOKEN/*":["src/api/token/*"],
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

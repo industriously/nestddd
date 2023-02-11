@@ -7,17 +7,17 @@ import { TypedBody } from '@nestia/core';
 export class AccountController {
   constructor(private readonly usecase: Account.Usecase) {}
 
-  @Get()
+  @Get('profile')
   getProfile(@Session() session: ISession): Promise<Account.Usecase.Detail> {
     return this.usecase.getProfile(session.account);
   }
 
-  @Get(':account_id')
+  @Get(':account_id/profile')
   getPublicProfile(): Promise<Account.Usecase.Public> {
     return this.usecase.getPublicProfile();
   }
 
-  @Patch()
+  @Patch('profile')
   setProfile(
     @Session() session: ISession,
     @TypedBody() body: Account.Usecase.SetProfileData,

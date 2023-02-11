@@ -4,9 +4,9 @@ import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
 import session from 'express-session';
 import { sessionConfig } from './session.config';
-import { PrismaService } from '@PRISMA/service';
 import { LoggerServiceToken } from '@LOGGER/service';
 import { CORS_ORGIN } from '@COMMON/constant';
+import { PrismaService } from '@INFRA/DB';
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
