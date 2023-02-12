@@ -1,8 +1,10 @@
-import { map } from '@COMMON/util';
+import { FxUtil } from '@COMMON/util';
 import { DBManager } from '@INFRA/DB';
 import { Repository, Domain } from '@INTERFACE/account';
 import { Injectable } from '@nestjs/common';
-import { toAccountState } from './account.mapper';
+import { accounts, Prisma } from '@PRISMA';
+import { pipe } from 'rxjs';
+import { toAccountState, toAccountStateAsync } from './account.mapper';
 
 @Injectable()
 export class AccountRepository implements Repository {
@@ -13,19 +15,24 @@ export class AccountRepository implements Repository {
   }
 
   async create(data: Repository.CreateData): Promise<Domain.State> {
-    return toAccountState(await this.getAccounts().create({ data }));
+    return pipe(
+      (input: Prisma.accountsCreateInput) =>
+        this.getAccounts().create({ data: input }),
+      toAccountStateAsync,
+    )(data);
   }
 
   async findOne(
     id: string,
     include_deleted: boolean,
   ): Promise<Domain.State | null> {
-    return map(
-      await this.getAccounts().findFirst({
-        where: { id, ...(include_deleted ? {} : { is_deleted: false }) },
-      }),
-      toAccountState,
-    );
+    return pipe(
+      (where: Prisma.accountsWhereInput) =>
+        this.getAccounts().findFirst({ where }),
+
+      async (input: Promise<accounts | null>) =>
+        FxUtil.map(toAccountState)(await input),
+    )({ id, ...(include_deleted ? {} : { is_deleted: false }) });
   }
 
   async findOneOrCreate(
@@ -37,20 +44,12 @@ export class AccountRepository implements Repository {
     const exist = await this.getAccounts().findFirst({
       where: { OR: [{ sub, oauth_type }, { email }] },
     });
-    if (exist) {
-      if (exist.is_deleted) {
-        return this.getAccounts().update({
-          where: { id: exist.id },
-          data: { is_deleted: false },
-        });
-      }
-      return toAccountState(exist);
-    }
-    return toAccountState(
-      await this.getAccounts().create({
-        data: { sub, oauth_type, email, username },
-      }),
-    );
+
+    return exist
+      ? exist.is_deleted
+        ? this.update(exist.id, { is_deleted: false })
+        : toAccountState(exist)
+      : this.create({ sub, oauth_type, email, username });
   }
 
   async findMany(
@@ -58,19 +57,21 @@ export class AccountRepository implements Repository {
     include_deleted: boolean,
   ): Promise<Domain.State[]> {
     const { oauth_type } = filter;
-    const accounts = await this.getAccounts().findMany({
-      where: { oauth_type, ...(include_deleted ? {} : { is_deleted: false }) },
-    });
-    return accounts.map(toAccountState);
+    return pipe(
+      (where: Prisma.accountsWhereInput) =>
+        this.getAccounts().findMany({ where }),
+      async (input) => FxUtil.Array.map(toAccountState)(await input),
+    )({ oauth_type, ...(include_deleted ? {} : { is_deleted: false }) });
   }
 
   async update(id: string, data: Repository.UpdateData): Promise<Domain.State> {
-    return toAccountState(
-      await this.getAccounts().update({
-        where: { id },
-        data,
-      }),
-    );
+    return pipe(
+      ([where, input]: [
+        Prisma.accountsWhereUniqueInput,
+        Prisma.accountsUpdateInput,
+      ]) => this.getAccounts().update({ where, data: input }),
+      toAccountStateAsync,
+    )([{ id }, data]);
   }
 
   async remove(id: string): Promise<void> {

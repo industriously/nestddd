@@ -32,7 +32,6 @@ export class AccountUsecase implements Usecase {
       const { id } = await this.accountService.findOneOrCreate(profile);
       return { id };
     } catch (error) {
-      console.log(error);
       throw new AuthException(401, '회원 인증에 실패했습니다.');
     }
   }

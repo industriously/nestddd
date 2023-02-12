@@ -15,7 +15,9 @@ export namespace Repository {
     OauthType;
 
   export type FindOneOrCreateData = Pick<Domain.State, 'username'>;
-  export type UpdateData = Pick<Domain.State, 'username'>;
+  export interface UpdateData extends Partial<Pick<Domain.State, 'username'>> {
+    readonly is_deleted?: false;
+  }
 }
 
 export interface Repository

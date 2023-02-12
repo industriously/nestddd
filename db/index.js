@@ -18,8 +18,9 @@ const {
   Debug,
   objectEnumValues,
   makeStrictEnum,
-  Extensions
-} = require('./runtime/index')
+  Extensions,
+  findSync
+} = require('./runtime/library')
 
 
 const Prisma = {}
@@ -27,12 +28,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 4.9.0
- * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
+ * Prisma Client JS version: 4.10.1
+ * Query Engine version: aead147aa326ccb985dcfed5b065b4fdabd44b19
  */
 Prisma.prismaVersion = {
-  client: "4.9.0",
-  engine: "ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5"
+  client: "4.10.1",
+  engine: "aead147aa326ccb985dcfed5b065b4fdabd44b19"
 }
 
 Prisma.PrismaClientKnownRequestError = PrismaClientKnownRequestError;
@@ -69,7 +70,6 @@ Prisma.NullTypes = {
 
   const path = require('path')
 
-const { findSync } = require('./runtime')
 const fs = require('fs')
 
 // some frameworks or bundlers replace or totally remove __dirname
@@ -116,12 +116,26 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
-
-exports.Prisma.ModelName = makeEnum({
-  accounts: 'accounts'
+exports.Prisma.UserScalarFieldEnum = makeEnum({
+  id: 'id',
+  sub: 'sub',
+  oauth_type: 'oauth_type',
+  email: 'email',
+  username: 'username',
+  address: 'address',
+  phone: 'phone',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  is_deleted: 'is_deleted'
 });
 
-const dmmfString = "{\"datamodel\":{\"enums\":[],\"models\":[{\"name\":\"accounts\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"uuid\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@format uuid\"},{\"name\":\"sub\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"oauth_type\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@format email\"},{\"name\":\"username\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"created_at\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"is_deleted\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[[\"sub\",\"oauth_type\"]],\"uniqueIndexes\":[{\"name\":null,\"fields\":[\"sub\",\"oauth_type\"]}],\"isGenerated\":false}],\"types\":[]},\"mappings\":{\"modelOperations\":[{\"model\":\"accounts\",\"plural\":\"accounts\",\"findUnique\":\"findUniqueaccounts\",\"findUniqueOrThrow\":\"findUniqueaccountsOrThrow\",\"findFirst\":\"findFirstaccounts\",\"findFirstOrThrow\":\"findFirstaccountsOrThrow\",\"findMany\":\"findManyaccounts\",\"create\":\"createOneaccounts\",\"createMany\":\"createManyaccounts\",\"delete\":\"deleteOneaccounts\",\"update\":\"updateOneaccounts\",\"deleteMany\":\"deleteManyaccounts\",\"updateMany\":\"updateManyaccounts\",\"upsert\":\"upsertOneaccounts\",\"aggregate\":\"aggregateaccounts\",\"groupBy\":\"groupByaccounts\"}],\"otherOperations\":{\"read\":[],\"write\":[\"executeRaw\",\"queryRaw\"]}}}"
+
+exports.Prisma.ModelName = makeEnum({
+  accounts: 'accounts',
+  User: 'User'
+});
+
+const dmmfString = "{\"datamodel\":{\"enums\":[],\"models\":[{\"name\":\"accounts\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"uuid\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@format uuid\"},{\"name\":\"sub\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"oauth_type\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@format email\"},{\"name\":\"username\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"created_at\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"is_deleted\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[[\"sub\",\"oauth_type\"]],\"uniqueIndexes\":[{\"name\":null,\"fields\":[\"sub\",\"oauth_type\"]}],\"isGenerated\":false},{\"name\":\"User\",\"dbName\":null,\"fields\":[{\"name\":\"id\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":true,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"String\",\"default\":{\"name\":\"uuid\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@format uuid\"},{\"name\":\"sub\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"oauth_type\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"email\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":true,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@format email\"},{\"name\":\"username\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@pattern ^[\\\\w\\\\d]{8,16}$\"},{\"name\":\"address\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"phone\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":false,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":false,\"type\":\"String\",\"isGenerated\":false,\"isUpdatedAt\":false,\"documentation\":\"@pattern ^010-[0-9]{4}-[0-9]{4}$\"},{\"name\":\"created_at\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"updated_at\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"DateTime\",\"default\":{\"name\":\"now\",\"args\":[]},\"isGenerated\":false,\"isUpdatedAt\":false},{\"name\":\"is_deleted\",\"kind\":\"scalar\",\"isList\":false,\"isRequired\":true,\"isUnique\":false,\"isId\":false,\"isReadOnly\":false,\"hasDefaultValue\":true,\"type\":\"Boolean\",\"default\":false,\"isGenerated\":false,\"isUpdatedAt\":false}],\"primaryKey\":null,\"uniqueFields\":[[\"sub\",\"oauth_type\"]],\"uniqueIndexes\":[{\"name\":null,\"fields\":[\"sub\",\"oauth_type\"]}],\"isGenerated\":false}],\"types\":[]},\"mappings\":{\"modelOperations\":[{\"model\":\"accounts\",\"plural\":\"accounts\",\"findUnique\":\"findUniqueaccounts\",\"findUniqueOrThrow\":\"findUniqueaccountsOrThrow\",\"findFirst\":\"findFirstaccounts\",\"findFirstOrThrow\":\"findFirstaccountsOrThrow\",\"findMany\":\"findManyaccounts\",\"create\":\"createOneaccounts\",\"createMany\":\"createManyaccounts\",\"delete\":\"deleteOneaccounts\",\"update\":\"updateOneaccounts\",\"deleteMany\":\"deleteManyaccounts\",\"updateMany\":\"updateManyaccounts\",\"upsert\":\"upsertOneaccounts\",\"aggregate\":\"aggregateaccounts\",\"groupBy\":\"groupByaccounts\"},{\"model\":\"User\",\"plural\":\"users\",\"findUnique\":\"findUniqueUser\",\"findUniqueOrThrow\":\"findUniqueUserOrThrow\",\"findFirst\":\"findFirstUser\",\"findFirstOrThrow\":\"findFirstUserOrThrow\",\"findMany\":\"findManyUser\",\"create\":\"createOneUser\",\"createMany\":\"createManyUser\",\"delete\":\"deleteOneUser\",\"update\":\"updateOneUser\",\"deleteMany\":\"deleteManyUser\",\"updateMany\":\"updateManyUser\",\"upsert\":\"upsertOneUser\",\"aggregate\":\"aggregateUser\",\"groupBy\":\"groupByUser\"}],\"otherOperations\":{\"read\":[],\"write\":[\"executeRaw\",\"queryRaw\"]}}}"
 const dmmf = JSON.parse(dmmfString)
 exports.Prisma.dmmf = JSON.parse(dmmfString)
 
@@ -151,8 +165,8 @@ const config = {
     "schemaEnvPath": "../.env"
   },
   "relativePath": "../prisma",
-  "clientVersion": "4.9.0",
-  "engineVersion": "ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5",
+  "clientVersion": "4.10.1",
+  "engineVersion": "aead147aa326ccb985dcfed5b065b4fdabd44b19",
   "datasourceNames": [
     "db"
   ],
@@ -165,7 +179,7 @@ config.dirname = dirname
 
 
 
-const { warnEnvConflicts } = require('./runtime/index')
+const { warnEnvConflicts } = require('./runtime/library')
 
 warnEnvConflicts({
     rootEnvPath: config.relativeEnvPaths.rootEnvPath && path.resolve(dirname, config.relativeEnvPaths.rootEnvPath),

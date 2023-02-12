@@ -1,14 +1,17 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  roots: ['<rootDir>'],
   coverageDirectory: '<rootDir>/coverage',
-  testRegex: '.spec.ts$',
   testEnvironment: 'node',
+  testMatch: ['**/__tests__/**/*.(spec|test).ts'],
   transform: {
     '^.+\\.ts$': [
       'ts-jest',
-      { diagnostics: false, tsconfig: '<rootDir>/tsconfig.json' },
+      {
+        compiler: 'ttypescript',
+        diagnostics: false,
+        tsconfig: '<rootDir>/tsconfig.json',
+      },
     ],
   },
   moduleNameMapper: {
@@ -35,6 +38,7 @@ const config: Config = {
     'src/infrastructure/DB',
     'src/infrastructure/config',
   ],
+  watchman: false,
 };
 
 export default config;

@@ -13,12 +13,12 @@ const Prisma = {}
 exports.Prisma = Prisma
 
 /**
- * Prisma Client JS version: 4.9.0
- * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
+ * Prisma Client JS version: 4.10.1
+ * Query Engine version: aead147aa326ccb985dcfed5b065b4fdabd44b19
  */
 Prisma.prismaVersion = {
-  client: "4.9.0",
-  engine: "ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5"
+  client: "4.10.1",
+  engine: "aead147aa326ccb985dcfed5b065b4fdabd44b19"
 }
 
 Prisma.PrismaClientKnownRequestError = () => {
@@ -112,9 +112,23 @@ exports.Prisma.TransactionIsolationLevel = makeStrictEnum({
   Serializable: 'Serializable'
 });
 
+exports.Prisma.UserScalarFieldEnum = makeEnum({
+  id: 'id',
+  sub: 'sub',
+  oauth_type: 'oauth_type',
+  email: 'email',
+  username: 'username',
+  address: 'address',
+  phone: 'phone',
+  created_at: 'created_at',
+  updated_at: 'updated_at',
+  is_deleted: 'is_deleted'
+});
+
 
 exports.Prisma.ModelName = makeEnum({
-  accounts: 'accounts'
+  accounts: 'accounts',
+  User: 'User'
 });
 
 /**

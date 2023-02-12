@@ -1,11 +1,14 @@
-import { Domain } from '@INTERFACE/account';
+import { UserDomain } from '@INTERFACE/user';
 
 export interface IProfile {
-  readonly sub: Domain.State['sub'];
-  readonly oauth_type: Domain.OauthType;
-  readonly username: Domain.State['username'];
+  readonly sub: UserDomain.State['sub'];
+  readonly oauth_type: UserDomain.OauthType;
+  /**
+   * @pattern ^[\w\d]{8,16}$
+   */
+  readonly username: UserDomain.State['username'];
   /**
    * @format email
    */
-  readonly email: Domain.State['email'];
+  readonly email: UserDomain.State['email'];
 }

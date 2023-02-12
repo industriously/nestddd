@@ -3,12 +3,10 @@
  * Client
 **/
 
-import * as runtime from './runtime/index';
-declare const prisma: unique symbol
-export interface PrismaPromise<A> extends Promise<A> {[prisma]: true}
+import * as runtime from './runtime/library';
 type UnwrapPromise<P extends any> = P extends Promise<infer R> ? R : P
 type UnwrapTuple<Tuple extends readonly unknown[]> = {
-  [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
+  [K in keyof Tuple]: K extends `${number}` ? Tuple[K] extends Prisma.PrismaPromise<infer X> ? X : UnwrapPromise<Tuple[K]> : UnwrapPromise<Tuple[K]>
 };
 
 
@@ -28,6 +26,35 @@ export type accounts = {
    */
   email: string
   username: string
+  created_at: Date
+  updated_at: Date
+  is_deleted: boolean
+}
+
+/**
+ * Model User
+ * 
+ */
+export type User = {
+  /**
+   * @format uuid
+   */
+  id: string
+  sub: string
+  oauth_type: string
+  /**
+   * @format email
+   */
+  email: string
+  /**
+   * @pattern ^[\w\d]{8,16}$
+   */
+  username: string
+  address: string | null
+  /**
+   * @pattern ^010-[0-9]{4}-[0-9]{4}$
+   */
+  phone: string | null
   created_at: Date
   updated_at: Date
   is_deleted: boolean
@@ -97,7 +124,7 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<number>;
+  $executeRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<number>;
 
   /**
    * Executes a raw query and returns the number of affected rows.
@@ -109,7 +136,7 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): PrismaPromise<number>;
+  $executeRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<number>;
 
   /**
    * Performs a prepared raw query and returns the `SELECT` data.
@@ -120,7 +147,7 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): PrismaPromise<T>;
+  $queryRaw<T = unknown>(query: TemplateStringsArray | Prisma.Sql, ...values: any[]): Prisma.PrismaPromise<T>;
 
   /**
    * Performs a raw query and returns the `SELECT` data.
@@ -132,7 +159,7 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/raw-database-access).
    */
-  $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): PrismaPromise<T>;
+  $queryRawUnsafe<T = unknown>(query: string, ...values: any[]): Prisma.PrismaPromise<T>;
 
   /**
    * Allows the running of a sequence of read/write operations that are guaranteed to either succeed or fail as a whole.
@@ -147,9 +174,9 @@ export class PrismaClient<
    * 
    * Read more in our [docs](https://www.prisma.io/docs/concepts/components/prisma-client/transactions).
    */
-  $transaction<P extends PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>
+  $transaction<P extends Prisma.PrismaPromise<any>[]>(arg: [...P], options?: { isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<UnwrapTuple<P>>
 
-  $transaction<R>(fn: (prisma: Prisma.TransactionClient) => Promise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<R>
+  $transaction<R>(fn: (prisma: Omit<this, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use">) => Promise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<R>
 
       /**
    * `prisma.accounts`: Exposes CRUD operations for the **accounts** model.
@@ -160,10 +187,22 @@ export class PrismaClient<
     * ```
     */
   get accounts(): Prisma.accountsDelegate<GlobalReject>;
+
+  /**
+   * `prisma.user`: Exposes CRUD operations for the **User** model.
+    * Example usage:
+    * ```ts
+    * // Fetch zero or more Users
+    * const users = await prisma.user.findMany()
+    * ```
+    */
+  get user(): Prisma.UserDelegate<GlobalReject>;
 }
 
 export namespace Prisma {
   export import DMMF = runtime.DMMF
+
+  export type PrismaPromise<T> = runtime.Types.Public.PrismaPromise<T>
 
   /**
    * Prisma Errors
@@ -201,8 +240,8 @@ export namespace Prisma {
 
 
   /**
-   * Prisma Client JS version: 4.9.0
-   * Query Engine version: ceb5c99003b99c9ee2c1d2e618e359c14aef2ea5
+   * Prisma Client JS version: 4.10.1
+   * Query Engine version: aead147aa326ccb985dcfed5b065b4fdabd44b19
    */
   export type PrismaVersion = {
     client: string
@@ -625,18 +664,10 @@ export namespace Prisma {
 
   type FieldRefInputType<Model, FieldType> = Model extends never ? never : FieldRef<Model, FieldType>
 
-  class PrismaClientFetcher {
-    private readonly prisma;
-    private readonly debug;
-    private readonly hooks?;
-    constructor(prisma: PrismaClient<any, any>, debug?: boolean, hooks?: Hooks | undefined);
-    request<T>(document: any, dataPath?: string[], rootField?: string, typeName?: string, isList?: boolean, callsite?: string): Promise<T>;
-    sanitizeMessage(message: string): string;
-    protected unpack(document: any, data: any, path: string[], rootField?: string, isList?: boolean): any;
-  }
 
   export const ModelName: {
-    accounts: 'accounts'
+    accounts: 'accounts',
+    User: 'User'
   };
 
   export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -713,10 +744,6 @@ export namespace Prisma {
      * Read more in our [docs](https://www.prisma.io/docs/reference/tools-and-interfaces/prisma-client/logging#the-log-option).
      */
     log?: Array<LogLevel | LogDefinition>
-  }
-
-  export type Hooks = {
-    beforeRequest?: (options: { query: string, path: string[], rootField?: string, typeName?: string, document: any }) => any
   }
 
   /* Types for Logging */
@@ -973,7 +1000,7 @@ export namespace Prisma {
     _max: AccountsMaxAggregateOutputType | null
   }
 
-  type GetAccountsGroupByPayload<T extends AccountsGroupByArgs> = PrismaPromise<
+  type GetAccountsGroupByPayload<T extends AccountsGroupByArgs> = Prisma.PrismaPromise<
     Array<
       PickArray<AccountsGroupByOutputType, T['by']> &
         {
@@ -1104,7 +1131,7 @@ export namespace Prisma {
     **/
     findMany<T extends accountsFindManyArgs>(
       args?: SelectSubset<T, accountsFindManyArgs>
-    ): PrismaPromise<Array<accountsGetPayload<T>>>
+    ): Prisma.PrismaPromise<Array<accountsGetPayload<T>>>
 
     /**
      * Create a Accounts.
@@ -1136,7 +1163,7 @@ export namespace Prisma {
     **/
     createMany<T extends accountsCreateManyArgs>(
       args?: SelectSubset<T, accountsCreateManyArgs>
-    ): PrismaPromise<BatchPayload>
+    ): Prisma.PrismaPromise<BatchPayload>
 
     /**
      * Delete a Accounts.
@@ -1187,7 +1214,7 @@ export namespace Prisma {
     **/
     deleteMany<T extends accountsDeleteManyArgs>(
       args?: SelectSubset<T, accountsDeleteManyArgs>
-    ): PrismaPromise<BatchPayload>
+    ): Prisma.PrismaPromise<BatchPayload>
 
     /**
      * Update zero or more Accounts.
@@ -1208,7 +1235,7 @@ export namespace Prisma {
     **/
     updateMany<T extends accountsUpdateManyArgs>(
       args: SelectSubset<T, accountsUpdateManyArgs>
-    ): PrismaPromise<BatchPayload>
+    ): Prisma.PrismaPromise<BatchPayload>
 
     /**
      * Create or update one Accounts.
@@ -1246,7 +1273,7 @@ export namespace Prisma {
     **/
     count<T extends accountsCountArgs>(
       args?: Subset<T, accountsCountArgs>,
-    ): PrismaPromise<
+    ): Prisma.PrismaPromise<
       T extends _Record<'select', any>
         ? T['select'] extends true
           ? number
@@ -1278,7 +1305,7 @@ export namespace Prisma {
      *   take: 10,
      * })
     **/
-    aggregate<T extends AccountsAggregateArgs>(args: Subset<T, AccountsAggregateArgs>): PrismaPromise<GetAccountsAggregateType<T>>
+    aggregate<T extends AccountsAggregateArgs>(args: Subset<T, AccountsAggregateArgs>): Prisma.PrismaPromise<GetAccountsAggregateType<T>>
 
     /**
      * Group by Accounts.
@@ -1355,7 +1382,7 @@ export namespace Prisma {
             ? never
             : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
         }[OrderFields]
-    >(args: SubsetIntersection<T, AccountsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountsGroupByPayload<T> : PrismaPromise<InputErrors>
+    >(args: SubsetIntersection<T, AccountsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
 
   }
 
@@ -1365,10 +1392,8 @@ export namespace Prisma {
    * Because we want to prevent naming conflicts as mentioned in
    * https://github.com/prisma/prisma-client-js/issues/707
    */
-  export class Prisma__accountsClient<T, Null = never> implements PrismaPromise<T> {
-    [prisma]: true;
+  export class Prisma__accountsClient<T, Null = never> implements Prisma.PrismaPromise<T> {
     private readonly _dmmf;
-    private readonly _fetcher;
     private readonly _queryType;
     private readonly _rootField;
     private readonly _clientMethod;
@@ -1379,8 +1404,8 @@ export namespace Prisma {
     private _isList;
     private _callsite;
     private _requestPromise?;
-    constructor(_dmmf: runtime.DMMFClass, _fetcher: PrismaClientFetcher, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-    readonly [Symbol.toStringTag]: 'PrismaClientPromise';
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
 
 
     private get _document();
@@ -1715,6 +1740,928 @@ export namespace Prisma {
 
 
   /**
+   * Model User
+   */
+
+
+  export type AggregateUser = {
+    _count: UserCountAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
+  }
+
+  export type UserMinAggregateOutputType = {
+    id: string | null
+    sub: string | null
+    oauth_type: string | null
+    email: string | null
+    username: string | null
+    address: string | null
+    phone: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    is_deleted: boolean | null
+  }
+
+  export type UserMaxAggregateOutputType = {
+    id: string | null
+    sub: string | null
+    oauth_type: string | null
+    email: string | null
+    username: string | null
+    address: string | null
+    phone: string | null
+    created_at: Date | null
+    updated_at: Date | null
+    is_deleted: boolean | null
+  }
+
+  export type UserCountAggregateOutputType = {
+    id: number
+    sub: number
+    oauth_type: number
+    email: number
+    username: number
+    address: number
+    phone: number
+    created_at: number
+    updated_at: number
+    is_deleted: number
+    _all: number
+  }
+
+
+  export type UserMinAggregateInputType = {
+    id?: true
+    sub?: true
+    oauth_type?: true
+    email?: true
+    username?: true
+    address?: true
+    phone?: true
+    created_at?: true
+    updated_at?: true
+    is_deleted?: true
+  }
+
+  export type UserMaxAggregateInputType = {
+    id?: true
+    sub?: true
+    oauth_type?: true
+    email?: true
+    username?: true
+    address?: true
+    phone?: true
+    created_at?: true
+    updated_at?: true
+    is_deleted?: true
+  }
+
+  export type UserCountAggregateInputType = {
+    id?: true
+    sub?: true
+    oauth_type?: true
+    email?: true
+    username?: true
+    address?: true
+    phone?: true
+    created_at?: true
+    updated_at?: true
+    is_deleted?: true
+    _all?: true
+  }
+
+  export type UserAggregateArgs = {
+    /**
+     * Filter which User to aggregate.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the start position
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Count returned Users
+    **/
+    _count?: true | UserCountAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the minimum value
+    **/
+    _min?: UserMinAggregateInputType
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
+     * 
+     * Select which fields to find the maximum value
+    **/
+    _max?: UserMaxAggregateInputType
+  }
+
+  export type GetUserAggregateType<T extends UserAggregateArgs> = {
+        [P in keyof T & keyof AggregateUser]: P extends '_count' | 'count'
+      ? T[P] extends true
+        ? number
+        : GetScalarType<T[P], AggregateUser[P]>
+      : GetScalarType<T[P], AggregateUser[P]>
+  }
+
+
+
+
+  export type UserGroupByArgs = {
+    where?: UserWhereInput
+    orderBy?: Enumerable<UserOrderByWithAggregationInput>
+    by: UserScalarFieldEnum[]
+    having?: UserScalarWhereWithAggregatesInput
+    take?: number
+    skip?: number
+    _count?: UserCountAggregateInputType | true
+    _min?: UserMinAggregateInputType
+    _max?: UserMaxAggregateInputType
+  }
+
+
+  export type UserGroupByOutputType = {
+    id: string
+    sub: string
+    oauth_type: string
+    email: string
+    username: string
+    address: string | null
+    phone: string | null
+    created_at: Date
+    updated_at: Date
+    is_deleted: boolean
+    _count: UserCountAggregateOutputType | null
+    _min: UserMinAggregateOutputType | null
+    _max: UserMaxAggregateOutputType | null
+  }
+
+  type GetUserGroupByPayload<T extends UserGroupByArgs> = Prisma.PrismaPromise<
+    Array<
+      PickArray<UserGroupByOutputType, T['by']> &
+        {
+          [P in ((keyof T) & (keyof UserGroupByOutputType))]: P extends '_count'
+            ? T[P] extends boolean
+              ? number
+              : GetScalarType<T[P], UserGroupByOutputType[P]>
+            : GetScalarType<T[P], UserGroupByOutputType[P]>
+        }
+      >
+    >
+
+
+  export type UserSelect = {
+    id?: boolean
+    sub?: boolean
+    oauth_type?: boolean
+    email?: boolean
+    username?: boolean
+    address?: boolean
+    phone?: boolean
+    created_at?: boolean
+    updated_at?: boolean
+    is_deleted?: boolean
+  }
+
+
+  export type UserGetPayload<S extends boolean | null | undefined | UserArgs> =
+    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
+    S extends true ? User :
+    S extends undefined ? never :
+    S extends { include: any } & (UserArgs | UserFindManyArgs)
+    ? User 
+    : S extends { select: any } & (UserArgs | UserFindManyArgs)
+      ? {
+    [P in TruthyKeys<S['select']>]:
+    P extends keyof User ? User[P] : never
+  } 
+      : User
+
+
+  type UserCountArgs = 
+    Omit<UserFindManyArgs, 'select' | 'include'> & {
+      select?: UserCountAggregateInputType | true
+    }
+
+  export interface UserDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
+
+    /**
+     * Find zero or one User that matches the filter.
+     * @param {UserFindUniqueArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUnique({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUnique<T extends UserFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args: SelectSubset<T, UserFindUniqueArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'User'> extends True ? Prisma__UserClient<UserGetPayload<T>> : Prisma__UserClient<UserGetPayload<T> | null, null>
+
+    /**
+     * Find one User that matches the filter or throw an error  with `error.code='P2025'` 
+     *     if no matches were found.
+     * @param {UserFindUniqueOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findUniqueOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findUniqueOrThrow<T extends UserFindUniqueOrThrowArgs>(
+      args?: SelectSubset<T, UserFindUniqueOrThrowArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Find the first User that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirst({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirst<T extends UserFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
+      args?: SelectSubset<T, UserFindFirstArgs>
+    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'User'> extends True ? Prisma__UserClient<UserGetPayload<T>> : Prisma__UserClient<UserGetPayload<T> | null, null>
+
+    /**
+     * Find the first User that matches the filter or
+     * throw `NotFoundError` if no matches were found.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindFirstOrThrowArgs} args - Arguments to find a User
+     * @example
+     * // Get one User
+     * const user = await prisma.user.findFirstOrThrow({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+    **/
+    findFirstOrThrow<T extends UserFindFirstOrThrowArgs>(
+      args?: SelectSubset<T, UserFindFirstOrThrowArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Find zero or more Users that matches the filter.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserFindManyArgs=} args - Arguments to filter and select certain fields only.
+     * @example
+     * // Get all Users
+     * const users = await prisma.user.findMany()
+     * 
+     * // Get first 10 Users
+     * const users = await prisma.user.findMany({ take: 10 })
+     * 
+     * // Only select the `id`
+     * const userWithIdOnly = await prisma.user.findMany({ select: { id: true } })
+     * 
+    **/
+    findMany<T extends UserFindManyArgs>(
+      args?: SelectSubset<T, UserFindManyArgs>
+    ): Prisma.PrismaPromise<Array<UserGetPayload<T>>>
+
+    /**
+     * Create a User.
+     * @param {UserCreateArgs} args - Arguments to create a User.
+     * @example
+     * // Create one User
+     * const User = await prisma.user.create({
+     *   data: {
+     *     // ... data to create a User
+     *   }
+     * })
+     * 
+    **/
+    create<T extends UserCreateArgs>(
+      args: SelectSubset<T, UserCreateArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Create many Users.
+     *     @param {UserCreateManyArgs} args - Arguments to create many Users.
+     *     @example
+     *     // Create many Users
+     *     const user = await prisma.user.createMany({
+     *       data: {
+     *         // ... provide data here
+     *       }
+     *     })
+     *     
+    **/
+    createMany<T extends UserCreateManyArgs>(
+      args?: SelectSubset<T, UserCreateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Delete a User.
+     * @param {UserDeleteArgs} args - Arguments to delete one User.
+     * @example
+     * // Delete one User
+     * const User = await prisma.user.delete({
+     *   where: {
+     *     // ... filter to delete one User
+     *   }
+     * })
+     * 
+    **/
+    delete<T extends UserDeleteArgs>(
+      args: SelectSubset<T, UserDeleteArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Update one User.
+     * @param {UserUpdateArgs} args - Arguments to update one User.
+     * @example
+     * // Update one User
+     * const user = await prisma.user.update({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    update<T extends UserUpdateArgs>(
+      args: SelectSubset<T, UserUpdateArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Delete zero or more Users.
+     * @param {UserDeleteManyArgs} args - Arguments to filter Users to delete.
+     * @example
+     * // Delete a few Users
+     * const { count } = await prisma.user.deleteMany({
+     *   where: {
+     *     // ... provide filter here
+     *   }
+     * })
+     * 
+    **/
+    deleteMany<T extends UserDeleteManyArgs>(
+      args?: SelectSubset<T, UserDeleteManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Update zero or more Users.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserUpdateManyArgs} args - Arguments to update one or more rows.
+     * @example
+     * // Update many Users
+     * const user = await prisma.user.updateMany({
+     *   where: {
+     *     // ... provide filter here
+     *   },
+     *   data: {
+     *     // ... provide data here
+     *   }
+     * })
+     * 
+    **/
+    updateMany<T extends UserUpdateManyArgs>(
+      args: SelectSubset<T, UserUpdateManyArgs>
+    ): Prisma.PrismaPromise<BatchPayload>
+
+    /**
+     * Create or update one User.
+     * @param {UserUpsertArgs} args - Arguments to update or create a User.
+     * @example
+     * // Update or create a User
+     * const user = await prisma.user.upsert({
+     *   create: {
+     *     // ... data to create a User
+     *   },
+     *   update: {
+     *     // ... in case it already exists, update
+     *   },
+     *   where: {
+     *     // ... the filter for the User we want to update
+     *   }
+     * })
+    **/
+    upsert<T extends UserUpsertArgs>(
+      args: SelectSubset<T, UserUpsertArgs>
+    ): Prisma__UserClient<UserGetPayload<T>>
+
+    /**
+     * Count the number of Users.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserCountArgs} args - Arguments to filter Users to count.
+     * @example
+     * // Count the number of Users
+     * const count = await prisma.user.count({
+     *   where: {
+     *     // ... the filter for the Users we want to count
+     *   }
+     * })
+    **/
+    count<T extends UserCountArgs>(
+      args?: Subset<T, UserCountArgs>,
+    ): Prisma.PrismaPromise<
+      T extends _Record<'select', any>
+        ? T['select'] extends true
+          ? number
+          : GetScalarType<T['select'], UserCountAggregateOutputType>
+        : number
+    >
+
+    /**
+     * Allows you to perform aggregations operations on a User.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
+     * @example
+     * // Ordered by age ascending
+     * // Where email contains prisma.io
+     * // Limited to the 10 users
+     * const aggregations = await prisma.user.aggregate({
+     *   _avg: {
+     *     age: true,
+     *   },
+     *   where: {
+     *     email: {
+     *       contains: "prisma.io",
+     *     },
+     *   },
+     *   orderBy: {
+     *     age: "asc",
+     *   },
+     *   take: 10,
+     * })
+    **/
+    aggregate<T extends UserAggregateArgs>(args: Subset<T, UserAggregateArgs>): Prisma.PrismaPromise<GetUserAggregateType<T>>
+
+    /**
+     * Group by User.
+     * Note, that providing `undefined` is treated as the value not being there.
+     * Read more here: https://pris.ly/d/null-undefined
+     * @param {UserGroupByArgs} args - Group by arguments.
+     * @example
+     * // Group by city, order by createdAt, get count
+     * const result = await prisma.user.groupBy({
+     *   by: ['city', 'createdAt'],
+     *   orderBy: {
+     *     createdAt: true
+     *   },
+     *   _count: {
+     *     _all: true
+     *   },
+     * })
+     * 
+    **/
+    groupBy<
+      T extends UserGroupByArgs,
+      HasSelectOrTake extends Or<
+        Extends<'skip', Keys<T>>,
+        Extends<'take', Keys<T>>
+      >,
+      OrderByArg extends True extends HasSelectOrTake
+        ? { orderBy: UserGroupByArgs['orderBy'] }
+        : { orderBy?: UserGroupByArgs['orderBy'] },
+      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
+      ByFields extends TupleToUnion<T['by']>,
+      ByValid extends Has<ByFields, OrderFields>,
+      HavingFields extends GetHavingFields<T['having']>,
+      HavingValid extends Has<ByFields, HavingFields>,
+      ByEmpty extends T['by'] extends never[] ? True : False,
+      InputErrors extends ByEmpty extends True
+      ? `Error: "by" must not be empty.`
+      : HavingValid extends False
+      ? {
+          [P in HavingFields]: P extends ByFields
+            ? never
+            : P extends string
+            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
+            : [
+                Error,
+                'Field ',
+                P,
+                ` in "having" needs to be provided in "by"`,
+              ]
+        }[HavingFields]
+      : 'take' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "take", you also need to provide "orderBy"'
+      : 'skip' extends Keys<T>
+      ? 'orderBy' extends Keys<T>
+        ? ByValid extends True
+          ? {}
+          : {
+              [P in OrderFields]: P extends ByFields
+                ? never
+                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+            }[OrderFields]
+        : 'Error: If you provide "skip", you also need to provide "orderBy"'
+      : ByValid extends True
+      ? {}
+      : {
+          [P in OrderFields]: P extends ByFields
+            ? never
+            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
+        }[OrderFields]
+    >(args: SubsetIntersection<T, UserGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetUserGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
+
+  }
+
+  /**
+   * The delegate class that acts as a "Promise-like" for User.
+   * Why is this prefixed with `Prisma__`?
+   * Because we want to prevent naming conflicts as mentioned in
+   * https://github.com/prisma/prisma-client-js/issues/707
+   */
+  export class Prisma__UserClient<T, Null = never> implements Prisma.PrismaPromise<T> {
+    private readonly _dmmf;
+    private readonly _queryType;
+    private readonly _rootField;
+    private readonly _clientMethod;
+    private readonly _args;
+    private readonly _dataPath;
+    private readonly _errorFormat;
+    private readonly _measurePerformance?;
+    private _isList;
+    private _callsite;
+    private _requestPromise?;
+    readonly [Symbol.toStringTag]: 'PrismaPromise';
+    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
+
+
+    private get _document();
+    /**
+     * Attaches callbacks for the resolution and/or rejection of the Promise.
+     * @param onfulfilled The callback to execute when the Promise is resolved.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of which ever callback is executed.
+     */
+    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
+    /**
+     * Attaches a callback for only the rejection of the Promise.
+     * @param onrejected The callback to execute when the Promise is rejected.
+     * @returns A Promise for the completion of the callback.
+     */
+    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
+    /**
+     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
+     * resolved value cannot be modified from the callback.
+     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
+     * @returns A Promise for the completion of the callback.
+     */
+    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
+  }
+
+
+
+  // Custom InputTypes
+
+  /**
+   * User base type for findUnique actions
+   */
+  export type UserFindUniqueArgsBase = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
+  }
+
+  /**
+   * User findUnique
+   */
+  export interface UserFindUniqueArgs extends UserFindUniqueArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * User findUniqueOrThrow
+   */
+  export type UserFindUniqueOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where: UserWhereUniqueInput
+  }
+
+
+  /**
+   * User base type for findFirst actions
+   */
+  export type UserFindFirstArgsBase = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: Enumerable<UserScalarFieldEnum>
+  }
+
+  /**
+   * User findFirst
+   */
+  export interface UserFindFirstArgs extends UserFindFirstArgsBase {
+   /**
+    * Throw an Error if query returns no results
+    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
+    */
+    rejectOnNotFound?: RejectOnNotFound
+  }
+      
+
+  /**
+   * User findFirstOrThrow
+   */
+  export type UserFindFirstOrThrowArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Filter, which User to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for searching for Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
+     * 
+     * Filter by unique combinations of Users.
+     */
+    distinct?: Enumerable<UserScalarFieldEnum>
+  }
+
+
+  /**
+   * User findMany
+   */
+  export type UserFindManyArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Filter, which Users to fetch.
+     */
+    where?: UserWhereInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
+     * 
+     * Determine the order of Users to fetch.
+     */
+    orderBy?: Enumerable<UserOrderByWithRelationInput>
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
+     * 
+     * Sets the position for listing Users.
+     */
+    cursor?: UserWhereUniqueInput
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Take `±n` Users from the position of the cursor.
+     */
+    take?: number
+    /**
+     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
+     * 
+     * Skip the first `n` Users.
+     */
+    skip?: number
+    distinct?: Enumerable<UserScalarFieldEnum>
+  }
+
+
+  /**
+   * User create
+   */
+  export type UserCreateArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * The data needed to create a User.
+     */
+    data: XOR<UserCreateInput, UserUncheckedCreateInput>
+  }
+
+
+  /**
+   * User createMany
+   */
+  export type UserCreateManyArgs = {
+    /**
+     * The data used to create many Users.
+     */
+    data: Enumerable<UserCreateManyInput>
+    skipDuplicates?: boolean
+  }
+
+
+  /**
+   * User update
+   */
+  export type UserUpdateArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * The data needed to update a User.
+     */
+    data: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+    /**
+     * Choose, which User to update.
+     */
+    where: UserWhereUniqueInput
+  }
+
+
+  /**
+   * User updateMany
+   */
+  export type UserUpdateManyArgs = {
+    /**
+     * The data used to update Users.
+     */
+    data: XOR<UserUpdateManyMutationInput, UserUncheckedUpdateManyInput>
+    /**
+     * Filter which Users to update
+     */
+    where?: UserWhereInput
+  }
+
+
+  /**
+   * User upsert
+   */
+  export type UserUpsertArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * The filter to search for the User to update in case it exists.
+     */
+    where: UserWhereUniqueInput
+    /**
+     * In case the User found by the `where` argument doesn't exist, create a new User with this data.
+     */
+    create: XOR<UserCreateInput, UserUncheckedCreateInput>
+    /**
+     * In case the User was found with the provided `where` argument, update it with this data.
+     */
+    update: XOR<UserUpdateInput, UserUncheckedUpdateInput>
+  }
+
+
+  /**
+   * User delete
+   */
+  export type UserDeleteArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+    /**
+     * Filter which User to delete.
+     */
+    where: UserWhereUniqueInput
+  }
+
+
+  /**
+   * User deleteMany
+   */
+  export type UserDeleteManyArgs = {
+    /**
+     * Filter which Users to delete
+     */
+    where?: UserWhereInput
+  }
+
+
+  /**
+   * User without action
+   */
+  export type UserArgs = {
+    /**
+     * Select specific fields to fetch from the User
+     */
+    select?: UserSelect | null
+  }
+
+
+
+  /**
    * Enums
    */
 
@@ -1751,6 +2698,22 @@ export namespace Prisma {
   };
 
   export type TransactionIsolationLevel = (typeof TransactionIsolationLevel)[keyof typeof TransactionIsolationLevel]
+
+
+  export const UserScalarFieldEnum: {
+    id: 'id',
+    sub: 'sub',
+    oauth_type: 'oauth_type',
+    email: 'email',
+    username: 'username',
+    address: 'address',
+    phone: 'phone',
+    created_at: 'created_at',
+    updated_at: 'updated_at',
+    is_deleted: 'is_deleted'
+  };
+
+  export type UserScalarFieldEnum = (typeof UserScalarFieldEnum)[keyof typeof UserScalarFieldEnum]
 
 
   /**
@@ -1812,6 +2775,73 @@ export namespace Prisma {
     oauth_type?: StringWithAggregatesFilter | string
     email?: StringWithAggregatesFilter | string
     username?: StringWithAggregatesFilter | string
+    created_at?: DateTimeWithAggregatesFilter | Date | string
+    updated_at?: DateTimeWithAggregatesFilter | Date | string
+    is_deleted?: BoolWithAggregatesFilter | boolean
+  }
+
+  export type UserWhereInput = {
+    AND?: Enumerable<UserWhereInput>
+    OR?: Enumerable<UserWhereInput>
+    NOT?: Enumerable<UserWhereInput>
+    id?: StringFilter | string
+    sub?: StringFilter | string
+    oauth_type?: StringFilter | string
+    email?: StringFilter | string
+    username?: StringFilter | string
+    address?: StringNullableFilter | string | null
+    phone?: StringNullableFilter | string | null
+    created_at?: DateTimeFilter | Date | string
+    updated_at?: DateTimeFilter | Date | string
+    is_deleted?: BoolFilter | boolean
+  }
+
+  export type UserOrderByWithRelationInput = {
+    id?: SortOrder
+    sub?: SortOrder
+    oauth_type?: SortOrder
+    email?: SortOrder
+    username?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    is_deleted?: SortOrder
+  }
+
+  export type UserWhereUniqueInput = {
+    id?: string
+    email?: string
+    sub_oauth_type?: UserSubOauth_typeCompoundUniqueInput
+  }
+
+  export type UserOrderByWithAggregationInput = {
+    id?: SortOrder
+    sub?: SortOrder
+    oauth_type?: SortOrder
+    email?: SortOrder
+    username?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    is_deleted?: SortOrder
+    _count?: UserCountOrderByAggregateInput
+    _max?: UserMaxOrderByAggregateInput
+    _min?: UserMinOrderByAggregateInput
+  }
+
+  export type UserScalarWhereWithAggregatesInput = {
+    AND?: Enumerable<UserScalarWhereWithAggregatesInput>
+    OR?: Enumerable<UserScalarWhereWithAggregatesInput>
+    NOT?: Enumerable<UserScalarWhereWithAggregatesInput>
+    id?: StringWithAggregatesFilter | string
+    sub?: StringWithAggregatesFilter | string
+    oauth_type?: StringWithAggregatesFilter | string
+    email?: StringWithAggregatesFilter | string
+    username?: StringWithAggregatesFilter | string
+    address?: StringNullableWithAggregatesFilter | string | null
+    phone?: StringNullableWithAggregatesFilter | string | null
     created_at?: DateTimeWithAggregatesFilter | Date | string
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     is_deleted?: BoolWithAggregatesFilter | boolean
@@ -1889,6 +2919,97 @@ export namespace Prisma {
     oauth_type?: StringFieldUpdateOperationsInput | string
     email?: StringFieldUpdateOperationsInput | string
     username?: StringFieldUpdateOperationsInput | string
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserCreateInput = {
+    id?: string
+    sub: string
+    oauth_type: string
+    email: string
+    username: string
+    address?: string | null
+    phone?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    is_deleted?: boolean
+  }
+
+  export type UserUncheckedCreateInput = {
+    id?: string
+    sub: string
+    oauth_type: string
+    email: string
+    username: string
+    address?: string | null
+    phone?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    is_deleted?: boolean
+  }
+
+  export type UserUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserUncheckedUpdateInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserCreateManyInput = {
+    id?: string
+    sub: string
+    oauth_type: string
+    email: string
+    username: string
+    address?: string | null
+    phone?: string | null
+    created_at?: Date | string
+    updated_at?: Date | string
+    is_deleted?: boolean
+  }
+
+  export type UserUpdateManyMutationInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
+    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
+    is_deleted?: BoolFieldUpdateOperationsInput | boolean
+  }
+
+  export type UserUncheckedUpdateManyInput = {
+    id?: StringFieldUpdateOperationsInput | string
+    sub?: StringFieldUpdateOperationsInput | string
+    oauth_type?: StringFieldUpdateOperationsInput | string
+    email?: StringFieldUpdateOperationsInput | string
+    username?: StringFieldUpdateOperationsInput | string
+    address?: NullableStringFieldUpdateOperationsInput | string | null
+    phone?: NullableStringFieldUpdateOperationsInput | string | null
     created_at?: DateTimeFieldUpdateOperationsInput | Date | string
     updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
     is_deleted?: BoolFieldUpdateOperationsInput | boolean
@@ -2001,6 +3122,81 @@ export namespace Prisma {
     _max?: NestedBoolFilter
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type UserSubOauth_typeCompoundUniqueInput = {
+    sub: string
+    oauth_type: string
+  }
+
+  export type UserCountOrderByAggregateInput = {
+    id?: SortOrder
+    sub?: SortOrder
+    oauth_type?: SortOrder
+    email?: SortOrder
+    username?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    is_deleted?: SortOrder
+  }
+
+  export type UserMaxOrderByAggregateInput = {
+    id?: SortOrder
+    sub?: SortOrder
+    oauth_type?: SortOrder
+    email?: SortOrder
+    username?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    is_deleted?: SortOrder
+  }
+
+  export type UserMinOrderByAggregateInput = {
+    id?: SortOrder
+    sub?: SortOrder
+    oauth_type?: SortOrder
+    email?: SortOrder
+    username?: SortOrder
+    address?: SortOrder
+    phone?: SortOrder
+    created_at?: SortOrder
+    updated_at?: SortOrder
+    is_deleted?: SortOrder
+  }
+
+  export type StringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
   }
@@ -2011,6 +3207,10 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type NestedStringFilter = {
@@ -2091,6 +3291,48 @@ export namespace Prisma {
     _count?: NestedIntFilter
     _min?: NestedBoolFilter
     _max?: NestedBoolFilter
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
+  export type NestedStringNullableWithAggregatesFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableWithAggregatesFilter | string | null
+    _count?: NestedIntNullableFilter
+    _min?: NestedStringNullableFilter
+    _max?: NestedStringNullableFilter
+  }
+
+  export type NestedIntNullableFilter = {
+    equals?: number | null
+    in?: Enumerable<number> | null
+    notIn?: Enumerable<number> | null
+    lt?: number
+    lte?: number
+    gt?: number
+    gte?: number
+    not?: NestedIntNullableFilter | number | null
   }
 
 

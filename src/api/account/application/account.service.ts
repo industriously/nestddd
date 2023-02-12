@@ -4,7 +4,7 @@ import { HttpExceptionFactory } from '@COMMON/exception';
 import { throw_if_null } from '@COMMON/util';
 import { Inject, Injectable } from '@nestjs/common';
 import { AccountToken } from '@ACCOUNT/constant';
-import { Transaction } from '@COMMON/decorator';
+import { Transaction } from '@COMMON/decorator/lazy';
 
 @Injectable()
 export class AccountService implements Service {
