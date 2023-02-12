@@ -1,7 +1,7 @@
 import { UserDomain } from './user.domain.interface';
 
 export namespace IUserUsecase {
-  export type SetUserData = Pick<UserDomain.State, 'username'>;
+  export type UpdateUserData = Pick<UserDomain.State, 'username'>;
 }
 
 export interface IUserUsecase {
@@ -11,7 +11,7 @@ export interface IUserUsecase {
   readonly getDetail: (token: string) => Promise<UserDomain.Detail>;
   readonly update: (
     token: string,
-    data: IUserUsecase.SetUserData,
+    data: IUserUsecase.UpdateUserData,
   ) => Promise<void>;
   readonly remove: (token: string) => Promise<void>;
 }

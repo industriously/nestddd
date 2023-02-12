@@ -51,7 +51,7 @@ export class UserController {
   @Patch('user')
   update(
     @Authorization('bearer') token: string,
-    @TypedBody() body: IUserUsecase.SetUserData,
+    @TypedBody() body: IUserUsecase.UpdateUserData,
   ): Promise<void> {
     return this.userUsecase.update(token, body);
   }

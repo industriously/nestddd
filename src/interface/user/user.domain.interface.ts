@@ -5,5 +5,16 @@ export namespace UserDomain {
   export type OauthType = 'google' | 'github';
 
   export type Public = Pick<State, 'id' | 'email' | 'username'>;
-  export type Detail = State;
+  export type Detail = Pick<
+    State,
+    | 'id'
+    | 'sub'
+    | 'oauth_type'
+    | 'email'
+    | 'username'
+    | 'phone'
+    | 'address'
+    | 'created_at'
+    | 'updated_at'
+  >;
 }

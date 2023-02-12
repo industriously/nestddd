@@ -1,7 +1,7 @@
 import type { Domain, Service, Repository } from '@INTERFACE/account';
 import type { IProfile } from '@INTERFACE/common';
 import { HttpExceptionFactory } from '@COMMON/exception';
-import { throw_if_null } from '@COMMON/util';
+import { FxUtil } from '@COMMON/util';
 import { Inject, Injectable } from '@nestjs/common';
 import { AccountToken } from '@ACCOUNT/constant';
 import { Transaction } from '@COMMON/decorator/lazy';
@@ -14,9 +14,8 @@ export class AccountService implements Service {
   ) {}
 
   async findOne(id: Domain.State['id']): Promise<Domain.State> {
-    return throw_if_null(
+    return FxUtil.throw_if_nullish(HttpExceptionFactory('UnAuthorized'))(
       await this.repository.findOne(id, false),
-      HttpExceptionFactory('UnAuthorized'),
     );
   }
 

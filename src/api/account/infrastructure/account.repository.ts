@@ -18,6 +18,7 @@ export class AccountRepository implements Repository {
     return pipe(
       (input: Prisma.accountsCreateInput) =>
         this.getAccounts().create({ data: input }),
+
       toAccountStateAsync,
     )(data);
   }
@@ -60,6 +61,7 @@ export class AccountRepository implements Repository {
     return pipe(
       (where: Prisma.accountsWhereInput) =>
         this.getAccounts().findMany({ where }),
+
       async (input) => FxUtil.Array.map(toAccountState)(await input),
     )({ oauth_type, ...(include_deleted ? {} : { is_deleted: false }) });
   }
@@ -70,6 +72,7 @@ export class AccountRepository implements Repository {
         Prisma.accountsWhereUniqueInput,
         Prisma.accountsUpdateInput,
       ]) => this.getAccounts().update({ where, data: input }),
+
       toAccountStateAsync,
     )([{ id }, data]);
   }
