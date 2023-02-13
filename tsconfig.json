@@ -30,12 +30,12 @@
     "paths": {
       "@toss/nestjs-aop":["src/infrastructure/aop"],
       "@PRISMA":["db"],
-      "@LOGGER/service":["src/infrastructure/logger/constant.ts"],
       "@INTERFACE/*":["src/interface/*"],
       "@INFRA/*":["src/infrastructure/*"],
       "@COMMON/*":["src/api/common/*"],
       "@ACCOUNT/*":["src/api/account/*"],
       "@TOKEN/*":["src/api/token/*"],
+      "@USER/*":["src/api/user/*"]
     },                                      /* Specify a set of entries that re-map imports to additional lookup locations. */
     // "rootDirs": [],                                   /* Allow multiple folders to be treated as one when resolving modules. */
     // "typeRoots": [],                                  /* Specify multiple folders that act like './node_modules/@types'. */

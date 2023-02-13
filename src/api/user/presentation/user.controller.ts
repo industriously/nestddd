@@ -1,11 +1,14 @@
 import { Authorization } from '@COMMON/decorator/http';
 import { IUserUsecase, UserDomain } from '@INTERFACE/user';
 import { TypedBody, TypedParam } from '@nestia/core';
-import { Controller, Delete, Get, Patch } from '@nestjs/common';
+import { Controller, Delete, Get, Inject, Patch } from '@nestjs/common';
+import { UserUsecaseToken } from '@USER/application';
 
 @Controller()
 export class UserController {
-  constructor(private readonly userUsecase: IUserUsecase) {}
+  constructor(
+    @Inject(UserUsecaseToken) private readonly userUsecase: IUserUsecase,
+  ) {}
 
   /**
    * 인증된 사용자 정보 요청

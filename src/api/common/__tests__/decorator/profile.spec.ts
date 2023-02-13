@@ -1,4 +1,4 @@
-import { PROFILEKEY } from '@COMMON/constant';
+import { PROFILEKEY } from '@COMMON/constants';
 import { Profile } from '@COMMON/decorator';
 import { IProfile } from '@INTERFACE/common';
 import {

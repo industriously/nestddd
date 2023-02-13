@@ -5,7 +5,7 @@ import * as Account from '@INTERFACE/account';
 import { ISession } from '@INTERFACE/common';
 import { Service, Usecase } from '@INTERFACE/token';
 import { Inject, Injectable } from '@nestjs/common';
-import { TokenServiceToken } from './constant';
+import { TokenServiceToken } from './constants.ts';
 
 @Injectable()
 export class TokenUsecase implements Usecase {

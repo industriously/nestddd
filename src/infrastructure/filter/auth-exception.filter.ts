@@ -1,4 +1,4 @@
-import { SIGN_IN_FAIL_URL } from '@COMMON/constant';
+import { SIGN_IN_FAIL_URL } from '@COMMON/constants';
 import { AuthException } from '@devts/nestjs-auth';
 import {
   ExceptionFilter,

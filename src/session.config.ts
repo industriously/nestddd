@@ -1,4 +1,4 @@
-import { SESSION_KEY } from '@COMMON/constant';
+import { SESSION_KEY } from '@COMMON/constants';
 import session from 'express-session';
 
 export const sessionConfig: session.SessionOptions = {

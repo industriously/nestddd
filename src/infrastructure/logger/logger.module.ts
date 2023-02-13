@@ -1,6 +1,6 @@
 import { ConsoleLogger, Module } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { LoggerServiceToken } from './constant';
+import { LoggerServiceToken } from './constants';
 import { LoggerInterceptor } from './logger.interceptor';
 
 @Module({

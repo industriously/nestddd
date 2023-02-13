@@ -3,7 +3,7 @@ import { CallHandler } from '@nestjs/common';
 import { NestInterceptor } from '@nestjs/common';
 import { createNamespace, getNamespace } from 'cls-hooked';
 import { Observable } from 'rxjs';
-import { TRANSACTION_NS_KEY } from './constant';
+import { TRANSACTION_NS_KEY } from './constants';
 
 export class TransactionInterceptor implements NestInterceptor {
   constructor() {

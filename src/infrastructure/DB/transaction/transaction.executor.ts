@@ -1,9 +1,9 @@
 import { getNamespace } from 'cls-hooked';
 import { TransactionLevel } from '@COMMON/decorator/lazy';
 import { Aspect, LazyDecorator, WrapParams } from '@toss/nestjs-aop';
-import { TRANSACTION_ENTITY_KEY, TRANSACTION_NS_KEY } from './constant';
+import { TRANSACTION_ENTITY_KEY, TRANSACTION_NS_KEY } from './constants';
 import { Prisma } from '@PRISMA';
-import { TRANSACTION_DECORATOR_KEY } from '@COMMON/constant';
+import { TRANSACTION_DECORATOR_KEY } from '@COMMON/constants';
 import { PrismaService } from '../prisma.service';
 
 @Aspect(TRANSACTION_DECORATOR_KEY)

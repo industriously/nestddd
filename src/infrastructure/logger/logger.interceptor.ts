@@ -10,7 +10,7 @@ import {
 } from '@nestjs/common';
 import { catchError, Observable, throwError } from 'rxjs';
 import { TypeGuardError } from 'typia';
-import { LoggerServiceToken } from './constant';
+import { LoggerServiceToken } from './constants';
 
 @Injectable()
 export class LoggerInterceptor implements NestInterceptor {

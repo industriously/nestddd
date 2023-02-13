@@ -5,7 +5,7 @@ import { PrismaService } from './prisma.service';
 import {
   TRANSACTION_ENTITY_KEY,
   TRANSACTION_NS_KEY,
-} from './transaction/constant';
+} from './transaction/constants';
 
 @Injectable()
 export class DBManager {

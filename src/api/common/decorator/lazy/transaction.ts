@@ -1,4 +1,4 @@
-import { TRANSACTION_DECORATOR_KEY } from '@COMMON/constant';
+import { TRANSACTION_DECORATOR_KEY } from '@COMMON/constants';
 import { applyDecorators, SetMetadata } from '@nestjs/common';
 
 export type TransactionLevel =

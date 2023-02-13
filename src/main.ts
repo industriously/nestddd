@@ -5,7 +5,7 @@ import { AppModule } from './app.module';
 import session from 'express-session';
 import { sessionConfig } from './session.config';
 import { LoggerServiceToken } from '@LOGGER/service';
-import { CORS_ORGIN } from '@COMMON/constant';
+import { CORS_ORGIN } from '@COMMON/constants';
 import { PrismaService } from '@INFRA/DB';
 
 async function bootstrap() {

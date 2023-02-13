@@ -1,5 +1,5 @@
 import type { IEnv, IProfile } from '@INTERFACE/common';
-import { PROFILEKEY } from '@COMMON/constant';
+import { PROFILEKEY } from '@COMMON/constants';
 import { AuthException, Google } from '@devts/nestjs-auth';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
