@@ -11,27 +11,6 @@ type UnwrapTuple<Tuple extends readonly unknown[]> = {
 
 
 /**
- * Model accounts
- * 
- */
-export type accounts = {
-  /**
-   * @format uuid
-   */
-  id: string
-  sub: string
-  oauth_type: string
-  /**
-   * @format email
-   */
-  email: string
-  username: string
-  created_at: Date
-  updated_at: Date
-  is_deleted: boolean
-}
-
-/**
  * Model User
  * 
  */
@@ -68,8 +47,8 @@ export type User = {
  * @example
  * ```
  * const prisma = new PrismaClient()
- * // Fetch zero or more Accounts
- * const accounts = await prisma.accounts.findMany()
+ * // Fetch zero or more Users
+ * const users = await prisma.user.findMany()
  * ```
  *
  * 
@@ -89,8 +68,8 @@ export class PrismaClient<
    * @example
    * ```
    * const prisma = new PrismaClient()
-   * // Fetch zero or more Accounts
-   * const accounts = await prisma.accounts.findMany()
+   * // Fetch zero or more Users
+   * const users = await prisma.user.findMany()
    * ```
    *
    * 
@@ -179,16 +158,6 @@ export class PrismaClient<
   $transaction<R>(fn: (prisma: Omit<this, "$connect" | "$disconnect" | "$on" | "$transaction" | "$use">) => Promise<R>, options?: { maxWait?: number, timeout?: number, isolationLevel?: Prisma.TransactionIsolationLevel }): Promise<R>
 
       /**
-   * `prisma.accounts`: Exposes CRUD operations for the **accounts** model.
-    * Example usage:
-    * ```ts
-    * // Fetch zero or more Accounts
-    * const accounts = await prisma.accounts.findMany()
-    * ```
-    */
-  get accounts(): Prisma.accountsDelegate<GlobalReject>;
-
-  /**
    * `prisma.user`: Exposes CRUD operations for the **User** model.
     * Example usage:
     * ```ts
@@ -666,7 +635,6 @@ export namespace Prisma {
 
 
   export const ModelName: {
-    accounts: 'accounts',
     User: 'User'
   };
 
@@ -832,912 +800,6 @@ export namespace Prisma {
   /**
    * Models
    */
-
-  /**
-   * Model accounts
-   */
-
-
-  export type AggregateAccounts = {
-    _count: AccountsCountAggregateOutputType | null
-    _min: AccountsMinAggregateOutputType | null
-    _max: AccountsMaxAggregateOutputType | null
-  }
-
-  export type AccountsMinAggregateOutputType = {
-    id: string | null
-    sub: string | null
-    oauth_type: string | null
-    email: string | null
-    username: string | null
-    created_at: Date | null
-    updated_at: Date | null
-    is_deleted: boolean | null
-  }
-
-  export type AccountsMaxAggregateOutputType = {
-    id: string | null
-    sub: string | null
-    oauth_type: string | null
-    email: string | null
-    username: string | null
-    created_at: Date | null
-    updated_at: Date | null
-    is_deleted: boolean | null
-  }
-
-  export type AccountsCountAggregateOutputType = {
-    id: number
-    sub: number
-    oauth_type: number
-    email: number
-    username: number
-    created_at: number
-    updated_at: number
-    is_deleted: number
-    _all: number
-  }
-
-
-  export type AccountsMinAggregateInputType = {
-    id?: true
-    sub?: true
-    oauth_type?: true
-    email?: true
-    username?: true
-    created_at?: true
-    updated_at?: true
-    is_deleted?: true
-  }
-
-  export type AccountsMaxAggregateInputType = {
-    id?: true
-    sub?: true
-    oauth_type?: true
-    email?: true
-    username?: true
-    created_at?: true
-    updated_at?: true
-    is_deleted?: true
-  }
-
-  export type AccountsCountAggregateInputType = {
-    id?: true
-    sub?: true
-    oauth_type?: true
-    email?: true
-    username?: true
-    created_at?: true
-    updated_at?: true
-    is_deleted?: true
-    _all?: true
-  }
-
-  export type AccountsAggregateArgs = {
-    /**
-     * Filter which accounts to aggregate.
-     */
-    where?: accountsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of accounts to fetch.
-     */
-    orderBy?: Enumerable<accountsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the start position
-     */
-    cursor?: accountsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` accounts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` accounts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Count returned accounts
-    **/
-    _count?: true | AccountsCountAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the minimum value
-    **/
-    _min?: AccountsMinAggregateInputType
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/aggregations Aggregation Docs}
-     * 
-     * Select which fields to find the maximum value
-    **/
-    _max?: AccountsMaxAggregateInputType
-  }
-
-  export type GetAccountsAggregateType<T extends AccountsAggregateArgs> = {
-        [P in keyof T & keyof AggregateAccounts]: P extends '_count' | 'count'
-      ? T[P] extends true
-        ? number
-        : GetScalarType<T[P], AggregateAccounts[P]>
-      : GetScalarType<T[P], AggregateAccounts[P]>
-  }
-
-
-
-
-  export type AccountsGroupByArgs = {
-    where?: accountsWhereInput
-    orderBy?: Enumerable<accountsOrderByWithAggregationInput>
-    by: AccountsScalarFieldEnum[]
-    having?: accountsScalarWhereWithAggregatesInput
-    take?: number
-    skip?: number
-    _count?: AccountsCountAggregateInputType | true
-    _min?: AccountsMinAggregateInputType
-    _max?: AccountsMaxAggregateInputType
-  }
-
-
-  export type AccountsGroupByOutputType = {
-    id: string
-    sub: string
-    oauth_type: string
-    email: string
-    username: string
-    created_at: Date
-    updated_at: Date
-    is_deleted: boolean
-    _count: AccountsCountAggregateOutputType | null
-    _min: AccountsMinAggregateOutputType | null
-    _max: AccountsMaxAggregateOutputType | null
-  }
-
-  type GetAccountsGroupByPayload<T extends AccountsGroupByArgs> = Prisma.PrismaPromise<
-    Array<
-      PickArray<AccountsGroupByOutputType, T['by']> &
-        {
-          [P in ((keyof T) & (keyof AccountsGroupByOutputType))]: P extends '_count'
-            ? T[P] extends boolean
-              ? number
-              : GetScalarType<T[P], AccountsGroupByOutputType[P]>
-            : GetScalarType<T[P], AccountsGroupByOutputType[P]>
-        }
-      >
-    >
-
-
-  export type accountsSelect = {
-    id?: boolean
-    sub?: boolean
-    oauth_type?: boolean
-    email?: boolean
-    username?: boolean
-    created_at?: boolean
-    updated_at?: boolean
-    is_deleted?: boolean
-  }
-
-
-  export type accountsGetPayload<S extends boolean | null | undefined | accountsArgs> =
-    S extends { select: any, include: any } ? 'Please either choose `select` or `include`' :
-    S extends true ? accounts :
-    S extends undefined ? never :
-    S extends { include: any } & (accountsArgs | accountsFindManyArgs)
-    ? accounts 
-    : S extends { select: any } & (accountsArgs | accountsFindManyArgs)
-      ? {
-    [P in TruthyKeys<S['select']>]:
-    P extends keyof accounts ? accounts[P] : never
-  } 
-      : accounts
-
-
-  type accountsCountArgs = 
-    Omit<accountsFindManyArgs, 'select' | 'include'> & {
-      select?: AccountsCountAggregateInputType | true
-    }
-
-  export interface accountsDelegate<GlobalRejectSettings extends Prisma.RejectOnNotFound | Prisma.RejectPerOperation | false | undefined> {
-
-    /**
-     * Find zero or one Accounts that matches the filter.
-     * @param {accountsFindUniqueArgs} args - Arguments to find a Accounts
-     * @example
-     * // Get one Accounts
-     * const accounts = await prisma.accounts.findUnique({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUnique<T extends accountsFindUniqueArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args: SelectSubset<T, accountsFindUniqueArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findUnique', 'accounts'> extends True ? Prisma__accountsClient<accountsGetPayload<T>> : Prisma__accountsClient<accountsGetPayload<T> | null, null>
-
-    /**
-     * Find one Accounts that matches the filter or throw an error  with `error.code='P2025'` 
-     *     if no matches were found.
-     * @param {accountsFindUniqueOrThrowArgs} args - Arguments to find a Accounts
-     * @example
-     * // Get one Accounts
-     * const accounts = await prisma.accounts.findUniqueOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findUniqueOrThrow<T extends accountsFindUniqueOrThrowArgs>(
-      args?: SelectSubset<T, accountsFindUniqueOrThrowArgs>
-    ): Prisma__accountsClient<accountsGetPayload<T>>
-
-    /**
-     * Find the first Accounts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {accountsFindFirstArgs} args - Arguments to find a Accounts
-     * @example
-     * // Get one Accounts
-     * const accounts = await prisma.accounts.findFirst({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirst<T extends accountsFindFirstArgs,  LocalRejectSettings = T["rejectOnNotFound"] extends RejectOnNotFound ? T['rejectOnNotFound'] : undefined>(
-      args?: SelectSubset<T, accountsFindFirstArgs>
-    ): HasReject<GlobalRejectSettings, LocalRejectSettings, 'findFirst', 'accounts'> extends True ? Prisma__accountsClient<accountsGetPayload<T>> : Prisma__accountsClient<accountsGetPayload<T> | null, null>
-
-    /**
-     * Find the first Accounts that matches the filter or
-     * throw `NotFoundError` if no matches were found.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {accountsFindFirstOrThrowArgs} args - Arguments to find a Accounts
-     * @example
-     * // Get one Accounts
-     * const accounts = await prisma.accounts.findFirstOrThrow({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-    **/
-    findFirstOrThrow<T extends accountsFindFirstOrThrowArgs>(
-      args?: SelectSubset<T, accountsFindFirstOrThrowArgs>
-    ): Prisma__accountsClient<accountsGetPayload<T>>
-
-    /**
-     * Find zero or more Accounts that matches the filter.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {accountsFindManyArgs=} args - Arguments to filter and select certain fields only.
-     * @example
-     * // Get all Accounts
-     * const accounts = await prisma.accounts.findMany()
-     * 
-     * // Get first 10 Accounts
-     * const accounts = await prisma.accounts.findMany({ take: 10 })
-     * 
-     * // Only select the `id`
-     * const accountsWithIdOnly = await prisma.accounts.findMany({ select: { id: true } })
-     * 
-    **/
-    findMany<T extends accountsFindManyArgs>(
-      args?: SelectSubset<T, accountsFindManyArgs>
-    ): Prisma.PrismaPromise<Array<accountsGetPayload<T>>>
-
-    /**
-     * Create a Accounts.
-     * @param {accountsCreateArgs} args - Arguments to create a Accounts.
-     * @example
-     * // Create one Accounts
-     * const Accounts = await prisma.accounts.create({
-     *   data: {
-     *     // ... data to create a Accounts
-     *   }
-     * })
-     * 
-    **/
-    create<T extends accountsCreateArgs>(
-      args: SelectSubset<T, accountsCreateArgs>
-    ): Prisma__accountsClient<accountsGetPayload<T>>
-
-    /**
-     * Create many Accounts.
-     *     @param {accountsCreateManyArgs} args - Arguments to create many Accounts.
-     *     @example
-     *     // Create many Accounts
-     *     const accounts = await prisma.accounts.createMany({
-     *       data: {
-     *         // ... provide data here
-     *       }
-     *     })
-     *     
-    **/
-    createMany<T extends accountsCreateManyArgs>(
-      args?: SelectSubset<T, accountsCreateManyArgs>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Delete a Accounts.
-     * @param {accountsDeleteArgs} args - Arguments to delete one Accounts.
-     * @example
-     * // Delete one Accounts
-     * const Accounts = await prisma.accounts.delete({
-     *   where: {
-     *     // ... filter to delete one Accounts
-     *   }
-     * })
-     * 
-    **/
-    delete<T extends accountsDeleteArgs>(
-      args: SelectSubset<T, accountsDeleteArgs>
-    ): Prisma__accountsClient<accountsGetPayload<T>>
-
-    /**
-     * Update one Accounts.
-     * @param {accountsUpdateArgs} args - Arguments to update one Accounts.
-     * @example
-     * // Update one Accounts
-     * const accounts = await prisma.accounts.update({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    update<T extends accountsUpdateArgs>(
-      args: SelectSubset<T, accountsUpdateArgs>
-    ): Prisma__accountsClient<accountsGetPayload<T>>
-
-    /**
-     * Delete zero or more Accounts.
-     * @param {accountsDeleteManyArgs} args - Arguments to filter Accounts to delete.
-     * @example
-     * // Delete a few Accounts
-     * const { count } = await prisma.accounts.deleteMany({
-     *   where: {
-     *     // ... provide filter here
-     *   }
-     * })
-     * 
-    **/
-    deleteMany<T extends accountsDeleteManyArgs>(
-      args?: SelectSubset<T, accountsDeleteManyArgs>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Update zero or more Accounts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {accountsUpdateManyArgs} args - Arguments to update one or more rows.
-     * @example
-     * // Update many Accounts
-     * const accounts = await prisma.accounts.updateMany({
-     *   where: {
-     *     // ... provide filter here
-     *   },
-     *   data: {
-     *     // ... provide data here
-     *   }
-     * })
-     * 
-    **/
-    updateMany<T extends accountsUpdateManyArgs>(
-      args: SelectSubset<T, accountsUpdateManyArgs>
-    ): Prisma.PrismaPromise<BatchPayload>
-
-    /**
-     * Create or update one Accounts.
-     * @param {accountsUpsertArgs} args - Arguments to update or create a Accounts.
-     * @example
-     * // Update or create a Accounts
-     * const accounts = await prisma.accounts.upsert({
-     *   create: {
-     *     // ... data to create a Accounts
-     *   },
-     *   update: {
-     *     // ... in case it already exists, update
-     *   },
-     *   where: {
-     *     // ... the filter for the Accounts we want to update
-     *   }
-     * })
-    **/
-    upsert<T extends accountsUpsertArgs>(
-      args: SelectSubset<T, accountsUpsertArgs>
-    ): Prisma__accountsClient<accountsGetPayload<T>>
-
-    /**
-     * Count the number of Accounts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {accountsCountArgs} args - Arguments to filter Accounts to count.
-     * @example
-     * // Count the number of Accounts
-     * const count = await prisma.accounts.count({
-     *   where: {
-     *     // ... the filter for the Accounts we want to count
-     *   }
-     * })
-    **/
-    count<T extends accountsCountArgs>(
-      args?: Subset<T, accountsCountArgs>,
-    ): Prisma.PrismaPromise<
-      T extends _Record<'select', any>
-        ? T['select'] extends true
-          ? number
-          : GetScalarType<T['select'], AccountsCountAggregateOutputType>
-        : number
-    >
-
-    /**
-     * Allows you to perform aggregations operations on a Accounts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountsAggregateArgs} args - Select which aggregations you would like to apply and on what fields.
-     * @example
-     * // Ordered by age ascending
-     * // Where email contains prisma.io
-     * // Limited to the 10 users
-     * const aggregations = await prisma.user.aggregate({
-     *   _avg: {
-     *     age: true,
-     *   },
-     *   where: {
-     *     email: {
-     *       contains: "prisma.io",
-     *     },
-     *   },
-     *   orderBy: {
-     *     age: "asc",
-     *   },
-     *   take: 10,
-     * })
-    **/
-    aggregate<T extends AccountsAggregateArgs>(args: Subset<T, AccountsAggregateArgs>): Prisma.PrismaPromise<GetAccountsAggregateType<T>>
-
-    /**
-     * Group by Accounts.
-     * Note, that providing `undefined` is treated as the value not being there.
-     * Read more here: https://pris.ly/d/null-undefined
-     * @param {AccountsGroupByArgs} args - Group by arguments.
-     * @example
-     * // Group by city, order by createdAt, get count
-     * const result = await prisma.user.groupBy({
-     *   by: ['city', 'createdAt'],
-     *   orderBy: {
-     *     createdAt: true
-     *   },
-     *   _count: {
-     *     _all: true
-     *   },
-     * })
-     * 
-    **/
-    groupBy<
-      T extends AccountsGroupByArgs,
-      HasSelectOrTake extends Or<
-        Extends<'skip', Keys<T>>,
-        Extends<'take', Keys<T>>
-      >,
-      OrderByArg extends True extends HasSelectOrTake
-        ? { orderBy: AccountsGroupByArgs['orderBy'] }
-        : { orderBy?: AccountsGroupByArgs['orderBy'] },
-      OrderFields extends ExcludeUnderscoreKeys<Keys<MaybeTupleToUnion<T['orderBy']>>>,
-      ByFields extends TupleToUnion<T['by']>,
-      ByValid extends Has<ByFields, OrderFields>,
-      HavingFields extends GetHavingFields<T['having']>,
-      HavingValid extends Has<ByFields, HavingFields>,
-      ByEmpty extends T['by'] extends never[] ? True : False,
-      InputErrors extends ByEmpty extends True
-      ? `Error: "by" must not be empty.`
-      : HavingValid extends False
-      ? {
-          [P in HavingFields]: P extends ByFields
-            ? never
-            : P extends string
-            ? `Error: Field "${P}" used in "having" needs to be provided in "by".`
-            : [
-                Error,
-                'Field ',
-                P,
-                ` in "having" needs to be provided in "by"`,
-              ]
-        }[HavingFields]
-      : 'take' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "take", you also need to provide "orderBy"'
-      : 'skip' extends Keys<T>
-      ? 'orderBy' extends Keys<T>
-        ? ByValid extends True
-          ? {}
-          : {
-              [P in OrderFields]: P extends ByFields
-                ? never
-                : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-            }[OrderFields]
-        : 'Error: If you provide "skip", you also need to provide "orderBy"'
-      : ByValid extends True
-      ? {}
-      : {
-          [P in OrderFields]: P extends ByFields
-            ? never
-            : `Error: Field "${P}" in "orderBy" needs to be provided in "by"`
-        }[OrderFields]
-    >(args: SubsetIntersection<T, AccountsGroupByArgs, OrderByArg> & InputErrors): {} extends InputErrors ? GetAccountsGroupByPayload<T> : Prisma.PrismaPromise<InputErrors>
-
-  }
-
-  /**
-   * The delegate class that acts as a "Promise-like" for accounts.
-   * Why is this prefixed with `Prisma__`?
-   * Because we want to prevent naming conflicts as mentioned in
-   * https://github.com/prisma/prisma-client-js/issues/707
-   */
-  export class Prisma__accountsClient<T, Null = never> implements Prisma.PrismaPromise<T> {
-    private readonly _dmmf;
-    private readonly _queryType;
-    private readonly _rootField;
-    private readonly _clientMethod;
-    private readonly _args;
-    private readonly _dataPath;
-    private readonly _errorFormat;
-    private readonly _measurePerformance?;
-    private _isList;
-    private _callsite;
-    private _requestPromise?;
-    readonly [Symbol.toStringTag]: 'PrismaPromise';
-    constructor(_dmmf: runtime.DMMFClass, _queryType: 'query' | 'mutation', _rootField: string, _clientMethod: string, _args: any, _dataPath: string[], _errorFormat: ErrorFormat, _measurePerformance?: boolean | undefined, _isList?: boolean);
-
-
-    private get _document();
-    /**
-     * Attaches callbacks for the resolution and/or rejection of the Promise.
-     * @param onfulfilled The callback to execute when the Promise is resolved.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of which ever callback is executed.
-     */
-    then<TResult1 = T, TResult2 = never>(onfulfilled?: ((value: T) => TResult1 | PromiseLike<TResult1>) | undefined | null, onrejected?: ((reason: any) => TResult2 | PromiseLike<TResult2>) | undefined | null): Promise<TResult1 | TResult2>;
-    /**
-     * Attaches a callback for only the rejection of the Promise.
-     * @param onrejected The callback to execute when the Promise is rejected.
-     * @returns A Promise for the completion of the callback.
-     */
-    catch<TResult = never>(onrejected?: ((reason: any) => TResult | PromiseLike<TResult>) | undefined | null): Promise<T | TResult>;
-    /**
-     * Attaches a callback that is invoked when the Promise is settled (fulfilled or rejected). The
-     * resolved value cannot be modified from the callback.
-     * @param onfinally The callback to execute when the Promise is settled (fulfilled or rejected).
-     * @returns A Promise for the completion of the callback.
-     */
-    finally(onfinally?: (() => void) | undefined | null): Promise<T>;
-  }
-
-
-
-  // Custom InputTypes
-
-  /**
-   * accounts base type for findUnique actions
-   */
-  export type accountsFindUniqueArgsBase = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * Filter, which accounts to fetch.
-     */
-    where: accountsWhereUniqueInput
-  }
-
-  /**
-   * accounts findUnique
-   */
-  export interface accountsFindUniqueArgs extends accountsFindUniqueArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findUniqueOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * accounts findUniqueOrThrow
-   */
-  export type accountsFindUniqueOrThrowArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * Filter, which accounts to fetch.
-     */
-    where: accountsWhereUniqueInput
-  }
-
-
-  /**
-   * accounts base type for findFirst actions
-   */
-  export type accountsFindFirstArgsBase = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * Filter, which accounts to fetch.
-     */
-    where?: accountsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of accounts to fetch.
-     */
-    orderBy?: Enumerable<accountsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for accounts.
-     */
-    cursor?: accountsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` accounts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` accounts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of accounts.
-     */
-    distinct?: Enumerable<AccountsScalarFieldEnum>
-  }
-
-  /**
-   * accounts findFirst
-   */
-  export interface accountsFindFirstArgs extends accountsFindFirstArgsBase {
-   /**
-    * Throw an Error if query returns no results
-    * @deprecated since 4.0.0: use `findFirstOrThrow` method instead
-    */
-    rejectOnNotFound?: RejectOnNotFound
-  }
-      
-
-  /**
-   * accounts findFirstOrThrow
-   */
-  export type accountsFindFirstOrThrowArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * Filter, which accounts to fetch.
-     */
-    where?: accountsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of accounts to fetch.
-     */
-    orderBy?: Enumerable<accountsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for searching for accounts.
-     */
-    cursor?: accountsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` accounts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` accounts.
-     */
-    skip?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/distinct Distinct Docs}
-     * 
-     * Filter by unique combinations of accounts.
-     */
-    distinct?: Enumerable<AccountsScalarFieldEnum>
-  }
-
-
-  /**
-   * accounts findMany
-   */
-  export type accountsFindManyArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * Filter, which accounts to fetch.
-     */
-    where?: accountsWhereInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/sorting Sorting Docs}
-     * 
-     * Determine the order of accounts to fetch.
-     */
-    orderBy?: Enumerable<accountsOrderByWithRelationInput>
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination#cursor-based-pagination Cursor Docs}
-     * 
-     * Sets the position for listing accounts.
-     */
-    cursor?: accountsWhereUniqueInput
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Take `±n` accounts from the position of the cursor.
-     */
-    take?: number
-    /**
-     * {@link https://www.prisma.io/docs/concepts/components/prisma-client/pagination Pagination Docs}
-     * 
-     * Skip the first `n` accounts.
-     */
-    skip?: number
-    distinct?: Enumerable<AccountsScalarFieldEnum>
-  }
-
-
-  /**
-   * accounts create
-   */
-  export type accountsCreateArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * The data needed to create a accounts.
-     */
-    data: XOR<accountsCreateInput, accountsUncheckedCreateInput>
-  }
-
-
-  /**
-   * accounts createMany
-   */
-  export type accountsCreateManyArgs = {
-    /**
-     * The data used to create many accounts.
-     */
-    data: Enumerable<accountsCreateManyInput>
-    skipDuplicates?: boolean
-  }
-
-
-  /**
-   * accounts update
-   */
-  export type accountsUpdateArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * The data needed to update a accounts.
-     */
-    data: XOR<accountsUpdateInput, accountsUncheckedUpdateInput>
-    /**
-     * Choose, which accounts to update.
-     */
-    where: accountsWhereUniqueInput
-  }
-
-
-  /**
-   * accounts updateMany
-   */
-  export type accountsUpdateManyArgs = {
-    /**
-     * The data used to update accounts.
-     */
-    data: XOR<accountsUpdateManyMutationInput, accountsUncheckedUpdateManyInput>
-    /**
-     * Filter which accounts to update
-     */
-    where?: accountsWhereInput
-  }
-
-
-  /**
-   * accounts upsert
-   */
-  export type accountsUpsertArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * The filter to search for the accounts to update in case it exists.
-     */
-    where: accountsWhereUniqueInput
-    /**
-     * In case the accounts found by the `where` argument doesn't exist, create a new accounts with this data.
-     */
-    create: XOR<accountsCreateInput, accountsUncheckedCreateInput>
-    /**
-     * In case the accounts was found with the provided `where` argument, update it with this data.
-     */
-    update: XOR<accountsUpdateInput, accountsUncheckedUpdateInput>
-  }
-
-
-  /**
-   * accounts delete
-   */
-  export type accountsDeleteArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-    /**
-     * Filter which accounts to delete.
-     */
-    where: accountsWhereUniqueInput
-  }
-
-
-  /**
-   * accounts deleteMany
-   */
-  export type accountsDeleteManyArgs = {
-    /**
-     * Filter which accounts to delete
-     */
-    where?: accountsWhereInput
-  }
-
-
-  /**
-   * accounts without action
-   */
-  export type accountsArgs = {
-    /**
-     * Select specific fields to fetch from the accounts
-     */
-    select?: accountsSelect | null
-  }
-
-
 
   /**
    * Model User
@@ -2668,20 +1730,6 @@ export namespace Prisma {
   // Based on
   // https://github.com/microsoft/TypeScript/issues/3192#issuecomment-261720275
 
-  export const AccountsScalarFieldEnum: {
-    id: 'id',
-    sub: 'sub',
-    oauth_type: 'oauth_type',
-    email: 'email',
-    username: 'username',
-    created_at: 'created_at',
-    updated_at: 'updated_at',
-    is_deleted: 'is_deleted'
-  };
-
-  export type AccountsScalarFieldEnum = (typeof AccountsScalarFieldEnum)[keyof typeof AccountsScalarFieldEnum]
-
-
   export const SortOrder: {
     asc: 'asc',
     desc: 'desc'
@@ -2720,65 +1768,6 @@ export namespace Prisma {
    * Deep Input Types
    */
 
-
-  export type accountsWhereInput = {
-    AND?: Enumerable<accountsWhereInput>
-    OR?: Enumerable<accountsWhereInput>
-    NOT?: Enumerable<accountsWhereInput>
-    id?: StringFilter | string
-    sub?: StringFilter | string
-    oauth_type?: StringFilter | string
-    email?: StringFilter | string
-    username?: StringFilter | string
-    created_at?: DateTimeFilter | Date | string
-    updated_at?: DateTimeFilter | Date | string
-    is_deleted?: BoolFilter | boolean
-  }
-
-  export type accountsOrderByWithRelationInput = {
-    id?: SortOrder
-    sub?: SortOrder
-    oauth_type?: SortOrder
-    email?: SortOrder
-    username?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    is_deleted?: SortOrder
-  }
-
-  export type accountsWhereUniqueInput = {
-    id?: string
-    email?: string
-    sub_oauth_type?: accountsSubOauth_typeCompoundUniqueInput
-  }
-
-  export type accountsOrderByWithAggregationInput = {
-    id?: SortOrder
-    sub?: SortOrder
-    oauth_type?: SortOrder
-    email?: SortOrder
-    username?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    is_deleted?: SortOrder
-    _count?: accountsCountOrderByAggregateInput
-    _max?: accountsMaxOrderByAggregateInput
-    _min?: accountsMinOrderByAggregateInput
-  }
-
-  export type accountsScalarWhereWithAggregatesInput = {
-    AND?: Enumerable<accountsScalarWhereWithAggregatesInput>
-    OR?: Enumerable<accountsScalarWhereWithAggregatesInput>
-    NOT?: Enumerable<accountsScalarWhereWithAggregatesInput>
-    id?: StringWithAggregatesFilter | string
-    sub?: StringWithAggregatesFilter | string
-    oauth_type?: StringWithAggregatesFilter | string
-    email?: StringWithAggregatesFilter | string
-    username?: StringWithAggregatesFilter | string
-    created_at?: DateTimeWithAggregatesFilter | Date | string
-    updated_at?: DateTimeWithAggregatesFilter | Date | string
-    is_deleted?: BoolWithAggregatesFilter | boolean
-  }
 
   export type UserWhereInput = {
     AND?: Enumerable<UserWhereInput>
@@ -2845,83 +1834,6 @@ export namespace Prisma {
     created_at?: DateTimeWithAggregatesFilter | Date | string
     updated_at?: DateTimeWithAggregatesFilter | Date | string
     is_deleted?: BoolWithAggregatesFilter | boolean
-  }
-
-  export type accountsCreateInput = {
-    id?: string
-    sub: string
-    oauth_type: string
-    email: string
-    username: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    is_deleted?: boolean
-  }
-
-  export type accountsUncheckedCreateInput = {
-    id?: string
-    sub: string
-    oauth_type: string
-    email: string
-    username: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    is_deleted?: boolean
-  }
-
-  export type accountsUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sub?: StringFieldUpdateOperationsInput | string
-    oauth_type?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type accountsUncheckedUpdateInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sub?: StringFieldUpdateOperationsInput | string
-    oauth_type?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type accountsCreateManyInput = {
-    id?: string
-    sub: string
-    oauth_type: string
-    email: string
-    username: string
-    created_at?: Date | string
-    updated_at?: Date | string
-    is_deleted?: boolean
-  }
-
-  export type accountsUpdateManyMutationInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sub?: StringFieldUpdateOperationsInput | string
-    oauth_type?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
-  }
-
-  export type accountsUncheckedUpdateManyInput = {
-    id?: StringFieldUpdateOperationsInput | string
-    sub?: StringFieldUpdateOperationsInput | string
-    oauth_type?: StringFieldUpdateOperationsInput | string
-    email?: StringFieldUpdateOperationsInput | string
-    username?: StringFieldUpdateOperationsInput | string
-    created_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    updated_at?: DateTimeFieldUpdateOperationsInput | Date | string
-    is_deleted?: BoolFieldUpdateOperationsInput | boolean
   }
 
   export type UserCreateInput = {
@@ -3029,6 +1941,20 @@ export namespace Prisma {
     not?: NestedStringFilter | string
   }
 
+  export type StringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
+  }
+
   export type DateTimeFilter = {
     equals?: Date | string
     in?: Enumerable<Date> | Enumerable<string>
@@ -3043,97 +1969,6 @@ export namespace Prisma {
   export type BoolFilter = {
     equals?: boolean
     not?: NestedBoolFilter | boolean
-  }
-
-  export type accountsSubOauth_typeCompoundUniqueInput = {
-    sub: string
-    oauth_type: string
-  }
-
-  export type accountsCountOrderByAggregateInput = {
-    id?: SortOrder
-    sub?: SortOrder
-    oauth_type?: SortOrder
-    email?: SortOrder
-    username?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    is_deleted?: SortOrder
-  }
-
-  export type accountsMaxOrderByAggregateInput = {
-    id?: SortOrder
-    sub?: SortOrder
-    oauth_type?: SortOrder
-    email?: SortOrder
-    username?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    is_deleted?: SortOrder
-  }
-
-  export type accountsMinOrderByAggregateInput = {
-    id?: SortOrder
-    sub?: SortOrder
-    oauth_type?: SortOrder
-    email?: SortOrder
-    username?: SortOrder
-    created_at?: SortOrder
-    updated_at?: SortOrder
-    is_deleted?: SortOrder
-  }
-
-  export type StringWithAggregatesFilter = {
-    equals?: string
-    in?: Enumerable<string>
-    notIn?: Enumerable<string>
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringWithAggregatesFilter | string
-    _count?: NestedIntFilter
-    _min?: NestedStringFilter
-    _max?: NestedStringFilter
-  }
-
-  export type DateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
-  }
-
-  export type BoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
-    _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
-  }
-
-  export type StringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
   }
 
   export type UserSubOauth_typeCompoundUniqueInput = {
@@ -3180,6 +2015,23 @@ export namespace Prisma {
     is_deleted?: SortOrder
   }
 
+  export type StringWithAggregatesFilter = {
+    equals?: string
+    in?: Enumerable<string>
+    notIn?: Enumerable<string>
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringWithAggregatesFilter | string
+    _count?: NestedIntFilter
+    _min?: NestedStringFilter
+    _max?: NestedStringFilter
+  }
+
   export type StringNullableWithAggregatesFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -3197,8 +2049,34 @@ export namespace Prisma {
     _max?: NestedStringNullableFilter
   }
 
+  export type DateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
+  }
+
+  export type BoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
+  }
+
   export type StringFieldUpdateOperationsInput = {
     set?: string
+  }
+
+  export type NullableStringFieldUpdateOperationsInput = {
+    set?: string | null
   }
 
   export type DateTimeFieldUpdateOperationsInput = {
@@ -3207,10 +2085,6 @@ export namespace Prisma {
 
   export type BoolFieldUpdateOperationsInput = {
     set?: boolean
-  }
-
-  export type NullableStringFieldUpdateOperationsInput = {
-    set?: string | null
   }
 
   export type NestedStringFilter = {
@@ -3225,6 +2099,20 @@ export namespace Prisma {
     startsWith?: string
     endsWith?: string
     not?: NestedStringFilter | string
+  }
+
+  export type NestedStringNullableFilter = {
+    equals?: string | null
+    in?: Enumerable<string> | null
+    notIn?: Enumerable<string> | null
+    lt?: string
+    lte?: string
+    gt?: string
+    gte?: string
+    contains?: string
+    startsWith?: string
+    endsWith?: string
+    not?: NestedStringNullableFilter | string | null
   }
 
   export type NestedDateTimeFilter = {
@@ -3271,42 +2159,6 @@ export namespace Prisma {
     not?: NestedIntFilter | number
   }
 
-  export type NestedDateTimeWithAggregatesFilter = {
-    equals?: Date | string
-    in?: Enumerable<Date> | Enumerable<string>
-    notIn?: Enumerable<Date> | Enumerable<string>
-    lt?: Date | string
-    lte?: Date | string
-    gt?: Date | string
-    gte?: Date | string
-    not?: NestedDateTimeWithAggregatesFilter | Date | string
-    _count?: NestedIntFilter
-    _min?: NestedDateTimeFilter
-    _max?: NestedDateTimeFilter
-  }
-
-  export type NestedBoolWithAggregatesFilter = {
-    equals?: boolean
-    not?: NestedBoolWithAggregatesFilter | boolean
-    _count?: NestedIntFilter
-    _min?: NestedBoolFilter
-    _max?: NestedBoolFilter
-  }
-
-  export type NestedStringNullableFilter = {
-    equals?: string | null
-    in?: Enumerable<string> | null
-    notIn?: Enumerable<string> | null
-    lt?: string
-    lte?: string
-    gt?: string
-    gte?: string
-    contains?: string
-    startsWith?: string
-    endsWith?: string
-    not?: NestedStringNullableFilter | string | null
-  }
-
   export type NestedStringNullableWithAggregatesFilter = {
     equals?: string | null
     in?: Enumerable<string> | null
@@ -3333,6 +2185,28 @@ export namespace Prisma {
     gt?: number
     gte?: number
     not?: NestedIntNullableFilter | number | null
+  }
+
+  export type NestedDateTimeWithAggregatesFilter = {
+    equals?: Date | string
+    in?: Enumerable<Date> | Enumerable<string>
+    notIn?: Enumerable<Date> | Enumerable<string>
+    lt?: Date | string
+    lte?: Date | string
+    gt?: Date | string
+    gte?: Date | string
+    not?: NestedDateTimeWithAggregatesFilter | Date | string
+    _count?: NestedIntFilter
+    _min?: NestedDateTimeFilter
+    _max?: NestedDateTimeFilter
+  }
+
+  export type NestedBoolWithAggregatesFilter = {
+    equals?: boolean
+    not?: NestedBoolWithAggregatesFilter | boolean
+    _count?: NestedIntFilter
+    _min?: NestedBoolFilter
+    _max?: NestedBoolFilter
   }
 
 

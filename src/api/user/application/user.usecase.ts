@@ -1,51 +1,51 @@
-import { IUserService, IUserUsecase, UserDomain } from '@INTERFACE/user';
-import { Inject, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
+import { IUserRepository, IUserUsecase, UserSchema } from '@INTERFACE/user';
 import { pipe } from 'rxjs';
-import { UserMapper } from '../domain';
-import { UserServiceToken } from './constants';
+import { FxUtil } from '@COMMON/util';
+import { HttpExceptionFactory } from '@COMMON/exception';
+import { UserMapper } from '@USER/domain';
 
 @Injectable()
 export class UserUsecase implements IUserUsecase {
-  constructor(
-    @Inject(UserServiceToken) private readonly userService: IUserService,
-  ) {}
+  constructor(private readonly userRepository: IUserRepository) {}
 
-  getPublic(id: string): Promise<UserDomain.Public> {
+  getPublic(id: string): Promise<UserSchema.Public> {
     return pipe(
-      this.userService.findOne,
+      this.userRepository.findOne,
+
+      FxUtil.throwIfNullishAsync(HttpExceptionFactory('NotFound')),
 
       UserMapper.toPublicAsync,
     )(id);
   }
 
-  getDetail(token: string): Promise<UserDomain.Detail> {
+  getDetail(token: string): Promise<UserSchema.Detail> {
     return pipe(
-      (token: string) => token, // get id function
+      (token: string) => token,
 
-      this.userService.findOne,
+      this.userRepository.findOne,
+
+      FxUtil.throwIfNullishAsync(HttpExceptionFactory('NotFound')),
 
       UserMapper.toDetailAsync,
     )(token);
   }
 
-  async update(
-    token: string,
-    data: IUserUsecase.UpdateUserData,
-  ): Promise<void> {
-    await pipe(
-      (token: string) => token, // get id function
+  update(token: string, data: IUserUsecase.UpdateData): Promise<void> {
+    return pipe(
+      (token: string) => token,
 
-      (id) => this.userService.update(id, data),
+      (id) => this.userRepository.update(id, data),
+
+      async () => {},
     )(token);
-    return;
   }
 
-  async remove(token: string): Promise<void> {
-    await pipe(
-      (token: string) => token, // get id function
+  remove(token: string): Promise<void> {
+    return pipe(
+      (token: string) => token,
 
-      this.userService.remove,
+      this.userRepository.remove,
     )(token);
-    return;
   }
 }

@@ -3,8 +3,8 @@ import { Prisma } from '@PRISMA';
 import { getNamespace } from 'cls-hooked';
 import { PrismaService } from './prisma.service';
 import {
-  TRANSACTION_ENTITY_KEY,
   TRANSACTION_NS_KEY,
+  TRANSACTION_CLIENT,
 } from './transaction/constants';
 
 @Injectable()
@@ -16,6 +16,6 @@ export class DBManager {
     if (!namespace?.active) {
       throw Error('Namespace is not active');
     }
-    return namespace.get(TRANSACTION_ENTITY_KEY) ?? this.client;
+    return namespace.get(TRANSACTION_CLIENT) ?? this.client;
   }
 }

@@ -1,8 +1,8 @@
+/**
 import { Transaction } from '@COMMON/decorator/lazy';
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { FxUtil } from '@COMMON/util';
-import { IProfile } from '@INTERFACE/common';
-import { IUserRepository, IUserService, UserDomain } from '@INTERFACE/user';
+import { IUserRepository } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
 import { pipe } from 'rxjs';
 
@@ -22,13 +22,6 @@ export class UserService implements IUserService {
     )(id);
   }
 
-  /**
-   * 사용자 활성화
-   *
-   * 사용자가 soft-delete된 상태이면 활성상태로 변경한다.
-   * @param alias user id | user state
-   * @returns user state
-   */
   async activate(alias: string | UserDomain.State): Promise<UserDomain.State> {
     if (typeof alias === 'string') {
       const user = await this.findOne(alias);
@@ -64,3 +57,5 @@ export class UserService implements IUserService {
     return this.userRepository.remove(id);
   }
 }
+
+*/

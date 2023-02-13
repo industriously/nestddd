@@ -1,5 +1,5 @@
 import { DBManager } from '@INFRA/DB';
-import { IUserRepository, UserDomain } from '@INTERFACE/user';
+import { IUserRepository, UserSchema } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@PRISMA';
 import { UserMapper } from '@USER/domain';
@@ -12,30 +12,49 @@ export class UserRepository implements IUserRepository {
   private get User() {
     return this.manager.getClient().user;
   }
-  create(data: IUserRepository.CreateData): Promise<UserDomain.State> {
+  create(data: IUserRepository.CreateData): Promise<UserSchema.Aggregate> {
     return pipe(
-      (input: Prisma.UserCreateInput) => this.User.create({ data: input }),
-      UserMapper.toStateAsync,
-    )(data);
+      this.User.create<Omit<Prisma.UserCreateArgs, 'select'>>,
+
+      UserMapper.toAggregateAsync,
+    )({ data });
   }
+
   update(
     id: string,
     data: IUserRepository.UpdateData,
-  ): Promise<UserDomain.State> {
-    throw Error();
+  ): Promise<UserSchema.Aggregate> {
+    return pipe(
+      // RecordNotFound Exception is thrown if record does not exist.
+      this.User.update<Omit<Prisma.UserUpdateArgs, 'select'>>,
+
+      UserMapper.toAggregateAsync,
+    )({ where: { id }, data });
   }
-  findOneByEmailOrOauth(
-    filter: IUserRepository.findOneByEmailOrOauthFilter,
-  ): Promise<UserDomain.State | null> {
-    throw Error();
+
+  async findOneByOauth(
+    filter: IUserRepository.FindOneByOauthFilter,
+  ): Promise<UserSchema.Aggregate | null> {
+    const { sub, oauth_type, email } = filter;
+    const user = await this.User.findFirst({
+      where: { OR: [{ email }, { sub, oauth_type }] },
+    });
+    return user ? UserMapper.toAggregate(user) : null;
   }
-  findOne(
+
+  async findOne(
     id: string,
-    include_deleted: boolean,
-  ): Promise<UserDomain.State | null> {
-    throw Error();
+    include_deleted = false,
+  ): Promise<UserSchema.Aggregate | null> {
+    const user = await this.User.findFirst({
+      where: { id, ...(include_deleted ? {} : { is_deleted: false }) },
+    });
+    return user ? UserMapper.toAggregate(user) : null;
   }
-  remove(id: string): Promise<void> {
-    throw Error();
+
+  async remove(id: string): Promise<void> {
+    // RecordNotFound Exception is thrown if record does not exist.
+    await this.User.delete({ where: { id } });
+    return;
   }
 }

@@ -7,20 +7,6 @@ datasource db {
   provider = "mysql"
   url      = env("DATABASE_URL")
 }
-model accounts {
-  /// @format uuid
-  id         String   @id @default(uuid())
-  sub        String
-  oauth_type String
-  /// @format email
-  email      String   @unique
-  username   String
-  created_at DateTime @default(now())
-  updated_at DateTime @default(now())
-  is_deleted Boolean  @default(false)
-
-  @@unique([sub, oauth_type])
-}
 model User {
   /// @format uuid
   id         String   @id @default(uuid())

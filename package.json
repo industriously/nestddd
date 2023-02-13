@@ -33,7 +33,7 @@
     "sdk": "rimraf ./src/sdk && nestia sdk",
     "nestia": "npm run swagger && npm run sdk",
     "schema": "ls ./prisma/schema/*.prisma | xargs cat > ./prisma/schema.prisma",
-    "db:migrate": "npm run schema && prisma migrate dev",
+    "db:migrate": "rimraf db && npm run schema && prisma migrate dev",
     "db:status": "npm run schema && prisma migrate status",
     "db:dashboard": "prisma studio"
   },
@@ -52,7 +52,7 @@
     "joi": "^17.7.1",
     "reflect-metadata": "^0.1.13",
     "rxjs": "^7.8.0",
-    "typia": "^3.4.28",
+    "typia": "^3.5.3",
     "winston": "^3.8.2"
   },
   "devDependencies": {

@@ -1,36 +1,35 @@
-import { UserDomain } from '@INTERFACE/user';
+import { FxUtil } from '@COMMON/util';
+import { UserSchema } from '@INTERFACE/user';
 import { User } from '@PRISMA';
-import { UnaryFunction } from 'rxjs';
+import typia from 'typia';
 
 export namespace UserMapper {
-  export const toState: UnaryFunction<User, UserDomain.State> = (model) => {
-    return { ...model };
-  };
-
-  export const toStateAsync: UnaryFunction<
-    Promise<User>,
-    Promise<UserDomain.State>
-  > = async (model) => {
-    return toState(await model);
-  };
-
-  export const toPublic: UnaryFunction<UserDomain.State, UserDomain.Public> = (
-    state,
+  export const toAggregate: FxUtil.UnaryFunction<User, UserSchema.Aggregate> = (
+    model,
   ) => {
-    const { id, email, username } = state;
+    return typia.assertEquals<UserSchema.Aggregate>(model);
+  };
+
+  export const toAggregateAsync: FxUtil.AsyncUnary<typeof toAggregate> = async (
+    model,
+  ) => toAggregate(await model);
+
+  export const toPublic: FxUtil.UnaryFunction<
+    UserSchema.Aggregate,
+    UserSchema.Public
+  > = (aggregate) => {
+    const { id, email, username } = aggregate;
     return { id, email, username };
   };
 
-  export const toPublicAsync: UnaryFunction<
-    Promise<UserDomain.State>,
-    Promise<UserDomain.Public>
-  > = async (model) => {
-    return toPublic(await model);
-  };
+  export const toPublicAsync: FxUtil.AsyncUnary<typeof toPublic> = async (
+    aggregate,
+  ) => toPublic(await aggregate);
 
-  export const toDetail: UnaryFunction<UserDomain.State, UserDomain.Detail> = (
-    state,
-  ) => {
+  export const toDetail: FxUtil.UnaryFunction<
+    UserSchema.Aggregate,
+    UserSchema.Detail
+  > = (aggregate) => {
     const {
       id,
       sub,
@@ -41,7 +40,7 @@ export namespace UserMapper {
       address,
       created_at,
       updated_at,
-    } = state;
+    } = aggregate;
     return {
       id,
       sub,
@@ -54,10 +53,7 @@ export namespace UserMapper {
       updated_at,
     };
   };
-  export const toDetailAsync: UnaryFunction<
-    Promise<UserDomain.State>,
-    Promise<UserDomain.Detail>
-  > = async (model) => {
-    return toDetail(await model);
-  };
+  export const toDetailAsync: FxUtil.AsyncUnary<typeof toDetail> = async (
+    aggregate,
+  ) => toDetail(await aggregate);
 }

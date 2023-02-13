@@ -1,14 +1,15 @@
-import type { IEnv, IProfile } from '@INTERFACE/common';
-import { PROFILEKEY } from '@COMMON/constants';
+import { OAUTH_PROFILE } from '@USER/_constants_';
 import { AuthException, Github } from '@devts/nestjs-auth';
+import { UserSchema } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import typia from 'typia';
+import { IEnv } from '@INTERFACE/common';
 
 @Injectable()
 export class GithubStrategy extends Github.AbstractStrategy<
-  PROFILEKEY,
-  IProfile
+  typeof OAUTH_PROFILE,
+  UserSchema.OauthProfile
 > {
   constructor(config: ConfigService<IEnv, true>) {
     super({
@@ -27,7 +28,9 @@ export class GithubStrategy extends Github.AbstractStrategy<
     return true;
   }
 
-  transform(identity: Github.User & { email: string }): IProfile {
+  transform(
+    identity: Github.User & { email: string },
+  ): UserSchema.OauthProfile {
     const { login: username, email, id } = identity;
     return { username, email, sub: id + '', oauth_type: 'github' };
   }

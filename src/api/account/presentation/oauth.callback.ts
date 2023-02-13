@@ -1,3 +1,4 @@
+/**
 import type { IProfile, ISession } from '@INTERFACE/common';
 import { Profile } from '@COMMON/decorator';
 import { SIGN_IN_SUCCESS_URL } from '@COMMON/constants';
@@ -42,3 +43,5 @@ export class OauthCallback {
     session.account = { id };
   }
 }
+
+*/

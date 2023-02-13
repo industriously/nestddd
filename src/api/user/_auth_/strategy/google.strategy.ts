@@ -1,15 +1,16 @@
-import type { IEnv, IProfile } from '@INTERFACE/common';
-import { PROFILEKEY } from '@COMMON/constants';
 import { AuthException, Google } from '@devts/nestjs-auth';
+import { IEnv } from '@INTERFACE/common';
+import { UserSchema } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { OAUTH_PROFILE } from '@USER/_constants_';
 import typia from 'typia';
 
 @Injectable()
 export class GoogleStrategy extends Google.AbstractStrategy<
-  PROFILEKEY,
+  typeof OAUTH_PROFILE,
   'email' | 'profile',
-  IProfile
+  UserSchema.OauthProfile
 > {
   constructor(config: ConfigService<IEnv, true>) {
     super({
@@ -30,7 +31,9 @@ export class GoogleStrategy extends Google.AbstractStrategy<
     return true;
   }
 
-  transform(identity: Google.IdToken<'email' | 'profile'>): IProfile {
+  transform(
+    identity: Google.IdToken<'email' | 'profile'>,
+  ): UserSchema.OauthProfile {
     const { name: username, email, sub } = identity;
     return { username, email, sub, oauth_type: 'google' };
   }

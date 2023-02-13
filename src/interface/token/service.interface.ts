@@ -1,12 +1,7 @@
-import * as Account from '@INTERFACE/account';
-
 export namespace Service {
   type JwtPayload = { readonly exp: number; readonly iat: number };
-  export type AccessTokenPayload = Pick<Account.Domain.State, 'id'>;
-  export type IdTokenPayload = Pick<
-    Account.Domain.State,
-    'id' | 'email' | 'username'
-  >;
+  export interface AccessTokenPayload {}
+  export interface IdTokenPayload {}
 
   export type VerifyTokenResponse = JwtPayload &
     (AccessTokenPayload | IdTokenPayload);

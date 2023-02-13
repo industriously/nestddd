@@ -1,20 +1,14 @@
-import { AccountToken } from '@ACCOUNT/constant';
+/** 
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { throw_if_null } from '@COMMON/util';
 import * as Account from '@INTERFACE/account';
 import { ISession } from '@INTERFACE/common';
 import { Service, Usecase } from '@INTERFACE/token';
 import { Inject, Injectable } from '@nestjs/common';
-import { TokenServiceToken } from './constants.ts';
 
 @Injectable()
 export class TokenUsecase implements Usecase {
-  constructor(
-    @Inject(TokenServiceToken)
-    private readonly tokenService: Service,
-    @Inject(AccountToken.Service)
-    private readonly accountService: Account.Service,
-  ) {}
+  constructor(private readonly tokenService: Service) {}
 
   private getAccount(account: ISession['account']) {
     const { id } = throw_if_null(account, HttpExceptionFactory('UnAuthorized'));
@@ -38,3 +32,5 @@ export class TokenUsecase implements Usecase {
     };
   }
 }
+
+ */

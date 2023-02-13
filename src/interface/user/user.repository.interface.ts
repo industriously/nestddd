@@ -1,40 +1,33 @@
 import { IRepository } from '@INTERFACE/common';
-import { UserDomain } from './user.domain.interface';
+import { UserSchema } from './user.schema.interface';
 
 export namespace IUserRepository {
-  interface OauthType {
-    readonly oauth_type: UserDomain.OauthType;
-  }
   export type CreateData = Pick<
-    UserDomain.State,
-    'email' | 'sub' | 'oauth_type' | 'username'
+    UserSchema.Aggregate,
+    'sub' | 'oauth_type' | 'email' | 'username'
   >;
-
   export type UpdateData = Partial<
     Pick<
-      UserDomain.State,
+      UserSchema.Aggregate,
       'email' | 'username' | 'address' | 'phone' | 'is_deleted'
     >
   >;
-
-  export type findOneByEmailOrOauthFilter = Pick<
-    UserDomain.State,
-    'sub' | 'email'
-  > &
-    OauthType;
+  export type FindOneByOauthFilter = Pick<
+    UserSchema.Aggregate,
+    'sub' | 'oauth_type' | 'email'
+  >;
 }
 
 export interface IUserRepository
-  extends IRepository<UserDomain.State, UserDomain.State['id']> {
+  extends IRepository<UserSchema.Aggregate, string> {
   readonly create: (
     data: IUserRepository.CreateData,
-  ) => Promise<UserDomain.State>;
+  ) => Promise<UserSchema.Aggregate>;
   readonly update: (
-    id: UserDomain.State['id'],
+    id: string,
     data: IUserRepository.UpdateData,
-  ) => Promise<UserDomain.State>;
-
-  readonly findOneByEmailOrOauth: (
-    filter: IUserRepository.findOneByEmailOrOauthFilter,
-  ) => Promise<UserDomain.State | null>;
+  ) => Promise<UserSchema.Aggregate>;
+  readonly findOneByOauth: (
+    filter: IUserRepository.FindOneByOauthFilter,
+  ) => Promise<UserSchema.Aggregate | null>;
 }

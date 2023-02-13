@@ -1,5 +1,4 @@
 import { Controller, Get, UseGuards } from '@nestjs/common';
-import { GithubGuard, GoogleGuard } from '../guard';
 
 @Controller('sign-in')
 export class SignInController {
@@ -11,7 +10,7 @@ export class SignInController {
    * 인증 실패시 로그인 실패 페이지로 이동합니다.
    * @tag authentication
    */
-  @UseGuards(GoogleGuard)
+
   @Get('google')
   signInByGoogle() {
     return;
@@ -25,7 +24,7 @@ export class SignInController {
    * 인증 실패시 로그인 실패 페이지로 이동합니다.
    * @tag authentication
    */
-  @UseGuards(GithubGuard)
+
   @Get('github')
   signInByGithub() {
     return;
