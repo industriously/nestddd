@@ -12,7 +12,7 @@ export class UserUsercase implements IUserUsecase {
     return pipe(
       this.userService.findOne,
 
-      FxUtil.asyncMapper(UserMapper.toPublic),
+      FxUtil.asyncUnary(UserMapper.toPublic),
     )(id);
   }
 
@@ -22,27 +22,28 @@ export class UserUsercase implements IUserUsecase {
 
       this.userService.findOne,
 
-      FxUtil.asyncMapper(UserMapper.toDetail),
+      FxUtil.asyncUnary(UserMapper.toDetail),
     )(token);
   }
 
-  update(token: string, data: IUserUsecase.UpdateUserData): Promise<void> {
-    return pipe(
+  async update(
+    token: string,
+    data: IUserUsecase.UpdateUserData,
+  ): Promise<void> {
+    await pipe(
       (token: string) => token, // get id function
 
-      async (id: string) => {
-        await this.userService.update(id, data);
-      },
+      (id) => this.userService.update(id, data),
     )(token);
+    return;
   }
 
-  remove(token: string): Promise<void> {
-    return pipe(
+  async remove(token: string): Promise<void> {
+    await pipe(
       (token: string) => token, // get id function
 
-      async (id: string) => {
-        await this.userService.remove(id);
-      },
+      this.userService.remove,
     )(token);
+    return;
   }
 }

@@ -2,8 +2,6 @@ import { UnaryFunction } from 'rxjs';
 
 export namespace FxUtil {
   type Nullish = null | undefined;
-  type Func = (...args: any[]) => unknown;
-  type AsyncFunc = (...args: any[]) => Promise<unknown>;
 
   export const map =
     <T, R>(iter: (_: T) => R) =>
@@ -31,21 +29,21 @@ export namespace FxUtil {
       }
       return input;
     };
-  export const asyncMapper = <T, R>(
+  export const asyncUnary = <T, R>(
     unary: UnaryFunction<T, R>,
   ): UnaryFunction<Promise<T>, Promise<R>> => {
     return async (input: Promise<T>) => unary(await input);
   };
-  export const returnVoid = <T extends (...args: infer A) => infer R>(
-    callback: T,
-  ) => {
-    return (...args: A): void => {
+
+  const returnVoid = <T extends (...args: any[]) => any>(callback: T) => {
+    return (...args: Parameters<T>): void => {
       callback(...args);
       return;
     };
   };
-  export const returnAsyncVoid = (callback: AsyncFunc) => {
-    return async (...args: any[]): Promise<void> => {
+
+  const returnAsyncVoid = <T extends (...args: any[]) => any>(callback: T) => {
+    return async (...args: Parameters<T>): Promise<void> => {
       await callback(...args);
       return;
     };

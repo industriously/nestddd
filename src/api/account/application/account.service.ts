@@ -14,7 +14,7 @@ export class AccountService implements Service {
   ) {}
 
   async findOne(id: Domain.State['id']): Promise<Domain.State> {
-    return FxUtil.throw_if_nullish(HttpExceptionFactory('UnAuthorized'))(
+    return FxUtil.throwIfNullish(HttpExceptionFactory('UnAuthorized'))(
       await this.repository.findOne(id, false),
     );
   }
