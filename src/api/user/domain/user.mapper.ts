@@ -7,11 +7,25 @@ export namespace UserMapper {
     return { ...model };
   };
 
+  export const toStateAsync: UnaryFunction<
+    Promise<User>,
+    Promise<UserDomain.State>
+  > = async (model) => {
+    return toState(await model);
+  };
+
   export const toPublic: UnaryFunction<UserDomain.State, UserDomain.Public> = (
     state,
   ) => {
     const { id, email, username } = state;
     return { id, email, username };
+  };
+
+  export const toPublicAsync: UnaryFunction<
+    Promise<UserDomain.State>,
+    Promise<UserDomain.Public>
+  > = async (model) => {
+    return toPublic(await model);
   };
 
   export const toDetail: UnaryFunction<UserDomain.State, UserDomain.Detail> = (
@@ -39,5 +53,11 @@ export namespace UserMapper {
       created_at,
       updated_at,
     };
+  };
+  export const toDetailAsync: UnaryFunction<
+    Promise<UserDomain.State>,
+    Promise<UserDomain.Detail>
+  > = async (model) => {
+    return toDetail(await model);
   };
 }

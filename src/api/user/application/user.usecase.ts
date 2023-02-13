@@ -1,4 +1,3 @@
-import { FxUtil } from '@COMMON/util';
 import { IUserService, IUserUsecase, UserDomain } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
 import { pipe } from 'rxjs';
@@ -12,7 +11,7 @@ export class UserUsercase implements IUserUsecase {
     return pipe(
       this.userService.findOne,
 
-      FxUtil.asyncUnary(UserMapper.toPublic),
+      UserMapper.toPublicAsync,
     )(id);
   }
 
@@ -22,7 +21,7 @@ export class UserUsercase implements IUserUsecase {
 
       this.userService.findOne,
 
-      FxUtil.asyncUnary(UserMapper.toDetail),
+      UserMapper.toDetailAsync,
     )(token);
   }
 
