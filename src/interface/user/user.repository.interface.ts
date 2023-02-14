@@ -26,7 +26,7 @@ export interface IUserRepository
   readonly update: (
     id: string,
     data: IUserRepository.UpdateData,
-  ) => Promise<UserSchema.Aggregate>;
+  ) => Promise<void>;
   readonly findOneByOauth: (
     filter: IUserRepository.FindOneByOauthFilter,
   ) => Promise<UserSchema.Aggregate | null>;

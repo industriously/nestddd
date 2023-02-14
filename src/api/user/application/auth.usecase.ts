@@ -7,8 +7,10 @@ export class AuthUsecase implements IAuthUsecase {
   constructor(private readonly userRepository: IUserRepository) {}
 
   @Transaction()
-  signIn(profile: UserSchema.OauthProfile): Promise<IAuthUsecase.SignInResult> {
-    this.userRepository.findOneByOauth(profile);
+  async signIn(
+    profile: UserSchema.OauthProfile,
+  ): Promise<IAuthUsecase.SignInResult> {
+    const user = await this.userRepository.findOneByOauth(profile);
     // findOne or Create logic
     throw Error();
   }

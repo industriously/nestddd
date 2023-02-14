@@ -21,9 +21,9 @@ export class TransactionDecorator implements LazyDecorator {
         return method(...args);
       }
       return this.prisma.$transaction(
-        (tx) => {
+        async (tx) => {
           namespace.set(TRANSACTION_CLIENT, tx);
-          return method(...args);
+          return await method(...args);
         },
         {
           isolationLevel: TransactionLevel[metadata],
