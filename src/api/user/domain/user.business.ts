@@ -1,7 +1,11 @@
 import { UserSchema } from '@INTERFACE/user';
 
-export class UserBusinessDI {
-  async activate(aggregate: UserSchema.Aggregate): Promise<void> {}
+export namespace UserBusiness {
+  export const isActive = (aggregate: UserSchema.Aggregate): boolean => {
+    return !aggregate.is_deleted;
+  };
 
-  async inActivate(aggregate: UserSchema.Aggregate): Promise<void> {}
+  export const isInActive = (aggregate: UserSchema.Aggregate): boolean => {
+    return aggregate.is_deleted;
+  };
 }

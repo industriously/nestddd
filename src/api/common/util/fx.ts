@@ -1,7 +1,8 @@
 export namespace FxUtil {
   type Nullish = null | undefined;
+
   export interface UnaryFunction<T, R> {
-    (input: T): R;
+    (input: T): R | Promise<R>;
   }
   export interface UnaryAsyncFunction<T, R> {
     (input: Promise<T>): Promise<R>;
@@ -9,7 +10,7 @@ export namespace FxUtil {
   export type AsyncUnary<F extends (_: any) => any> = F extends (
     input: infer P,
   ) => infer R
-    ? UnaryAsyncFunction<P, R>
+    ? UnaryAsyncFunction<P, Awaited<R>>
     : never;
 
   export const map =
@@ -40,7 +41,7 @@ export namespace FxUtil {
     };
   export const asyncUnary =
     <T, R>(unary: UnaryFunction<T, R>): UnaryAsyncFunction<T, R> =>
-    async (input: Promise<T>) => {
+    async (input) => {
       return unary(await input);
     };
 
