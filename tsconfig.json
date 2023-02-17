@@ -30,6 +30,7 @@
     "paths": {
       "@toss/nestjs-aop":["src/infrastructure/aop"],
       "@PRISMA":["db"],
+      "@UTIL":["src/util"],
       "@INTERFACE/*":["src/interface/*"],
       "@INFRA/*":["src/infrastructure/*"],
       "@COMMON/*":["src/api/common/*"],

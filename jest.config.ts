@@ -18,6 +18,7 @@ const config: Config = {
     '^src/(.*)$': '<rootDir>/src/$1',
     '@toss/nestjs-aop': '<rootDir>/src/infrastructure/aop',
     '@PRISMA': '<rootDir>/db',
+    '@UTIL$': '<rootDir>/src/util',
     '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
     '@INFRA/(.*)$': '<rootDir>/src/infrastructure/$1',
     '@COMMON/(.*)$': '<rootDir>/src/api/common/$1',

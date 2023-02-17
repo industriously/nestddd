@@ -1,10 +1,11 @@
+import { pipe } from 'rxjs';
 import {
   BadRequestException,
   ExecutionContext,
   createParamDecorator,
 } from '@nestjs/common';
+import { List, Nullish } from '@UTIL';
 import type { Request } from 'express';
-import { throw_if_null } from '../../util';
 
 type QueryType = 'boolean' | 'number' | 'string' | 'string' | 'uuid';
 
@@ -26,7 +27,7 @@ interface TypedQueryOptions {
 const UUID_PATTERN =
   /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
 
-export const type_cast = (val: string, type: QueryType) => {
+export const typeCast = (type: QueryType) => (val: string) => {
   if (type === 'boolean') {
     if (val === 'true' || val === 'True' || val === '1') {
       return true;
@@ -54,18 +55,21 @@ export const query_typecast = (
   options?: TypedQueryOptions,
 ) => {
   const { type = 'string', multiple = false, nullable = false } = options ?? {};
-  const typecast_exception = new BadRequestException(
-    `Value of the URL query '${key}' is not a ${type}.`,
+
+  const type_cast = typeCast(type);
+  const throw_if_null = Nullish.throwIf(
+    new BadRequestException(
+      `Value of the URL query '${key}' is not a ${type}.`,
+    ),
   );
 
-  if (value == undefined) {
-    if (nullable) {
-      return undefined;
-    } else {
+  if (Nullish.is(value)) {
+    if (!nullable) {
       throw new BadRequestException(
         `Value of the URL query '${key}' is required.`,
       );
     }
+    return undefined; // 사용될 때, null이 아니라 optional값으로 사용 따라서 undefined
   }
 
   if (Array.isArray(value)) {
@@ -74,13 +78,20 @@ export const query_typecast = (
         `Value of the URL query '${key}' is not a single.`,
       );
     }
-    return value.map((item) =>
-      throw_if_null(type_cast(item, type), typecast_exception),
-    );
+    return pipe(
+      List.map(type_cast),
+
+      List.filter(Nullish.isNot),
+    )(value);
   }
 
-  const casted = throw_if_null(type_cast(value, type), typecast_exception);
-  return multiple ? [casted] : casted;
+  return pipe(
+    type_cast,
+
+    throw_if_null,
+
+    (input) => (multiple ? [input] : input),
+  )(value);
 };
 
 /**
@@ -101,16 +112,24 @@ export const query_typecast = (
  */
 export const TypedQuery = (key: string, options?: TypedQueryOptions) =>
   createParamDecorator((_key: string, ctx: ExecutionContext) => {
-    const request = ctx.switchToHttp().getRequest<
-      Request<
-        {
-          [key: string]: string;
-        },
-        any,
-        any,
-        { [key: string]: string | string[] | undefined }
-      >
-    >();
-    const value = request.query[_key];
-    return query_typecast(_key, value, options);
+    const extract_query = (context: ExecutionContext) =>
+      context.switchToHttp().getRequest<
+        Request<
+          {
+            [key: string]: string;
+          },
+          any,
+          any,
+          { [key: string]: string | string[] | undefined }
+        >
+      >().query[_key];
+
+    const type_cast_query = (query: string | string[] | undefined) =>
+      query_typecast(_key, query, options);
+
+    return pipe(
+      extract_query,
+
+      type_cast_query,
+    )(ctx);
   })(key);
