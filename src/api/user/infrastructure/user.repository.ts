@@ -1,9 +1,9 @@
-import { FxUtil } from '@COMMON/util';
 import { DBManager } from '@INFRA/DB';
 import { IUserRepository, UserSchema } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
 import { Prisma } from '@PRISMA';
 import { UserMapper } from '@USER/domain';
+import { asyncUnary, map } from '@UTIL';
 import { pipe } from 'rxjs';
 
 @Injectable()
@@ -29,7 +29,7 @@ export class UserRepository implements IUserRepository {
     return pipe(
       this.User.findFirst,
 
-      FxUtil.asyncUnary(FxUtil.map(UserMapper.toAggregate)),
+      asyncUnary(map(UserMapper.toAggregate)),
     )({ where: { id, ...(include_deleted ? {} : { is_deleted: false }) } });
   }
 
@@ -40,7 +40,7 @@ export class UserRepository implements IUserRepository {
     return pipe(
       this.User.findFirst,
 
-      FxUtil.asyncUnary(FxUtil.map(UserMapper.toAggregate)),
+      asyncUnary(map(UserMapper.toAggregate)),
     )({ where: { OR: [{ email }, { sub, oauth_type }] } });
   }
 

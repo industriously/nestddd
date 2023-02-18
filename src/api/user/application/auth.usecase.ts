@@ -6,8 +6,8 @@ import {
   UserSchema,
 } from '@INTERFACE/user';
 import { Transaction } from '@COMMON/decorator/lazy';
-import { FxUtil } from '@COMMON/util';
 import { pipe } from 'rxjs';
+import { asyncUnary, edge, Nullish } from '@UTIL';
 
 @Injectable()
 export class AuthUsecase implements IAuthUsecase {
@@ -23,13 +23,17 @@ export class AuthUsecase implements IAuthUsecase {
     return pipe(
       this.userRepository.findOneByOauth,
 
-      FxUtil.asyncUnary((exist) =>
-        exist
-          ? this.userService.activate(exist)
-          : this.userRepository.create(profile),
+      asyncUnary(
+        edge(
+          Nullish.isNot,
+
+          this.userService.activate,
+
+          () => this.userRepository.create(profile),
+        ),
       ),
 
-      FxUtil.asyncUnary(({ id }) => ({ id })),
+      asyncUnary(({ id }) => ({ id })),
     )(profile);
   }
 }

@@ -1,9 +1,9 @@
 import { Injectable } from '@nestjs/common';
 import { IUserRepository, IUserUsecase, UserSchema } from '@INTERFACE/user';
 import { pipe } from 'rxjs';
-import { FxUtil } from '@COMMON/util';
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { UserMapper } from '@USER/domain';
+import { asyncUnary, Nullish } from '@UTIL';
 
 @Injectable()
 export class UserUsecase implements IUserUsecase {
@@ -13,7 +13,7 @@ export class UserUsecase implements IUserUsecase {
     return pipe(
       this.userRepository.findOne,
 
-      FxUtil.throwIfNullishAsync(HttpExceptionFactory('NotFound')),
+      asyncUnary(Nullish.throwIf(HttpExceptionFactory('NotFound'))),
 
       UserMapper.toPublicAsync,
     )(id);
@@ -25,7 +25,7 @@ export class UserUsecase implements IUserUsecase {
 
       this.userRepository.findOne,
 
-      FxUtil.throwIfNullishAsync(HttpExceptionFactory('NotFound')),
+      asyncUnary(Nullish.throwIf(HttpExceptionFactory('NotFound'))),
 
       UserMapper.toDetailAsync,
     )(token);
@@ -36,8 +36,6 @@ export class UserUsecase implements IUserUsecase {
       (token: string) => token,
 
       (id) => this.userRepository.update(id, data),
-
-      async () => {},
     )(token);
   }
 

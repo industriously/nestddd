@@ -1,20 +1,19 @@
-import { FxUtil } from '@COMMON/util';
 import { UserSchema } from '@INTERFACE/user';
 import { User } from '@PRISMA';
+import { UnaryFunction } from 'rxjs';
+import { asyncUnary } from '@UTIL';
 import typia from 'typia';
 
 export namespace UserMapper {
-  export const toAggregate: FxUtil.UnaryFunction<User, UserSchema.Aggregate> = (
+  export const toAggregate: UnaryFunction<User, UserSchema.Aggregate> = (
     model,
   ) => {
     return typia.assertEquals<UserSchema.Aggregate>(model);
   };
 
-  export const toAggregateAsync: FxUtil.AsyncUnary<typeof toAggregate> = async (
-    model,
-  ) => toAggregate(await model);
+  export const toAggregateAsync = asyncUnary(toAggregate);
 
-  export const toPublic: FxUtil.UnaryFunction<
+  export const toPublic: UnaryFunction<
     UserSchema.Aggregate,
     UserSchema.Public
   > = (aggregate) => {
@@ -22,11 +21,9 @@ export namespace UserMapper {
     return { id, email, username };
   };
 
-  export const toPublicAsync: FxUtil.AsyncUnary<typeof toPublic> = async (
-    aggregate,
-  ) => toPublic(await aggregate);
+  export const toPublicAsync = asyncUnary(toPublic);
 
-  export const toDetail: FxUtil.UnaryFunction<
+  export const toDetail: UnaryFunction<
     UserSchema.Aggregate,
     UserSchema.Detail
   > = (aggregate) => {
@@ -53,7 +50,5 @@ export namespace UserMapper {
       updated_at,
     };
   };
-  export const toDetailAsync: FxUtil.AsyncUnary<typeof toDetail> = async (
-    aggregate,
-  ) => toDetail(await aggregate);
+  export const toDetailAsync = asyncUnary(toDetail);
 }

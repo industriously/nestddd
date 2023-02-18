@@ -15,6 +15,7 @@ export class UserService implements IUserService {
     }
     return aggregate;
   }
+
   async inActivate(
     aggregate: UserSchema.Aggregate,
   ): Promise<UserSchema.Aggregate> {
