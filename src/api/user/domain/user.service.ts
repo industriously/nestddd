@@ -1,10 +1,14 @@
 import { IUserRepository, IUserService, UserSchema } from '@INTERFACE/user';
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
+import { UserRepositoryToken } from '@USER/_constants_';
 import { UserBusiness } from './user.business';
 
 @Injectable()
 export class UserService implements IUserService {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    @Inject(UserRepositoryToken)
+    private readonly userRepository: IUserRepository,
+  ) {}
 
   async activate(
     aggregate: UserSchema.Aggregate,

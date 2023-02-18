@@ -17,9 +17,6 @@ export namespace UserSchema {
      * @format email
      */
     readonly email: string;
-    /**
-     * @pattern ^[\w\d]{8,16}$
-     */
     readonly username: string;
     readonly address: string | null;
     /**

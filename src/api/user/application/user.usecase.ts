@@ -1,13 +1,17 @@
-import { Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { IUserRepository, IUserUsecase, UserSchema } from '@INTERFACE/user';
 import { pipe } from 'rxjs';
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { UserMapper } from '@USER/domain';
 import { asyncUnary, Nullish } from '@UTIL';
+import { UserRepositoryToken } from '@USER/_constants_';
 
 @Injectable()
 export class UserUsecase implements IUserUsecase {
-  constructor(private readonly userRepository: IUserRepository) {}
+  constructor(
+    @Inject(UserRepositoryToken)
+    private readonly userRepository: IUserRepository,
+  ) {}
 
   getPublic(id: string): Promise<UserSchema.Public> {
     return pipe(
