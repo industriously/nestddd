@@ -24,4 +24,5 @@ model User {
   is_deleted Boolean  @default(false)
 
   @@unique([sub, oauth_type])
+  @@map("users")
 }
