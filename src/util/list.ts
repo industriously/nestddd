@@ -5,9 +5,13 @@ export namespace List {
       return input.map(iter);
     };
 
+  export const each =
+    <T>(iter: (input: T) => void) =>
+    (input: T[]) =>
+      input.forEach(iter);
+
   export const filter =
-    <T, S extends T = T>(predicate: (value: T) => value is S) =>
-    (input: T[]): S[] => {
-      return input.filter<S>(predicate);
-    };
+    <T, S extends T = T>(predicate: (value: T) => boolean) =>
+    (input: T[]) =>
+      input.filter(predicate) as S[];
 }

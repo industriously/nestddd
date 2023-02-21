@@ -1,6 +1,7 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { DiscoveryService, MetadataScanner, Reflector } from '@nestjs/core';
 import { InstanceWrapper } from '@nestjs/core/injector/instance-wrapper';
+import { Nullish } from '@UTIL';
 import { ASPECT } from './aspect';
 import { LazyDecorator } from './lazy-decorator';
 
@@ -26,35 +27,7 @@ export class AutoAspectExecutor implements OnModuleInit {
     providers
       .filter((wrapper) => wrapper.isDependencyTreeStatic())
       .filter(({ instance }) => instance && Object.getPrototypeOf(instance))
-      .forEach(({ instance }) => {
-        this.metadataScanner.scanFromPrototype(
-          instance,
-          Object.getPrototypeOf(instance),
-          (methodName) =>
-            lazyDecorators.forEach((lazyDecorator) => {
-              const metadataKey = this.reflector.get(
-                ASPECT,
-                lazyDecorator.constructor,
-              );
-
-              const metadata = this.reflector.get(
-                metadataKey,
-                instance[methodName],
-              );
-              if (!metadata) {
-                return;
-              }
-              const wrappedMethod = lazyDecorator.wrap({
-                instance,
-                methodName,
-                method: instance[methodName].bind(instance),
-                metadata,
-              });
-              Object.setPrototypeOf(wrappedMethod, instance[methodName]);
-              instance[methodName] = wrappedMethod;
-            }),
-        );
-      });
+      .forEach(({ instance }) => this.wrapMethod(instance, lazyDecorators));
   }
 
   private lookupLazyDecorators(providers: InstanceWrapper[]): LazyDecorator[] {
@@ -75,5 +48,31 @@ export class AutoAspectExecutor implements OnModuleInit {
         return typeof instance.wrap === 'function';
       })
       .map(({ instance }) => instance);
+  }
+
+  private wrapMethod(instance: any, decorators: LazyDecorator[]): void {
+    const methodNames = this.metadataScanner.getAllMethodNames(
+      Object.getPrototypeOf(instance),
+    );
+
+    for (const methodName of methodNames) {
+      for (const decorator of decorators) {
+        const metadata_key = this.reflector.get(ASPECT, decorator.constructor);
+        const metadata = this.reflector.get(metadata_key, instance[methodName]);
+        if (Nullish.is(metadata)) {
+          return;
+        }
+
+        const method = instance[methodName].bind(instance);
+        const wrappedMethod = decorator.wrap({
+          instance,
+          methodName,
+          method,
+          metadata,
+        });
+        Object.setPrototypeOf(wrappedMethod, method);
+        Object.getPrototypeOf(instance)[methodName] = wrappedMethod;
+      }
+    }
   }
 }

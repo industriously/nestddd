@@ -1,10 +1,10 @@
-import { pipe } from 'rxjs';
+import { identity, pipe } from 'rxjs';
 import {
   BadRequestException,
   ExecutionContext,
   createParamDecorator,
 } from '@nestjs/common';
-import { List, Nullish } from '@UTIL';
+import { Nullish } from '@UTIL';
 import type { Request } from 'express';
 
 type QueryType = 'boolean' | 'number' | 'string' | 'string' | 'uuid';
@@ -27,26 +27,35 @@ interface TypedQueryOptions {
 const UUID_PATTERN =
   /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
 
-export const typeCast = (type: QueryType) => (val: string) => {
-  if (type === 'boolean') {
-    if (val === 'true' || val === 'True' || val === '1') {
+const cast_to_boolean = (val: string): boolean | null => {
+  switch (val) {
+    case 'true':
+    case 'True':
+    case '1':
       return true;
-    }
-    if (val === 'false' || val === 'False' || val === '0') {
+    case 'false':
+    case 'False':
+    case '0':
       return false;
-    }
+    default:
+      return null;
   }
-  if (type === 'number') {
-    const num = Number(val);
-    if (!isNaN(num) && val !== '') return num;
-  }
-  if (type === 'uuid' && UUID_PATTERN.test(val)) {
-    return val;
-  }
-  if (type === 'string') {
-    return val;
-  }
-  return null;
+};
+
+const cast_to_number = (val: string): number | null => {
+  const num = Number(val);
+  return !isNaN(num) && val !== '' ? num : null;
+};
+
+const cast_to_uuid = (val: string): string | null => {
+  return UUID_PATTERN.test(val) ? val : null;
+};
+
+export const typeCast = {
+  boolean: cast_to_boolean,
+  number: cast_to_number,
+  uuid: cast_to_uuid,
+  string: identity<string>,
 };
 
 export const query_typecast = (
@@ -56,7 +65,9 @@ export const query_typecast = (
 ) => {
   const { type = 'string', multiple = false, nullable = false } = options ?? {};
 
-  const type_cast = typeCast(type);
+  const type_cast: (val: string) => boolean | number | string | null =
+    typeCast[type];
+
   const throw_if_null = Nullish.throwIf(
     new BadRequestException(
       `Value of the URL query '${key}' is not a ${type}.`,
@@ -78,19 +89,18 @@ export const query_typecast = (
         `Value of the URL query '${key}' is not a single.`,
       );
     }
-    return pipe(
-      List.map(type_cast),
 
-      List.filter(Nullish.isNot),
-    )(value);
+    return value.map(type_cast).filter(Nullish.isNot);
   }
+
+  const cast_to_array = <T>(input: T) => (multiple ? [input] : input);
 
   return pipe(
     type_cast,
 
     throw_if_null,
 
-    (input) => (multiple ? [input] : input),
+    cast_to_array,
   )(value);
 };
 

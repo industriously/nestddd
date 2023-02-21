@@ -7,7 +7,7 @@ import {
 } from '@INTERFACE/user';
 import { Transaction } from '@COMMON/decorator/lazy';
 import { pipe } from 'rxjs';
-import { asyncUnary, edge, Nullish } from '@UTIL';
+import { asyncUnary, Nullish } from '@UTIL';
 import { Inject } from '@nestjs/common';
 import { UserRepositoryToken, UserServiceToken } from '@USER/_constants_';
 
@@ -26,23 +26,30 @@ export class AuthUsecase implements IAuthUsecase {
    * @returns 위 정보를 기반으로 생성된 토큰을 포함한 객체
    */
   @Transaction()
-  signIn(
+  async signIn(
     profile: UserSchema.OauthProfile,
   ): Promise<IAuthUsecase.SignInResponse> {
+    const find_user = (filter: UserSchema.OauthProfile) =>
+      this.userRepository.findOneByOauth(filter);
+
+    const activate_or_create_user = asyncUnary(
+      (agg: UserSchema.Aggregate | null) => {
+        return Nullish.is(agg)
+          ? this.userRepository.create(profile)
+          : this.userService.activate(agg);
+      },
+    );
+
+    const generate_token = asyncUnary((agg: UserSchema.Aggregate) => ({
+      id: agg.id,
+    }));
+
     return pipe(
-      this.userRepository.findOneByOauth,
+      find_user,
 
-      asyncUnary(
-        edge(
-          Nullish.isNot,
+      activate_or_create_user,
 
-          this.userService.activate,
-
-          () => this.userRepository.create(profile),
-        ),
-      ),
-
-      asyncUnary(({ id }) => ({ id })),
+      generate_token,
     )(profile);
   }
 }

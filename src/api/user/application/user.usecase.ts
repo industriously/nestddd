@@ -14,40 +14,67 @@ export class UserUsecase implements IUserUsecase {
   ) {}
 
   getPublic(id: string): Promise<UserSchema.Public> {
+    const find_user = (_id: string) => this.userRepository.findOne(_id);
+
+    const throw_if_user_not_found = asyncUnary(
+      Nullish.throwIf(HttpExceptionFactory('NotFound')),
+    );
+
+    const transform_to_public = UserMapper.toPublicAsync;
+
     return pipe(
-      this.userRepository.findOne,
+      find_user,
 
-      asyncUnary(Nullish.throwIf(HttpExceptionFactory('NotFound'))),
+      throw_if_user_not_found,
 
-      UserMapper.toPublicAsync,
+      transform_to_public,
     )(id);
   }
 
   getDetail(token: string): Promise<UserSchema.Detail> {
+    const get_id_from_token = (token: string): string => token;
+
+    const find_user = (id: string) => this.userRepository.findOne(id);
+
+    const throw_if_user_not_found = asyncUnary<
+      UserSchema.Aggregate | null,
+      UserSchema.Aggregate
+    >(Nullish.throwIf(HttpExceptionFactory('NotFound')));
+
+    const transform_to_detail = UserMapper.toDetailAsync;
+
     return pipe(
-      (token: string) => token,
+      get_id_from_token,
 
-      this.userRepository.findOne,
+      find_user,
 
-      asyncUnary(Nullish.throwIf(HttpExceptionFactory('NotFound'))),
+      throw_if_user_not_found,
 
-      UserMapper.toDetailAsync,
+      transform_to_detail,
     )(token);
   }
 
   update(token: string, data: IUserUsecase.UpdateData): Promise<void> {
-    return pipe(
-      (token: string) => token,
+    const get_id_from_token = (token: string): string => token;
 
-      (id) => this.userRepository.update(id, data),
+    const update_user = (id: string) => this.userRepository.update(id, data);
+
+    return pipe(
+      get_id_from_token,
+
+      update_user,
     )(token);
   }
 
   remove(token: string): Promise<void> {
-    return pipe(
-      (token: string) => token,
+    const get_id_from_token = (token: string): string => token;
 
-      this.userRepository.remove,
+    const delete_user = (id: string) => this.userRepository.remove(id);
+
+    return pipe(
+      get_id_from_token,
+
+      delete_user,
     )(token);
   }
 }

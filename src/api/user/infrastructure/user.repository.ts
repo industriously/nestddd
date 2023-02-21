@@ -15,33 +15,52 @@ export class UserRepository implements IUserRepository {
   }
 
   create(data: IUserRepository.CreateData): Promise<UserSchema.Aggregate> {
-    return pipe(
-      this.User.create<Omit<Prisma.UserCreateArgs, 'select'>>,
+    const create_user = (data: Prisma.UserCreateInput) =>
+      this.User.create({ data });
 
-      UserMapper.toAggregateAsync,
-    )({ data });
+    const transform_to_aggregate = UserMapper.toAggregateAsync;
+
+    return pipe(
+      create_user,
+
+      transform_to_aggregate,
+    )(data);
   }
 
   findOne(
     id: string,
     include_deleted = false,
   ): Promise<UserSchema.Aggregate | null> {
-    return pipe(
-      this.User.findFirst,
+    const find_user = (where: Prisma.UserWhereInput) =>
+      this.User.findFirst({ where });
 
-      asyncUnary(map(UserMapper.toAggregate)),
-    )({ where: { id, ...(include_deleted ? {} : { is_deleted: false }) } });
+    const transform_to_aggregate_if_user_exists = asyncUnary(
+      map(UserMapper.toAggregate),
+    );
+
+    return pipe(
+      find_user,
+
+      transform_to_aggregate_if_user_exists,
+    )({ id, ...(include_deleted ? {} : { is_deleted: false }) });
   }
 
   async findOneByOauth(
     filter: IUserRepository.FindOneByOauthFilter,
   ): Promise<UserSchema.Aggregate | null> {
     const { sub, oauth_type, email } = filter;
-    return pipe(
-      this.User.findFirst,
+    const find_user = (where: Prisma.UserWhereInput) =>
+      this.User.findFirst({ where });
 
-      asyncUnary(map(UserMapper.toAggregate)),
-    )({ where: { OR: [{ email }, { sub, oauth_type }] } });
+    const transform_to_aggregate_if_user_exists = asyncUnary(
+      map(UserMapper.toAggregate),
+    );
+
+    return pipe(
+      find_user,
+
+      transform_to_aggregate_if_user_exists,
+    )({ OR: [{ email }, { sub, oauth_type }] });
   }
 
   async update(id: string, data: IUserRepository.UpdateData): Promise<void> {
