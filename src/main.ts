@@ -2,8 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import helmet from 'helmet';
 import cookieParser from 'cookie-parser';
 import { AppModule } from './app.module';
-import session from 'express-session';
-import { sessionConfig } from './session.config';
 import { CORS_ORGIN } from '@COMMON/constants';
 import { PrismaService } from '@INFRA/DB';
 import { LoggerServiceToken } from '@INFRA/logger';
@@ -21,7 +19,6 @@ async function bootstrap() {
 
   app.use(helmet({ contentSecurityPolicy: true, hidePoweredBy: true }));
   app.use(cookieParser());
-  app.use(session(sessionConfig));
 
   await app.listen(process.env.PORT, () => {
     process.send ? process.send('ready') : undefined;

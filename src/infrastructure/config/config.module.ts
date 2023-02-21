@@ -8,8 +8,6 @@ const validationSchema = Joi.object<any, false, IEnv>({
     .default('development'),
   PORT: Joi.string().default('4000'),
 
-  SESSION_SECRET: Joi.string().required(),
-
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
   GOOGLE_OAUTH_CALLBACK: Joi.string().required(),
