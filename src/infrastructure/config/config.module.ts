@@ -6,7 +6,7 @@ const validationSchema = Joi.object<any, false, IEnv>({
   NODE_ENV: Joi.string()
     .valid('development', 'production', 'test')
     .default('development'),
-  PORT: Joi.string().default('4000'),
+  PORT: Joi.string(),
 
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),

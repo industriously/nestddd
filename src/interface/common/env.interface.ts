@@ -2,8 +2,6 @@ export interface IEnv {
   NODE_ENV: 'development' | 'production' | 'test';
   PORT: string;
 
-  SESSION_SECRET: string;
-
   GOOGLE_CLIENT_ID: string;
   GOOGLE_CLIENT_SECRET: string;
   GOOGLE_OAUTH_CALLBACK: string;
