@@ -1,23 +1,17 @@
 import { Injectable } from '@nestjs/common';
-import {
-  IAuthUsecase,
-  IUserRepository,
-  IUserService,
-  UserSchema,
-} from '@INTERFACE/user';
+import { IAuthUsecase, IUserRepository, UserSchema } from '@INTERFACE/user';
 import { Transaction } from '@COMMON/decorator/lazy';
 import { pipe } from 'rxjs';
 import { asyncUnary, Nullish } from '@UTIL';
 import { Inject } from '@nestjs/common';
-import { UserRepositoryToken, UserServiceToken } from '@USER/_constants_';
+import { UserRepositoryToken } from '@USER/_constants_';
+import { UserBusiness } from '@USER/domain';
 
 @Injectable()
 export class AuthUsecase implements IAuthUsecase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,
-    @Inject(UserServiceToken)
-    private readonly userService: IUserService,
   ) {}
 
   /**
@@ -36,7 +30,7 @@ export class AuthUsecase implements IAuthUsecase {
       (agg: UserSchema.Aggregate | null) => {
         return Nullish.is(agg)
           ? this.userRepository.create(profile)
-          : this.userService.activate(agg);
+          : this.userRepository.save(UserBusiness.activate(agg));
       },
     );
 

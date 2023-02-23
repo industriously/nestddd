@@ -68,6 +68,13 @@ export class UserRepository implements IUserRepository {
     return;
   }
 
+  async save(aggregate: UserSchema.Aggregate): Promise<UserSchema.Aggregate> {
+    const { id, email, username, address, phone, is_deleted } = aggregate;
+    const data = { email, username, address, phone, is_deleted };
+    await this.User.updateMany({ where: { id }, data });
+    return aggregate;
+  }
+
   remove(id: string): Promise<void> {
     return this.update(id, { is_deleted: true });
   }

@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { AuthUsecase, UserUsecase } from './application';
-import { UserService } from './domain';
 import { UserRepository } from './infrastructure/user.repository';
 import { AuthController } from './presentation';
 import {
@@ -12,7 +11,6 @@ import {
 import {
   AuthUsecaseToken,
   UserRepositoryToken,
-  UserServiceToken,
   UserUsecaseToken,
 } from './_constants_';
 
@@ -23,10 +21,6 @@ import {
     {
       provide: UserRepositoryToken,
       useClass: UserRepository,
-    },
-    {
-      provide: UserServiceToken,
-      useClass: UserService,
     },
     {
       provide: UserUsecaseToken,
