@@ -33,7 +33,7 @@
     "sdk": "rimraf ./src/sdk && nestia sdk",
     "nestia": "npm run swagger && npm run sdk",
     "schema": "ls ./prisma/schema/*.prisma | xargs cat > ./prisma/schema.prisma",
-    "db:migrate": "rimraf db && npm run schema && prisma migrate dev",
+    "db:migrate": "rimraf db && npm run schema && { dotenv -e .env.dev prisma migrate dev & dotenv -e .env.test prisma migrate dev ; }",
     "db:status": "npm run schema && prisma migrate status",
     "db:dashboard": "prisma studio"
   },
@@ -69,6 +69,7 @@
     "@typescript-eslint/eslint-plugin": "^5.53.0",
     "@typescript-eslint/parser": "^5.53.0",
     "cross-env": "^7.0.3",
+    "dotenv-cli": "^7.0.0",
     "eslint": "^8.34.0",
     "eslint-config-prettier": "^8.6.0",
     "eslint-plugin-prettier": "^4.2.1",

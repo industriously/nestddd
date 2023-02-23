@@ -5,7 +5,7 @@ import { OAUTH_PROFILE } from '../_constants_/oauth-profile.request-key';
 
 export const OauthProfile = createParamDecorator(
   (_: unknown, ctx: ExecutionContext) => {
-    return typia.assertEquals<UserSchema.OauthProfile>(
+    return typia.assertPrune<UserSchema.OauthProfile>(
       ctx.switchToHttp().getRequest()[OAUTH_PROFILE],
     );
   },

@@ -4,7 +4,7 @@ import {
   ExecutionContext,
   createParamDecorator,
 } from '@nestjs/common';
-import { Nullish } from '@UTIL';
+import { Nullish, List } from '@UTIL';
 import type { Request } from 'express';
 
 type QueryType = 'boolean' | 'number' | 'string' | 'string' | 'uuid';
@@ -89,8 +89,14 @@ export const query_typecast = (
         `Value of the URL query '${key}' is not a single.`,
       );
     }
+    const cast_items = List.map(type_cast);
+    const validate_item_type = List.map(throw_if_null);
 
-    return value.map(type_cast).filter(Nullish.isNot);
+    return pipe(
+      cast_items,
+
+      validate_item_type,
+    )(value);
   }
 
   const cast_to_array = <T>(input: T) => (multiple ? [input] : input);

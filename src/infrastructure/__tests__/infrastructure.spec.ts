@@ -13,9 +13,9 @@ import { Test } from '@nestjs/testing';
 import supertest from 'supertest';
 import { AuthException } from '@devts/nestjs-auth';
 import { TypeGuardError } from 'typia';
-import { LoggerServiceToken } from '@LOGGER/service';
 import { AllExceptionFilter } from '../filter/all-exception.filter';
 import { LoggerModule } from '../logger/logger.module';
+import { LoggerServiceToken } from '@INFRA/logger';
 
 describe('Infrastructure Test', () => {
   let app: INestApplication;

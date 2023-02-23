@@ -8,7 +8,7 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { HttpExceptionFilter } from 'src/infrastructure/filter/http-exception.filter';
+import { HttpExceptionFilter } from '@INFRA/filter/http-exception.filter';
 import supertest from 'supertest';
 
 describe('Authorization doecorator Test', () => {
