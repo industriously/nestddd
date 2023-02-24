@@ -10,8 +10,10 @@ export interface IEnv {
   GITHUB_CLIENT_SECRET: string;
   GITHUB_OAUTH_CALLBACK: string;
 
-  TOKEN_PUBLICKEY: string;
-  TOKEN_PRIVATEKEY: string;
+  ACCESS_TOKEN_PRIVATE_KEY: string;
+  ACCESS_TOKEN_PUBLIC_KEY: string;
+  REFRESH_TOKEN_PRIVATE_KEY: string;
+  REFRESH_TOKEN_PUBLIC_KEY: string;
 }
 
 declare global {

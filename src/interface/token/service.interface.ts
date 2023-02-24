@@ -1,14 +1,26 @@
-export namespace Service {
-  type JwtPayload = { readonly exp: number; readonly iat: number };
-  export interface AccessTokenPayload {}
-  export interface IdTokenPayload {}
+import { UserSchema } from '@INTERFACE/user';
 
-  export type VerifyTokenResponse = JwtPayload &
-    (AccessTokenPayload | IdTokenPayload);
+export namespace ITokenService {
+  export type AccessTokenPayload = Pick<UserSchema.Aggregate, 'id'>;
+  export type RefreshTokenPayload = Pick<UserSchema.Aggregate, 'id'>;
+
+  export type AccessType = 'access';
+  export type RefreshType = 'refresh';
+  export type TokenType = AccessType | RefreshType;
 }
 
-export interface Service {
-  readonly getAccessToken: (payload: Service.AccessTokenPayload) => string;
-  readonly getIdToken: (payload: Service.IdTokenPayload) => string;
-  readonly verifyToken: (token: string) => Service.VerifyTokenResponse;
+export interface ITokenService {
+  readonly getAccessToken: (
+    payload: ITokenService.AccessTokenPayload,
+  ) => string;
+  readonly getRefreshToken: (
+    payload: ITokenService.RefreshTokenPayload,
+  ) => string;
+  readonly getIdToken: (payload: UserSchema.Detail) => string;
+  readonly getPayload: <T extends ITokenService.TokenType>(
+    token: string,
+    token_type?: T,
+  ) => ITokenService.AccessType extends T
+    ? ITokenService.AccessTokenPayload
+    : ITokenService.RefreshTokenPayload;
 }
