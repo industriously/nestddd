@@ -4,6 +4,10 @@ on:
   push:
     branches: [ main ]
 
+env:
+  ACCESS_TOKEN_PRIVATE_KEY: ${{ vars.ACCESS_TOKEN_PRIVATE_KEY }}
+  ACCESS_TOKEN_PUBLIC_KEY: ${{ vars.ACCESS_TOKEN_PUBLIC_KEY }}
+
 permissions:
   contents: write
     
