@@ -30,7 +30,7 @@
     "test": "DOTENV_CONFIG_PATH=.env.test jest",
     "test:cov": "rimraf coverage && npm run test -- --coverage",
     "swagger": "nestia swagger",
-    "sdk": "rimraf ./src/sdk && nestia sdk",
+    "sdk": "rimraf ./src/sdk/functional && nestia sdk",
     "nestia": "npm run swagger && npm run sdk",
     "schema": "ls ./prisma/schema/*.prisma | xargs cat > ./prisma/schema.prisma",
     "db:migrate": "rimraf db && npm run schema && { dotenv -e .env prisma migrate dev & dotenv -e .env.test prisma migrate dev ; }",

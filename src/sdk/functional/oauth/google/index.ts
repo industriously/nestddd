@@ -7,7 +7,7 @@
 import { Fetcher } from "@nestia/fetcher";
 import type { IConnection } from "@nestia/fetcher";
 
-import type { IAuthUsecase } from "./../../../../interface/user/auth.usecase.interface";
+import type { IAuthUsecase } from "./../../../interface/user/auth.usecase.interface";
 
 /**
  * @controller AuthController.callbackFromGoogle()
