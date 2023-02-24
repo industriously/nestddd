@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for api/token/presentation/token.controller.ts</title>
+    <title>Code coverage report for api/common/decorator/http/authorization.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../../../../prettify.css" />
+    <link rel="stylesheet" href="../../../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../../../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api/token/presentation</a> token.controller.ts</h1>
+        <h1><a href="../../../../index.html">All files</a> / <a href="index.html">api/common/decorator/http</a> authorization.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>10/10</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>8/8</span>
+                <span class='fraction'>14/14</span>
             </div>
         
             
@@ -101,85 +101,82 @@
 <a name='L36'></a><a href='#L36'>36</a>
 <a name='L37'></a><a href='#L37'>37</a>
 <a name='L38'></a><a href='#L38'>38</a>
-<a name='L39'></a><a href='#L39'>39</a>
-<a name='L40'></a><a href='#L40'>40</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L39'></a><a href='#L39'>39</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
+<span class="cline-any cline-yes">11x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">12x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ISession } from '@INTERFACE/common';
-import { ITokenUsecase, TokenAPI } from '@INTERFACE/token';
-import { Controller, Inject, Post, Session } from '@nestjs/common';
-import { TokenUsecaseToken } from '@TOKEN/application';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { HttpExceptionFactory } from '@COMMON/exception';
+import { createParamDecorator, ExecutionContext } from '@nestjs/common';
+import { Nullish } from '@UTIL';
+import { Request } from 'express';
+import { pipe } from 'rxjs';
 &nbsp;
-@Controller('token')
-export class TokenController {
-  constructor(
-    @Inject(TokenUsecaseToken) private readonly usecase: ITokenUsecase,
-  ) {}
-  /**
-   * 사용자 토큰 생성 API
-   *
-   * * access_token - api 요청시 사용자 인증에 사용
-   * * id_token - 사용자 프로필 정보를 포함
-   * @tag token
-   * @returns 생성된 사용자 토큰을 포함한 JSON 데이터
-   * @throw 401 사용자 인증 실패
-   * @throw 403 권힌 없음
-   */
-  @Post()
-  getTokens(@Session() session: ISession): Promise&lt;TokenAPI.Tokens&gt; {
-    return this.usecase.getTokens(session.account);
-  }
+type TOKEN_TYPE = 'basic' | 'bearer';
 &nbsp;
-  /**
-   * 사용자 인증 토큰 생성 API
-   *
-   * * access_token - api 요청시 사용자 인증에 사용
-   * @tag token
-   * @returns 재발급된 사용자 토큰을 포함한 포함한 JSON 데이터
-   * @throw 401 사용자 인증 실패
-   * @throw 403 권한 없음
-   */
-  @Post('access_token')
-  getAccessToken(@Session() session: ISession): Promise&lt;TokenAPI.AccessToken&gt; {
-    return this.usecase.getAccessToken(session.account);
-  }
-}
+export const Authorization = (token_type: TOKEN_TYPE) =&gt;
+  createParamDecorator((type: TOKEN_TYPE, ctx: ExecutionContext) =&gt; {
+    const extract_authorization_header = (context: ExecutionContext) =&gt;
+      context.switchToHttp().getRequest&lt;Request&gt;().headers['authorization'];
+&nbsp;
+    const throw_if_authorization_header_empty = Nullish.throwIf(
+      HttpExceptionFactory('Forbidden', 'Authorization header is required.'),
+    )&lt;string&gt;;
+&nbsp;
+    const validate_token_type = (input: string) =&gt;
+      input.match(new RegExp(`^${type}\\s+\\S+`, 'i'));
+&nbsp;
+    const throw_if_invalid_token = Nullish.throwIf(
+      HttpExceptionFactory('Forbidden', `${type} token is invalid.`),
+    );
+&nbsp;
+    const extract_token = (input: RegExpMatchArray) =&gt; input[0].split(/\s+/)[1];
+&nbsp;
+    return pipe(
+      extract_authorization_header,
+&nbsp;
+      throw_if_authorization_header_empty,
+&nbsp;
+      validate_token_type,
+&nbsp;
+      throw_if_invalid_token,
+&nbsp;
+      extract_token,
+    )(ctx);
+  })(token_type);
 &nbsp;</pre></td></tr></table></pre>
 
                 <div class='push'></div><!-- for sticky footer -->
@@ -187,16 +184,16 @@ export class TokenController {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-06T07:34:06.599Z
+                at 2023-02-24T15:31:16.577Z
             </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../../../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../../../../sorter.js"></script>
+        <script src="../../../../block-navigation.js"></script>
     </body>
 </html>
     

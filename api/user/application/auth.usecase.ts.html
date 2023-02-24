@@ -3,7 +3,7 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for api/account/application/account.service.ts</title>
+    <title>Code coverage report for api/user/application/auth.usecase.ts</title>
     <meta charset="utf-8" />
     <link rel="stylesheet" href="../../../prettify.css" />
     <link rel="stylesheet" href="../../../base.css" />
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api/account/application</a> account.service.ts</h1>
+        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api/user/application</a> auth.usecase.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>17/17</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>4/4</span>
+                <span class='fraction'>5/5</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>16/16</span>
             </div>
         
             
@@ -104,86 +104,110 @@
 <a name='L39'></a><a href='#L39'>39</a>
 <a name='L40'></a><a href='#L40'>40</a>
 <a name='L41'></a><a href='#L41'>41</a>
-<a name='L42'></a><a href='#L42'>42</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L42'></a><a href='#L42'>42</a>
+<a name='L43'></a><a href='#L43'>43</a>
+<a name='L44'></a><a href='#L44'>44</a>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">5x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-yes">3x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">3x</span>
 <span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { Account, IAccountService } from '@INTERFACE/account';
-import type { IProfile } from '@INTERFACE/common';
-import { HttpExceptionFactory } from '@COMMON/exception';
-import { throw_if_null } from '@COMMON/util';
-import { Injectable } from '@nestjs/common';
-import { PrismaService } from '@PRISMA/service';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@nestjs/common';
+import { IAuthUsecase, IUserRepository, UserSchema } from '@INTERFACE/user';
+import { Transaction } from '@COMMON/decorator/lazy';
+import { pipe } from 'rxjs';
+import { asyncUnary, Nullish } from '@UTIL';
+import { Inject } from '@nestjs/common';
+import { UserRepositoryToken } from '@USER/_constants_';
+import { UserBusiness } from '@USER/domain';
 &nbsp;
 @Injectable()
-export class AccountService implements IAccountService {
-  constructor(private readonly prisma: PrismaService) {}
+export class AuthUsecase implements IAuthUsecase {
+  constructor(
+    @Inject(UserRepositoryToken)
+    private readonly userRepository: IUserRepository,
+  ) {}
 &nbsp;
-  async findOne({ id }: IAccountService.FindOneFilter): Promise&lt;Account.State&gt; {
-    return throw_if_null(
-      await this.prisma.accounts.findFirst({
-        where: { id, is_deleted: false },
-      }),
-      HttpExceptionFactory('UnAuthorized'),
+  /**
+   * oauth server로 부터 전달받은 사용자 정보를 통해 로그인 토큰 생성
+   * @param profile oauth server로 부터 전달받은 신뢰할 수 있는 사용자 정보
+   * @returns 위 정보를 기반으로 생성된 토큰을 포함한 객체
+   */
+  @Transaction()
+  async signIn(
+    profile: UserSchema.OauthProfile,
+  ): Promise&lt;IAuthUsecase.SignInResponse&gt; {
+    const find_user = (filter: UserSchema.OauthProfile) =&gt;
+      this.userRepository.findOneByOauth(filter);
+&nbsp;
+    const activate_or_create_user = asyncUnary(
+      (agg: UserSchema.Aggregate | null) =&gt; {
+        return Nullish.is(agg)
+          ? this.userRepository.create(profile)
+          : this.userRepository.save(UserBusiness.activate(agg));
+      },
     );
-  }
 &nbsp;
-  findOneOrCreate(profile: IProfile): Promise&lt;Account.State&gt; {
-    return this.prisma.$transaction(async ({ accounts }) =&gt; {
-      const { sub, oauth_type, email, username } = profile;
-      const exist = await accounts.findFirst({
-        where: { OR: [{ sub, oauth_type }, { email }] },
-      });
-      if (exist) {
-        if (exist.is_deleted) {
-          return accounts.update({
-            data: { is_deleted: false },
-            where: { id: exist.id },
-          });
-        }
-        return exist;
-      }
-      return accounts.create({
-        data: { sub, oauth_type, email, username },
-      });
-    });
+    const generate_token = asyncUnary((agg: UserSchema.Aggregate) =&gt; ({
+      id: agg.id,
+    }));
+&nbsp;
+    return pipe(
+      find_user,
+&nbsp;
+      activate_or_create_user,
+&nbsp;
+      generate_token,
+    )(profile);
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -193,7 +217,7 @@ export class AccountService implements IAccountService {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-06T07:34:06.599Z
+                at 2023-02-24T15:31:16.577Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

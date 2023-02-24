@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for api/account/presentation/oauth.callback.ts</title>
+    <title>Code coverage report for api/token/token.service.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../../prettify.css" />
-    <link rel="stylesheet" href="../../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../../favicon.png" />
+    <link rel="stylesheet" href="../../prettify.css" />
+    <link rel="stylesheet" href="../../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../../sort-arrow-sprite.png);
+            background-image: url(../../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,34 +19,34 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../../index.html">All files</a> / <a href="index.html">api/account/presentation</a> oauth.callback.ts</h1>
+        <h1><a href="../../index.html">All files</a> / <a href="index.html">api/token</a> token.service.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">65.38% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>15/15</span>
+                <span class='fraction'>17/26</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">75% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>0/0</span>
+                <span class='fraction'>3/4</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">50% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>5/10</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">78.57% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>13/13</span>
+                <span class='fraction'>11/14</span>
             </div>
         
             
@@ -61,7 +61,7 @@
             </div>
         </template>
     </div>
-    <div class='status-line high'></div>
+    <div class='status-line medium'></div>
     <pre><table class="coverage">
 <tr><td class="line-count quiet"><a name='L1'></a><a href='#L1'>1</a>
 <a name='L2'></a><a href='#L2'>2</a>
@@ -107,92 +107,119 @@
 <a name='L42'></a><a href='#L42'>42</a>
 <a name='L43'></a><a href='#L43'>43</a>
 <a name='L44'></a><a href='#L44'>44</a>
-<a name='L45'></a><a href='#L45'>45</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L45'></a><a href='#L45'>45</a>
+<a name='L46'></a><a href='#L46'>46</a>
+<a name='L47'></a><a href='#L47'>47</a>
+<a name='L48'></a><a href='#L48'>48</a>
+<a name='L49'></a><a href='#L49'>49</a>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import type { IAccountUsecase } from '@INTERFACE/account';
-import type { IProfile, ISession } from '@INTERFACE/common';
-import { Profile } from '@COMMON/decorator';
-import { SIGN_IN_SUCCESS_URL } from '@COMMON/constant';
-import {
-  Get,
-  Inject,
-  Session,
-  UseGuards,
-  Controller,
-  Redirect,
-  HttpStatus,
-} from '@nestjs/common';
-import { AccountUsecaseToken } from '../application';
-import { GithubGuard, GoogleGuard } from '../guard';
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">6x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-yes">19x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { IEnv } from '@INTERFACE/common';
+import { ITokenService } from '@INTERFACE/token';
+import { UserSchema } from '@INTERFACE/user';
+import { Injectable } from '@nestjs/common';
+import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
+import typia from 'typia';
 &nbsp;
-@Controller('oauth')
-export class OauthCallback {
+@Injectable()
+export class TokenService implements ITokenService {
   constructor(
-    @Inject(AccountUsecaseToken) private readonly usecase: IAccountUsecase,
+    private readonly jwtService: JwtService,
+    private readonly config: ConfigService&lt;IEnv, true&gt;,
   ) {}
 &nbsp;
-  @UseGuards(GoogleGuard)
-  @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
-  @Get('google')
-  async callbackFromGoogle(
-    @Profile() profile: IProfile,
-    @Session() session: ISession,
-  ): Promise&lt;void&gt; {
-    const { id } = await this.usecase.signIn(profile);
-    session.account = { id }; // 로그인 세션 생성
+  getAccessToken(payload: ITokenService.AccessTokenPayload): string {
+    return this.jwtService.sign(typia.assertPrune(payload), {
+      expiresIn: '8h',
+      privateKey: this.config.get('ACCESS_TOKEN_PRIVATE_KEY'),
+    });
   }
 &nbsp;
-  @UseGuards(GithubGuard)
-  @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
-  @Get('github')
-  async callbackFromGithub(
-    @Profile() profile: IProfile,
-    @Session() session: ISession,
-  ): Promise&lt;void&gt; {
-    const { id } = await this.usecase.signIn(profile);
-    session.account = { id };
+<span class="fstat-no" title="function not covered" >  getRefreshToken(</span>payload: ITokenService.RefreshTokenPayload): string {
+<span class="cstat-no" title="statement not covered" >    return this.jwtService.sign<span class="fstat-no" title="function not covered" >(<span class="cstat-no" title="statement not covered" >t</span>ypia.assertPrune(<span class="cstat-no" title="statement not covered" >p</span>ayload)</span>, {</span>
+      expiresIn: '30w',
+      privateKey: this.config.get('REFRESH_TOKEN_PRIVATE_KEY'),
+    });
+  }
+&nbsp;
+<span class="fstat-no" title="function not covered" >  getIdToken(</span>payload: UserSchema.Detail): string {
+<span class="cstat-no" title="statement not covered" >    return this.jwtService.sign<span class="fstat-no" title="function not covered" >(<span class="cstat-no" title="statement not covered" >t</span>ypia.assertPrune(<span class="cstat-no" title="statement not covered" >p</span>ayload)</span>, {</span>
+      expiresIn: '1d',
+      privateKey: this.config.get('ACCESS_TOKEN_PRIVATE_KEY'),
+    });
+  }
+&nbsp;
+  getPayload(
+    token: string,
+    token_type: ITokenService.TokenType = 'access',
+  ): ITokenService.AccessTokenPayload | ITokenService.RefreshTokenPayload {
+    const payload = this.jwtService.verify(token, {
+      publicKey: this.config.get(
+        token_type === 'access'
+          ? 'ACCESS_TOKEN_PUBLIC_KEY'
+          : <span class="branch-1 cbranch-no" title="branch not covered" >'REFRESH_TOKEN_PUBLIC_KEY',</span>
+      ),
+    });
+    if (token_type === 'access') {
+      return typia.assertPrune&lt;ITokenService.AccessTokenPayload&gt;(payload);
+    }
+<span class="cstat-no" title="statement not covered" ><span class="fstat-no" title="function not covered" >    return <span class="cstat-no" title="statement not covered" >t</span>ypia.assertPrune&lt;ITokenService.RefreshTokenPayload&gt;(<span class="cstat-no" title="statement not covered" >p</span>ayload)</span>;</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -202,16 +229,16 @@ export class OauthCallback {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-06T07:34:06.599Z
+                at 2023-02-24T15:31:16.577Z
             </div>
-        <script src="../../../prettify.js"></script>
+        <script src="../../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../../sorter.js"></script>
-        <script src="../../../block-navigation.js"></script>
+        <script src="../../sorter.js"></script>
+        <script src="../../block-navigation.js"></script>
     </body>
 </html>
     
