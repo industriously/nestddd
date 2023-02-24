@@ -5,4 +5,4 @@
  */
 //================================================================
 export * as sign_in from "./sign_in";
-export * as token from "./token";
+export * as oauth from "./oauth";

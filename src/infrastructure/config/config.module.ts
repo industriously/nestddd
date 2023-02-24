@@ -6,9 +6,7 @@ const validationSchema = Joi.object<any, false, IEnv>({
   NODE_ENV: Joi.string()
     .valid('development', 'production', 'test')
     .default('development'),
-  PORT: Joi.string().default('4000'),
-
-  SESSION_SECRET: Joi.string().required(),
+  PORT: Joi.string(),
 
   GOOGLE_CLIENT_ID: Joi.string().required(),
   GOOGLE_CLIENT_SECRET: Joi.string().required(),
@@ -18,8 +16,10 @@ const validationSchema = Joi.object<any, false, IEnv>({
   GITHUB_CLIENT_SECRET: Joi.string().required(),
   GITHUB_OAUTH_CALLBACK: Joi.string().required(),
 
-  TOKEN_PUBLICKEY: Joi.string().required(),
-  TOKEN_PRIVATEKEY: Joi.string().required(),
+  ACCESS_TOKEN_PUBLIC_KEY: Joi.string().required(),
+  ACCESS_TOKEN_PRIVATE_KEY: Joi.string().required(),
+  REFRESH_TOKEN_PUBLIC_KEY: Joi.string().required(),
+  REFRESH_TOKEN_PRIVATE_KEY: Joi.string().required(),
 });
 
 export const ConfigModule = OriginalConfigModule.forRoot({

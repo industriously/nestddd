@@ -1,14 +1,23 @@
-import { INestApplication, Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@PRISMA';
+import { Server } from 'src/application';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
+  constructor() {
+    super({
+      log:
+        process.env.NODE_ENV === 'test'
+          ? []
+          : ['query', 'info', 'warn', 'error'],
+    });
+  }
   // 최초 연결을 더 빠르게 하기위해 구현
   async onModuleInit() {
     await this.$connect();
   }
 
-  enableShutdownHooks(app: INestApplication) {
-    this.$on('beforeExit', () => app.close());
+  enableShutdownHooks(server: Server) {
+    this.$on('beforeExit', () => server.end());
   }
 }

@@ -1,0 +1,19 @@
+model User {
+  /// @format uuid
+  id         String   @id @default(uuid())
+  sub        String
+  oauth_type String
+  /// @format email
+  email      String   @unique
+  /// @pattern ^[\w\d]{8,16}$
+  username   String
+  address    String?
+  /// @pattern ^010-[0-9]{4}-[0-9]{4}$
+  phone      String?
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  is_deleted Boolean  @default(false)
+
+  @@unique([sub, oauth_type])
+  @@map("users")
+}

@@ -1,39 +1,51 @@
 import type { Config } from 'jest';
 
 const config: Config = {
-  roots: ['<rootDir>'],
   coverageDirectory: '<rootDir>/coverage',
-  testRegex: '.spec.ts$',
   testEnvironment: 'node',
+  testEnvironmentOptions: { NODE_ENV: 'test' },
+  setupFiles: ['dotenv/config'],
+  testMatch: ['**/__tests__/**/*.(spec|test).ts'],
   transform: {
     '^.+\\.ts$': [
       'ts-jest',
-      { diagnostics: false, tsconfig: '<rootDir>/tsconfig.json' },
+      {
+        compiler: 'ttypescript',
+        diagnostics: false,
+        tsconfig: '<rootDir>/tsconfig.json',
+      },
     ],
   },
+  restoreMocks: true,
   moduleNameMapper: {
     '^src/(.*)$': '<rootDir>/src/$1',
+    '@toss/nestjs-aop': '<rootDir>/src/infrastructure/aop',
     '@PRISMA': '<rootDir>/db',
-    '@PRISMA/service': '<rootDir>/src/infrastructure/DB/prisma.service.ts',
-    '@LOGGER/service': '<rootDir>/src/infrastructure/logger/constant.ts',
-    '@INTERFACE/(.*)$': '<rootDir>/src/interface/$1',
+    '@UTIL$': '<rootDir>/src/util',
+    '@INTERFACE/(.*)$': '<rootDir>/src/sdk/interface/$1',
+    '@INFRA/(.*)$': '<rootDir>/src/infrastructure/$1',
     '@COMMON/(.*)$': '<rootDir>/src/api/common/$1',
     '@ACCOUNT/(.*)$': '<rootDir>/src/api/account/$1',
-    '@TOKEN/(.*)$': '<rootDir>/src/api/token/$1',
+    '@TOKEN': '<rootDir>/src/api/token',
+    '@USER/(.*)$': '<rootDir>/src/api/user/$1',
   },
   collectCoverageFrom: ['src/**/*.ts'],
   coveragePathIgnorePatterns: [
     'index.ts',
     'main.ts',
+    'application.ts',
     '.module.ts',
     '.config.ts',
     '.strategy.ts',
     'constant',
     'constant.ts',
+    '__tests__',
     'src/sdk',
     'src/infrastructure/DB',
+    'src/infrastructure/aop',
     'src/infrastructure/config',
   ],
+  watchman: false,
 };
 
 export default config;
