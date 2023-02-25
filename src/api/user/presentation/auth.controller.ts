@@ -1,15 +1,8 @@
-import { SIGN_IN_SUCCESS_URL } from '@COMMON/constants';
 import { IAuthUsecase, UserSchema } from '@INTERFACE/user';
-import {
-  Controller,
-  Get,
-  HttpStatus,
-  Inject,
-  Redirect,
-  UseGuards,
-} from '@nestjs/common';
+import { Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 import { GithubGuard, GoogleGuard, OauthProfile } from '@USER/_auth_';
 import { AuthUsecaseToken } from '@USER/_constants_';
+import { TypedQuery } from '@COMMON/decorator/http';
 
 @Controller()
 export class AuthController {
@@ -18,47 +11,51 @@ export class AuthController {
   ) {}
 
   /**
-   * 구글 oauth 인증 API
+   * 로그인 테스트용 api
    *
-   * 인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.
-   *
-   * 인증 실패시 로그인 실패 페이지로 이동합니다.
-   * @tag authentication
-   */
-
-  @UseGuards(GoogleGuard)
-  @Get('sign-in/google')
-  signInByGoogle() {}
-
-  /**
    * @internal
    */
   @UseGuards(GoogleGuard)
-  @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
-  @Get('oauth/google')
-  callbackFromGoogle(@OauthProfile() profile: UserSchema.OauthProfile) {
+  @Get('sign-in')
+  signIn() {}
+
+  /**
+   * 로그인 테스트용 api
+   *
+   * @internal
+   */
+  @Get('sign-in/google')
+  test(@TypedQuery('code') code: string) {
+    return code;
+  }
+
+  /**
+   * 로그인 API
+   *
+   * 구글 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.
+   *
+   * @tag authentication
+   */
+  @UseGuards(GoogleGuard)
+  @Post('sign-in/google')
+  callbackFromGoogle(
+    @OauthProfile() profile: UserSchema.OauthProfile,
+  ): Promise<IAuthUsecase.SignInResponse> {
     return this.authUsecase.signIn(profile);
   }
 
   /**
-   * 깃헙 oauth 인증 API
+   * 로그인 API
    *
-   * 인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.
+   * 깃헙 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.
    *
-   * 인증 실패시 로그인 실패 페이지로 이동합니다.
    * @tag authentication
    */
   @UseGuards(GithubGuard)
-  @Get('sign-in/github')
-  signInByGithub() {}
-
-  /**
-   * @internal
-   */
-  @UseGuards(GithubGuard)
-  @Redirect(SIGN_IN_SUCCESS_URL, HttpStatus.PERMANENT_REDIRECT)
-  @Get('oauth/github')
-  callbackFromGithub(@OauthProfile() profile: UserSchema.OauthProfile) {
+  @Post('sign-in/github')
+  callbackFromGithub(
+    @OauthProfile() profile: UserSchema.OauthProfile,
+  ): Promise<IAuthUsecase.SignInResponse> {
     return this.authUsecase.signIn(profile);
   }
 }

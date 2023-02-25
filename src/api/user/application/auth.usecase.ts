@@ -1,17 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { IAuthUsecase, IUserRepository, UserSchema } from '@INTERFACE/user';
 import { Transaction } from '@COMMON/decorator/lazy';
-import { pipe } from 'rxjs';
+import { identity, pipe } from 'rxjs';
 import { asyncUnary, Nullish } from '@UTIL';
 import { Inject } from '@nestjs/common';
 import { UserRepositoryToken } from '@USER/_constants_';
 import { UserBusiness } from '@USER/domain';
+import { ITokenService } from '@INTERFACE/token';
+import { TokenServiceToken } from '@TOKEN';
 
 @Injectable()
 export class AuthUsecase implements IAuthUsecase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,
+    @Inject(TokenServiceToken)
+    private readonly tokenService: ITokenService,
   ) {}
 
   /**
@@ -30,20 +34,26 @@ export class AuthUsecase implements IAuthUsecase {
       (agg: UserSchema.Aggregate | null) => {
         return Nullish.is(agg)
           ? this.userRepository.create(profile)
-          : this.userRepository.save(UserBusiness.activate(agg));
+          : UserBusiness.isInActive(agg)
+          ? this.userRepository.save(UserBusiness.activate(agg))
+          : identity(agg);
       },
     );
 
-    const generate_token = asyncUnary((agg: UserSchema.Aggregate) => ({
-      id: agg.id,
-    }));
+    const generate_tokens = asyncUnary(
+      (agg: UserSchema.Aggregate): IAuthUsecase.SignInResponse => ({
+        access_token: this.tokenService.getAccessToken(agg),
+        refresh_token: this.tokenService.getRefreshToken(agg),
+        id_token: this.tokenService.getIdToken(agg),
+      }),
+    );
 
     return pipe(
       find_user,
 
       activate_or_create_user,
 
-      generate_token,
+      generate_tokens,
     )(profile);
   }
 }

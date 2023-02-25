@@ -1,9 +1,8 @@
 import { UserSchema } from './user.schema.interface';
 
 export namespace IUserUsecase {
-  export type UpdateData = Pick<
-    UserSchema.Aggregate,
-    'username' | 'address' | 'phone'
+  export type UpdateData = Partial<
+    Pick<UserSchema.Aggregate, 'username' | 'address' | 'phone'>
   >;
 }
 

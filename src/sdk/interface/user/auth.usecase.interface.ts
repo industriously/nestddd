@@ -1,7 +1,11 @@
 import { UserSchema } from './user.schema.interface';
 
 export namespace IAuthUsecase {
-  export type SignInResponse = Pick<UserSchema.Aggregate, 'id'>;
+  export interface SignInResponse {
+    readonly access_token: string;
+    readonly refresh_token: string;
+    readonly id_token: string;
+  }
 }
 
 export interface IAuthUsecase {

@@ -20,7 +20,7 @@ export class UserUsecase implements IUserUsecase {
   private find_user = (id: string) => this.userRepository.findOne(id, false);
 
   private get_id_from_token = (token: string) =>
-    this.tokenService.getPayload(token).id;
+    this.tokenService.getAccessTokenPayload(token).id;
 
   private throw_if_user_not_found = (
     aggregate: UserSchema.Aggregate | Nullish.Nullish,

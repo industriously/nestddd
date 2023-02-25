@@ -1,4 +1,5 @@
-import { AuthException, Google } from '@devts/nestjs-auth';
+import { HttpExceptionFactory } from '@COMMON/exception';
+import { Google, Request, StrategyException } from '@devts/nestjs-auth';
 import { IEnv } from '@INTERFACE/common';
 import { UserSchema } from '@INTERFACE/user';
 import { Injectable } from '@nestjs/common';
@@ -24,9 +25,23 @@ export class GoogleStrategy extends Google.AbstractStrategy<
     });
   }
 
+  protected override throw({
+    message = '사용자 인증에 실패했습니다.',
+  }: StrategyException): never {
+    throw HttpExceptionFactory('UnAuthorized', message);
+  }
+
+  override getCode(request: Request): string {
+    const code = (request.body as any).code;
+    if (typeof code !== 'string') {
+      this.throw({ message: 'code not found' });
+    }
+    return code;
+  }
+
   validate(identity: Google.IdToken<'email' | 'profile'>): boolean {
     if (!typia.is(identity)) {
-      throw new AuthException(400, '사용자 정보가 충분하지 않습니다.');
+      this.throw({ message: '사용자 정보가 충분하지 않습니다.' });
     }
     return true;
   }

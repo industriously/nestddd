@@ -28,5 +28,5 @@ const createMessage = (expected: string, path?: string): string => {
     return `invalid type, expected to be ${expected}`;
   }
   const target = path.split('$input.')[1];
-  return `${target} should be ${expected}.`;
+  return `${target} type is invalid.`;
 };

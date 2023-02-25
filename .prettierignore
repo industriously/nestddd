@@ -1,6 +1,7 @@
 node_modules
 dist
 doc
-src/sdk
 db
 !src/infrastructure/DB
+src/sdk/*
+!src/sdk/interface
