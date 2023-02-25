@@ -10,7 +10,7 @@ export namespace UserMapper {
     model,
   ) => {
     const oauth_type = model.oauth_type as UserSchema.OauthType;
-    return { ...model, oauth_type };
+    return { ...model, oauth_type } satisfies UserSchema.Aggregate;
   };
 
   export const toAggregateAsync = asyncUnary(toAggregate);
@@ -20,7 +20,7 @@ export namespace UserMapper {
     UserSchema.Public
   > = (aggregate) => {
     const { id, email, username } = aggregate;
-    return { id, email, username };
+    return { id, email, username } satisfies UserSchema.Public;
   };
 
   export const toPublicAsync = asyncUnary(toPublic);
@@ -31,7 +31,6 @@ export namespace UserMapper {
   > = (aggregate) => {
     const {
       id,
-      sub,
       oauth_type,
       email,
       username,
@@ -42,15 +41,14 @@ export namespace UserMapper {
     } = aggregate;
     return {
       id,
-      sub,
       oauth_type,
       email,
       username,
       phone,
       address,
-      created_at,
-      updated_at,
-    };
+      created_at: created_at.toISOString(),
+      updated_at: updated_at.toISOString(),
+    } satisfies UserSchema.Detail;
   };
   export const toDetailAsync = asyncUnary(toDetail);
 }

@@ -1,11 +1,13 @@
 import { IAuthUsecase, UserSchema } from '@INTERFACE/user';
+import { TokenService } from '@TOKEN';
 import { AuthUsecase } from '@USER/application';
 import { UserBusiness } from '@USER/domain';
 import typia from 'typia';
-import { userRepository } from './user.repository.mock';
+import { config, jwtService, userRepository } from './mock';
 
 describe('Authentication Usecase Test', () => {
-  const usecase: IAuthUsecase = new AuthUsecase(userRepository);
+  const tokenService = new TokenService(jwtService, config);
+  const usecase: IAuthUsecase = new AuthUsecase(userRepository, tokenService);
 
   describe('sign in service', () => {
     const profile = typia.random<UserSchema.OauthProfile>();

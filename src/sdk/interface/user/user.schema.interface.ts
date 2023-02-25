@@ -32,16 +32,18 @@ export namespace UserSchema {
     'sub' | 'oauth_type' | 'email' | 'username'
   >;
   export type Public = Pick<Aggregate, 'id' | 'email' | 'username'>;
-  export type Detail = Pick<
-    Aggregate,
-    | 'id'
-    | 'sub'
-    | 'oauth_type'
-    | 'email'
-    | 'username'
-    | 'address'
-    | 'phone'
-    | 'created_at'
-    | 'updated_at'
-  >;
+  export interface Detail
+    extends Pick<
+      Aggregate,
+      'id' | 'oauth_type' | 'email' | 'username' | 'address' | 'phone'
+    > {
+    /**
+     * @format date-time
+     */
+    readonly created_at: string;
+    /**
+     * @format date-time
+     */
+    readonly updated_at: string;
+  }
 }

@@ -60,7 +60,7 @@ describe('Infrastructure Test', () => {
     const response: ExceptionResponse = {
       statusCode: HttpStatus.BAD_REQUEST,
       message: path
-        ? `${path.split('$input.')[1]} should be ${expected}.`
+        ? `${path.split('$input.')[1]} type is invalid.`
         : `invalid type, expected to be ${expected}`,
     };
     return supertest(app.getHttpServer())

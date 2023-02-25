@@ -8,14 +8,14 @@ export namespace TokenMapper {
     UserSchema.Aggregate,
     TokenSchema.AccessTokenPayload
   > = (agg) => {
-    return { id: agg.id };
+    return { id: agg.id } satisfies TokenSchema.AccessTokenPayload;
   };
 
   export const toRefreshTokenPayload: UnaryFunction<
     UserSchema.Aggregate,
     TokenSchema.RefreshTokenPayload
   > = (agg) => {
-    return { id: agg.id };
+    return { id: agg.id } satisfies TokenSchema.RefreshTokenPayload;
   };
 
   export const toIdTokenPayload = UserMapper.toDetail;
