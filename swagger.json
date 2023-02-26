@@ -12,19 +12,26 @@
   },
   "paths": {
     "/sign-in/google": {
-      "get": {
+      "post": {
         "tags": [
           "authentication"
         ],
         "parameters": [],
         "responses": {
-          "200": {
+          "201": {
             "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IAuthUsecase.SignInResponse"
+                }
+              }
+            },
             "x-nestia-encrypted": false
           }
         },
-        "description": "구글 oauth 인증 API\n\n인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.\n\n인증 실패시 로그인 실패 페이지로 이동합니다.",
-        "x-nestia-namespace": "sign-in.google.signInByGoogle",
+        "description": "로그인 API\n\n구글 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.",
+        "x-nestia-namespace": "sign-in.google.callbackFromGoogle",
         "x-nestia-jsDocTags": [
           {
             "name": "tag",
@@ -39,19 +46,26 @@
       }
     },
     "/sign-in/github": {
-      "get": {
+      "post": {
         "tags": [
           "authentication"
         ],
         "parameters": [],
         "responses": {
-          "200": {
+          "201": {
             "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IAuthUsecase.SignInResponse"
+                }
+              }
+            },
             "x-nestia-encrypted": false
           }
         },
-        "description": "깃헙 oauth 인증 API\n\n인증 성공시 로그인 세션을 생성하고 메인 페이지로 이동합니다.\n\n인증 실패시 로그인 실패 페이지로 이동합니다.",
-        "x-nestia-namespace": "sign-in.github.signInByGithub",
+        "description": "로그인 API\n\n깃헙 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.",
+        "x-nestia-namespace": "sign-in.github.callbackFromGithub",
         "x-nestia-jsDocTags": [
           {
             "name": "tag",
@@ -64,9 +78,373 @@
           }
         ]
       }
+    },
+    "/user": {
+      "get": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSchema.Detail"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "user.getProfile",
+        "x-nestia-jsDocTags": []
+      },
+      "patch": {
+        "tags": [],
+        "parameters": [],
+        "requestBody": {
+          "description": "",
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Partial_lt_Pick_lt_UserSchema.Aggregate_comma__space__doublequote_username_doublequote__space__or__space__doublequote_address_doublequote__space__or__space__doublequote_phone_doublequote__gt__gt_"
+              }
+            }
+          },
+          "required": true,
+          "x-nestia-encrypted": false
+        },
+        "responses": {
+          "201": {
+            "description": "",
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "user.updateProfile",
+        "x-nestia-jsDocTags": []
+      },
+      "delete": {
+        "tags": [],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "user.inActivate",
+        "x-nestia-jsDocTags": []
+      }
+    },
+    "/user/{user_id}": {
+      "get": {
+        "tags": [],
+        "parameters": [
+          {
+            "name": "user_id",
+            "in": "path",
+            "description": "",
+            "schema": {
+              "type": "string",
+              "nullable": false
+            },
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/UserSchema.Public"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "",
+        "x-nestia-namespace": "user.getPublicProfile",
+        "x-nestia-jsDocTags": []
+      }
     }
   },
   "components": {
-    "schemas": {}
+    "schemas": {
+      "IAuthUsecase.SignInResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          },
+          "refresh_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          },
+          "id_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "access_token",
+          "refresh_token",
+          "id_token"
+        ],
+        "x-typia-jsDocTags": []
+      },
+      "UserSchema.Detail": {
+        "type": "object",
+        "properties": {
+          "created_at": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-jsDocTags": [
+              {
+                "name": "format",
+                "text": [
+                  {
+                    "text": "date-time",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "format": "date-time"
+          },
+          "updated_at": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-jsDocTags": [
+              {
+                "name": "format",
+                "text": [
+                  {
+                    "text": "date-time",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "format": "date-time"
+          },
+          "id": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-metaTags": [
+              {
+                "kind": "format",
+                "value": "uuid"
+              }
+            ],
+            "x-typia-jsDocTags": [
+              {
+                "name": "format",
+                "text": [
+                  {
+                    "text": "uuid",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-metaTags": [
+              {
+                "kind": "format",
+                "value": "email"
+              }
+            ],
+            "x-typia-jsDocTags": [
+              {
+                "name": "format",
+                "text": [
+                  {
+                    "text": "email",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "format": "email"
+          },
+          "username": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          },
+          "address": {
+            "type": "string",
+            "nullable": true,
+            "x-typia-required": true
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "x-typia-metaTags": [
+              {
+                "kind": "pattern",
+                "value": "^010-[0-9]{4}-[0-9]{4}$"
+              }
+            ],
+            "x-typia-jsDocTags": [
+              {
+                "name": "pattern",
+                "text": [
+                  {
+                    "text": "^010-[0-9]{4}-[0-9]{4}$",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "pattern": "^010-[0-9]{4}-[0-9]{4}$"
+          },
+          "oauth_type": {
+            "type": "string",
+            "enum": [
+              "google",
+              "github"
+            ],
+            "nullable": false,
+            "description": "oauth server type",
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "created_at",
+          "updated_at",
+          "id",
+          "email",
+          "username",
+          "address",
+          "phone",
+          "oauth_type"
+        ],
+        "x-typia-jsDocTags": []
+      },
+      "UserSchema.Public": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-metaTags": [
+              {
+                "kind": "format",
+                "value": "uuid"
+              }
+            ],
+            "x-typia-jsDocTags": [
+              {
+                "name": "format",
+                "text": [
+                  {
+                    "text": "uuid",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "format": "uuid"
+          },
+          "email": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-metaTags": [
+              {
+                "kind": "format",
+                "value": "email"
+              }
+            ],
+            "x-typia-jsDocTags": [
+              {
+                "name": "format",
+                "text": [
+                  {
+                    "text": "email",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": true,
+            "format": "email"
+          },
+          "username": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "id",
+          "email",
+          "username"
+        ],
+        "x-typia-jsDocTags": []
+      },
+      "Partial_lt_Pick_lt_UserSchema.Aggregate_comma__space__doublequote_username_doublequote__space__or__space__doublequote_address_doublequote__space__or__space__doublequote_phone_doublequote__gt__gt_": {
+        "type": "object",
+        "properties": {
+          "username": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": false
+          },
+          "address": {
+            "type": "string",
+            "nullable": true,
+            "x-typia-required": false
+          },
+          "phone": {
+            "type": "string",
+            "nullable": true,
+            "x-typia-metaTags": [
+              {
+                "kind": "pattern",
+                "value": "^010-[0-9]{4}-[0-9]{4}$"
+              }
+            ],
+            "x-typia-jsDocTags": [
+              {
+                "name": "pattern",
+                "text": [
+                  {
+                    "text": "^010-[0-9]{4}-[0-9]{4}$",
+                    "kind": "text"
+                  }
+                ]
+              }
+            ],
+            "x-typia-required": false,
+            "pattern": "^010-[0-9]{4}-[0-9]{4}$"
+          }
+        },
+        "nullable": false,
+        "x-typia-jsDocTags": []
+      }
+    }
   }
 }
