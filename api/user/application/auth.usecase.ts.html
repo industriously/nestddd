@@ -25,14 +25,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>19/19</span>
+                <span class='fraction'>21/21</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Branches</span>
-                <span class='fraction'>2/2</span>
+                <span class='fraction'>4/4</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>19/19</span>
             </div>
         
             
@@ -112,7 +112,17 @@
 <a name='L47'></a><a href='#L47'>47</a>
 <a name='L48'></a><a href='#L48'>48</a>
 <a name='L49'></a><a href='#L49'>49</a>
-<a name='L50'></a><a href='#L50'>50</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L50'></a><a href='#L50'>50</a>
+<a name='L51'></a><a href='#L51'>51</a>
+<a name='L52'></a><a href='#L52'>52</a>
+<a name='L53'></a><a href='#L53'>53</a>
+<a name='L54'></a><a href='#L54'>54</a>
+<a name='L55'></a><a href='#L55'>55</a>
+<a name='L56'></a><a href='#L56'>56</a>
+<a name='L57'></a><a href='#L57'>57</a>
+<a name='L58'></a><a href='#L58'>58</a>
+<a name='L59'></a><a href='#L59'>59</a>
+<a name='L60'></a><a href='#L60'>60</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
@@ -121,9 +131,13 @@
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -148,7 +162,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-yes">3x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -164,17 +184,21 @@
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Injectable } from '@nestjs/common';
 import { IAuthUsecase, IUserRepository, UserSchema } from '@INTERFACE/user';
 import { Transaction } from '@COMMON/decorator/lazy';
-import { pipe } from 'rxjs';
+import { identity, pipe } from 'rxjs';
 import { asyncUnary, Nullish } from '@UTIL';
 import { Inject } from '@nestjs/common';
 import { UserRepositoryToken } from '@USER/_constants_';
 import { UserBusiness } from '@USER/domain';
+import { ITokenService } from '@INTERFACE/token';
+import { TokenServiceToken } from '@TOKEN';
 &nbsp;
 @Injectable()
 export class AuthUsecase implements IAuthUsecase {
   constructor(
     @Inject(UserRepositoryToken)
     private readonly userRepository: IUserRepository,
+    @Inject(TokenServiceToken)
+    private readonly tokenService: ITokenService,
   ) {}
 &nbsp;
   /**
@@ -193,20 +217,26 @@ export class AuthUsecase implements IAuthUsecase {
       (agg: UserSchema.Aggregate | null) =&gt; {
         return Nullish.is(agg)
           ? this.userRepository.create(profile)
-          : this.userRepository.save(UserBusiness.activate(agg));
+          : UserBusiness.isInActive(agg)
+          ? this.userRepository.save(UserBusiness.activate(agg))
+          : identity(agg);
       },
     );
 &nbsp;
-    const generate_token = asyncUnary((agg: UserSchema.Aggregate) =&gt; ({
-      id: agg.id,
-    }));
+    const generate_tokens = asyncUnary(
+      (agg: UserSchema.Aggregate): IAuthUsecase.SignInResponse =&gt; ({
+        access_token: this.tokenService.getAccessToken(agg),
+        refresh_token: this.tokenService.getRefreshToken(agg),
+        id_token: this.tokenService.getIdToken(agg),
+      }),
+    );
 &nbsp;
     return pipe(
       find_user,
 &nbsp;
       activate_or_create_user,
 &nbsp;
-      generate_token,
+      generate_tokens,
     )(profile);
   }
 }
@@ -217,7 +247,7 @@ export class AuthUsecase implements IAuthUsecase {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-24T15:31:16.577Z
+                at 2023-02-26T17:27:24.015Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
