@@ -20,8 +20,8 @@ describe('Authentication Usecase Test', () => {
       const received = await usecase.signIn(profile);
 
       typia.assertEquals<IAuthUsecase.SignInResponse>(received);
-      expect(spyOnCreate).toBeCalled();
-      expect(spyOnSave).not.toBeCalled();
+      expect(spyOnCreate).toBeCalledTimes(1);
+      expect(spyOnSave).toBeCalledTimes(0);
     });
 
     it('If actor is existing user', async () => {
@@ -31,8 +31,8 @@ describe('Authentication Usecase Test', () => {
       const received = await usecase.signIn(profile);
 
       typia.assertEquals<IAuthUsecase.SignInResponse>(received);
-      expect(spyOnCreate).not.toBeCalled();
-      expect(spyOnSave).toBeCalled();
+      expect(spyOnCreate).toBeCalledTimes(0);
+      expect(spyOnSave).toBeCalledTimes(0);
     });
 
     it('If actor is existing user, but inactive.', async () => {
@@ -56,8 +56,8 @@ describe('Authentication Usecase Test', () => {
       const received = await usecase.signIn(profile);
 
       typia.assertEquals<IAuthUsecase.SignInResponse>(received);
-      expect(spyOnCreate).not.toBeCalled();
-      expect(spyOnSave).toBeCalled();
+      expect(spyOnCreate).toBeCalledTimes(0);
+      expect(spyOnSave).toBeCalledTimes(1);
       expect(UserBusiness.isInActive(user)).toBe(false);
     });
   });

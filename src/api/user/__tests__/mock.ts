@@ -8,13 +8,25 @@ export const userRepository: IUserRepository = {
   async create(data) {
     const user = typia.random<UserSchema.Aggregate>();
     const now = new Date();
-    return { ...user, ...data, created_at: now, updated_at: now };
+    return {
+      ...user,
+      ...data,
+      is_deleted: false,
+      created_at: now,
+      updated_at: now,
+    };
   },
   async update() {},
   async findOneByOauth(filter) {
     const user = typia.random<UserSchema.Aggregate>();
     const now = new Date();
-    return { ...user, ...filter, created_at: now, updated_at: now };
+    return {
+      ...user,
+      ...filter,
+      is_deleted: false,
+      created_at: now,
+      updated_at: now,
+    };
   },
   async findOne(id, include_deleted = false) {
     const user = typia.random<UserSchema.Aggregate>();
