@@ -11,6 +11,9 @@ export class UserController {
     @Inject(UserUsecaseToken) private readonly userUsecase: IUserUsecase,
   ) {}
 
+  /**
+   * @tag user
+   */
   @Get()
   getProfile(
     @Authorization('bearer') token: string,
@@ -18,6 +21,9 @@ export class UserController {
     return this.userUsecase.getDetail(token);
   }
 
+  /**
+   * @tag user
+   */
   @Get(':user_id')
   getPublicProfile(
     @TypedParam('user_id', 'uuid') id: string,
@@ -25,6 +31,9 @@ export class UserController {
     return this.userUsecase.getPublic(id);
   }
 
+  /**
+   * @tag user
+   */
   @Patch()
   updateProfile(
     @Authorization('bearer') token: string,
@@ -33,6 +42,9 @@ export class UserController {
     return this.userUsecase.update(token, typia.assertPrune(body));
   }
 
+  /**
+   * @tag user
+   */
   @Delete()
   inActivate(@Authorization('bearer') token: string): Promise<void> {
     return this.userUsecase.remove(token);

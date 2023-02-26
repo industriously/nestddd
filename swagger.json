@@ -81,7 +81,9 @@
     },
     "/user": {
       "get": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -98,10 +100,22 @@
         },
         "description": "",
         "x-nestia-namespace": "user.getProfile",
-        "x-nestia-jsDocTags": []
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "user",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
       },
       "patch": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "parameters": [],
         "requestBody": {
           "description": "",
@@ -123,10 +137,22 @@
         },
         "description": "",
         "x-nestia-namespace": "user.updateProfile",
-        "x-nestia-jsDocTags": []
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "user",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
       },
       "delete": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "parameters": [],
         "responses": {
           "200": {
@@ -136,12 +162,24 @@
         },
         "description": "",
         "x-nestia-namespace": "user.inActivate",
-        "x-nestia-jsDocTags": []
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "user",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
       }
     },
     "/user/{user_id}": {
       "get": {
-        "tags": [],
+        "tags": [
+          "user"
+        ],
         "parameters": [
           {
             "name": "user_id",
@@ -169,7 +207,17 @@
         },
         "description": "",
         "x-nestia-namespace": "user.getPublicProfile",
-        "x-nestia-jsDocTags": []
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "user",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
       }
     }
   },
@@ -208,36 +256,50 @@
           "created_at": {
             "type": "string",
             "nullable": false,
+            "description": "ISO 8601 type",
+            "x-typia-metaTags": [
+              {
+                "kind": "pattern",
+                "value": "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]).[0-9]{3}Z$"
+              }
+            ],
             "x-typia-jsDocTags": [
               {
-                "name": "format",
+                "name": "pattern",
                 "text": [
                   {
-                    "text": "date-time",
+                    "text": "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]).[0-9]{3}Z$",
                     "kind": "text"
                   }
                 ]
               }
             ],
             "x-typia-required": true,
-            "format": "date-time"
+            "pattern": "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]).[0-9]{3}Z$"
           },
           "updated_at": {
             "type": "string",
             "nullable": false,
+            "description": "ISO 8601 type",
+            "x-typia-metaTags": [
+              {
+                "kind": "pattern",
+                "value": "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]).[0-9]{3}Z$"
+              }
+            ],
             "x-typia-jsDocTags": [
               {
-                "name": "format",
+                "name": "pattern",
                 "text": [
                   {
-                    "text": "date-time",
+                    "text": "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]).[0-9]{3}Z$",
                     "kind": "text"
                   }
                 ]
               }
             ],
             "x-typia-required": true,
-            "format": "date-time"
+            "pattern": "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])T(0[0-9]|1[0-9]|2[0-3]):([0-5][0-9]):([0-5][0-9]).[0-9]{3}Z$"
           },
           "id": {
             "type": "string",
