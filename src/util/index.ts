@@ -4,3 +4,4 @@ export * from './async_unary';
 export * from './predicate';
 export * from './edge';
 export * from './list';
+export * from './pipe';
