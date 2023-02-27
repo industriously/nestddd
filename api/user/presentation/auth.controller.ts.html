@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>0/15</span>
+                <span class='fraction'>0/17</span>
             </div>
         
             
@@ -39,14 +39,14 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>0/5</span>
+                <span class='fraction'>0/6</span>
             </div>
         
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">0% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>0/13</span>
+                <span class='fraction'>0/15</span>
             </div>
         
             
@@ -124,7 +124,21 @@
 <a name='L59'></a><a href='#L59'>59</a>
 <a name='L60'></a><a href='#L60'>60</a>
 <a name='L61'></a><a href='#L61'>61</a>
-<a name='L62'></a><a href='#L62'>62</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
+<a name='L62'></a><a href='#L62'>62</a>
+<a name='L63'></a><a href='#L63'>63</a>
+<a name='L64'></a><a href='#L64'>64</a>
+<a name='L65'></a><a href='#L65'>65</a>
+<a name='L66'></a><a href='#L66'>66</a>
+<a name='L67'></a><a href='#L67'>67</a>
+<a name='L68'></a><a href='#L68'>68</a>
+<a name='L69'></a><a href='#L69'>69</a>
+<a name='L70'></a><a href='#L70'>70</a>
+<a name='L71'></a><a href='#L71'>71</a>
+<a name='L72'></a><a href='#L72'>72</a>
+<a name='L73'></a><a href='#L73'>73</a>
+<a name='L74'></a><a href='#L74'>74</a>
+<a name='L75'></a><a href='#L75'>75</a>
+<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
@@ -179,6 +193,20 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-no">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -189,7 +217,7 @@
 <span class="cstat-no" title="statement not covered" >import { Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';</span>
 <span class="cstat-no" title="statement not covered" >import { GithubGuard, GoogleGuard, OauthProfile } from '@USER/_auth_';</span>
 <span class="cstat-no" title="statement not covered" >import { AuthUsecaseToken } from '@USER/_constants_';</span>
-<span class="cstat-no" title="statement not covered" >import { TypedQuery } from '@COMMON/decorator/http';</span>
+<span class="cstat-no" title="statement not covered" >import { Authorization, TypedQuery } from '@COMMON/decorator/http';</span>
 &nbsp;
 @Controller()
 export <span class="cstat-no" title="statement not covered" >class <span class="cstat-no" title="statement not covered" ><span class="cstat-no" title="statement not covered" >AuthController </span>{</span></span>
@@ -204,7 +232,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
    */
 <span class="cstat-no" title="statement not covered" >  @UseGuards(GoogleGuard)</span>
   @Get('sign-in')
-<span class="fstat-no" title="function not covered" >  signIn(</span>) {}
+<span class="fstat-no" title="function not covered" >  signInTest(</span>) {}
 &nbsp;
   /**
    * 로그인 테스트용 api
@@ -212,7 +240,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
    * @internal
    */
 <span class="cstat-no" title="statement not covered" >  @Get('sign-in/google')</span>
-<span class="fstat-no" title="function not covered" >  test(</span>@TypedQuery('code') code: string) {
+<span class="fstat-no" title="function not covered" >  signInTestCb(</span>@TypedQuery('code') code: string) {
 <span class="cstat-no" title="statement not covered" >    return code;</span>
   }
 &nbsp;
@@ -225,7 +253,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
    */
 <span class="cstat-no" title="statement not covered" >  @UseGuards(GoogleGuard)</span>
   @Post('sign-in/google')
-<span class="fstat-no" title="function not covered" >  callbackFromGoogle(</span>
+<span class="fstat-no" title="function not covered" >  signInGoogle(</span>
     @OauthProfile() profile: UserSchema.OauthProfile,
   ): Promise&lt;IAuthUsecase.SignInResponse&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.authUsecase.signIn(profile);</span>
@@ -240,10 +268,24 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
    */
 <span class="cstat-no" title="statement not covered" >  @UseGuards(GithubGuard)</span>
   @Post('sign-in/github')
-<span class="fstat-no" title="function not covered" >  callbackFromGithub(</span>
+<span class="fstat-no" title="function not covered" >  signInGithub(</span>
     @OauthProfile() profile: UserSchema.OauthProfile,
   ): Promise&lt;IAuthUsecase.SignInResponse&gt; {
 <span class="cstat-no" title="statement not covered" >    return this.authUsecase.signIn(profile);</span>
+  }
+&nbsp;
+  /**
+   * 인증 토큰 재발행 API
+   *
+   * Authorization header로 refresh_token을 전달헤야 합니다.
+   *
+   * @tag authentication
+   */
+<span class="cstat-no" title="statement not covered" >  @Get('token/refresh')</span>
+<span class="fstat-no" title="function not covered" >  refreshToken(</span>
+    @Authorization('bearer') token: string,
+  ): Promise&lt;IAuthUsecase.RefreshResponse&gt; {
+<span class="cstat-no" title="statement not covered" >    return this.authUsecase.refresh(token);</span>
   }
 }
 &nbsp;</pre></td></tr></table></pre>
@@ -253,7 +295,7 @@ export <span class="cstat-no" title="statement not covered" >class <span class="
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-26T18:26:45.624Z
+                at 2023-02-27T15:33:19.559Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>

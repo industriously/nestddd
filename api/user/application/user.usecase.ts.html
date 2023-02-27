@@ -25,7 +25,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>28/28</span>
+                <span class='fraction'>27/27</span>
             </div>
         
             
@@ -46,7 +46,7 @@
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Lines</span>
-                <span class='fraction'>23/23</span>
+                <span class='fraction'>22/22</span>
             </div>
         
             
@@ -137,16 +137,14 @@
 <a name='L72'></a><a href='#L72'>72</a>
 <a name='L73'></a><a href='#L73'>73</a>
 <a name='L74'></a><a href='#L74'>74</a>
-<a name='L75'></a><a href='#L75'>75</a>
-<a name='L76'></a><a href='#L76'>76</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<a name='L75'></a><a href='#L75'>75</a></td><td class="line-coverage quiet"><span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">2x</span>
@@ -156,11 +154,11 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">10x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">4x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">6x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
@@ -214,14 +212,13 @@
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { Inject, Injectable } from '@nestjs/common';
-import { IUserRepository, IUserUsecase, UserSchema } from '@INTERFACE/user';
-import { pipe } from 'rxjs';
 import { HttpExceptionFactory } from '@COMMON/exception';
-import { UserMapper } from '@USER/domain';
-import { asyncUnary, Nullish } from '@UTIL';
-import { UserRepositoryToken } from '@USER/_constants_';
-import { TokenServiceToken } from '@TOKEN';
+import { IUserRepository, IUserUsecase, UserSchema } from '@INTERFACE/user';
 import { ITokenService } from '@INTERFACE/token';
+import { UserMapper } from '@USER/domain';
+import { UserRepositoryToken } from '@USER/_constants_';
+import { Nullish, pipeAsync } from '@UTIL';
+import { TokenServiceToken } from '@TOKEN';
 &nbsp;
 @Injectable()
 export class UserUsecase implements IUserUsecase {
@@ -232,10 +229,10 @@ export class UserUsecase implements IUserUsecase {
     private readonly userRepository: IUserRepository,
   ) {}
 &nbsp;
-  private find_user = (id: string) =&gt; this.userRepository.findOne(id, false);
-&nbsp;
   private get_id_from_token = (token: string) =&gt;
     this.tokenService.getAccessTokenPayload(token).id;
+&nbsp;
+  private find_user = (id: string) =&gt; this.userRepository.findOne(id, false);
 &nbsp;
   private throw_if_user_not_found = (
     aggregate: UserSchema.Aggregate | Nullish.Nullish,
@@ -245,33 +242,33 @@ export class UserUsecase implements IUserUsecase {
   getPublic(id: string): Promise&lt;UserSchema.Public&gt; {
     const transform_to_public = UserMapper.toPublic;
 &nbsp;
-    return pipe(
+    return pipeAsync(
       this.find_user,
 &nbsp;
-      asyncUnary(this.throw_if_user_not_found),
+      this.throw_if_user_not_found,
 &nbsp;
-      asyncUnary(transform_to_public),
+      transform_to_public,
     )(id);
   }
 &nbsp;
   getDetail(token: string): Promise&lt;UserSchema.Detail&gt; {
     const transform_to_detail = UserMapper.toDetail;
 &nbsp;
-    return pipe(
+    return pipeAsync(
       this.get_id_from_token,
 &nbsp;
       this.find_user,
 &nbsp;
-      asyncUnary(this.throw_if_user_not_found),
+      this.throw_if_user_not_found,
 &nbsp;
-      asyncUnary(transform_to_detail),
+      transform_to_detail,
     )(token);
   }
 &nbsp;
   update(token: string, data: IUserUsecase.UpdateData): Promise&lt;void&gt; {
     const update_user = (id: string) =&gt; this.userRepository.update(id, data);
 &nbsp;
-    return pipe(
+    return pipeAsync(
       this.get_id_from_token,
 &nbsp;
       update_user,
@@ -281,7 +278,7 @@ export class UserUsecase implements IUserUsecase {
   remove(token: string): Promise&lt;void&gt; {
     const delete_user = (id: string) =&gt; this.userRepository.remove(id);
 &nbsp;
-    return pipe(
+    return pipeAsync(
       this.get_id_from_token,
 &nbsp;
       delete_user,
@@ -295,7 +292,7 @@ export class UserUsecase implements IUserUsecase {
             <div class='footer quiet pad2 space-top1 center small'>
                 Code coverage generated by
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
-                at 2023-02-26T18:26:45.624Z
+                at 2023-02-27T15:33:19.559Z
             </div>
         <script src="../../../prettify.js"></script>
         <script>
