@@ -1,7 +1,7 @@
 {
-  "name": "account-server",
+  "name": "nestddd",
   "version": "0.0.1",
-  "description": "nestjs application server for authentication & authorization.",
+  "description": "nestjs template for ddd",
   "author": "rojiwon",
   "private": true,
   "license": "UNLICENSED",

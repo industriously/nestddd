@@ -3,12 +3,12 @@
   "servers": [
     {
       "url": "http://localhost:4000",
-      "description": "authentication & authorization server"
+      "description": "NestJS DDD template using nestia + prisma"
     }
   ],
   "info": {
     "version": "1.0.0",
-    "title": "Account Server"
+    "title": "NestDDD - NestJS DDD template"
   },
   "paths": {
     "/sign-in/google": {

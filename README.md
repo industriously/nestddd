@@ -1,4 +1,4 @@
-# Account Server
+# NestJS template
 
 <div align=center>
 
@@ -12,7 +12,28 @@
 
 ## 개요
 
-회원 인증 및 관리 서버, 다른 서버에서 사용 가능한 토큰을 발급한다.
+nestjs기반의 프로젝트에서 사용할 보일러플레이트
+
+- 사용자 인증/crud api 구현
+- aop provider & util function 등 제공
+- prisma + nestia 적용
+- ddd 아키텍처 적용(노력중)
+
+## Github 환경 변수
+
+### secrets
+
+```
+GIST_SECRET // gist 수정 권한 필요
+```
+
+### variables
+
+```
+ACCESS_TOKEN_PRIVATE_KEY
+ACCESS_TOKEN_PUBLIC_KEY
+GIST_ID
+```
 
 ## API 문서
 
