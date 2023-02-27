@@ -31,7 +31,7 @@
           }
         },
         "description": "로그인 API\n\n구글 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.",
-        "x-nestia-namespace": "sign-in.google.callbackFromGoogle",
+        "x-nestia-namespace": "sign-in.google.signInGoogle",
         "x-nestia-jsDocTags": [
           {
             "name": "tag",
@@ -65,7 +65,41 @@
           }
         },
         "description": "로그인 API\n\n깃헙 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.",
-        "x-nestia-namespace": "sign-in.github.callbackFromGithub",
+        "x-nestia-namespace": "sign-in.github.signInGithub",
+        "x-nestia-jsDocTags": [
+          {
+            "name": "tag",
+            "text": [
+              {
+                "text": "authentication",
+                "kind": "text"
+              }
+            ]
+          }
+        ]
+      }
+    },
+    "/token/refresh": {
+      "get": {
+        "tags": [
+          "authentication"
+        ],
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/IAuthUsecase.RefreshResponse"
+                }
+              }
+            },
+            "x-nestia-encrypted": false
+          }
+        },
+        "description": "인증 토큰 재발행 API\n\nAuthorization header로 refresh_token을 전달헤야 합니다.",
+        "x-nestia-namespace": "token.refresh.refreshToken",
         "x-nestia-jsDocTags": [
           {
             "name": "tag",
@@ -122,7 +156,7 @@
           "content": {
             "application/json": {
               "schema": {
-                "$ref": "#/components/schemas/Partial_lt_Pick_lt_UserSchema.Aggregate_comma__space__doublequote_username_doublequote__space__or__space__doublequote_address_doublequote__space__or__space__doublequote_phone_doublequote__gt__gt_"
+                "$ref": "#/components/schemas/IUserUsecase.UpdateData"
               }
             }
           },
@@ -250,6 +284,21 @@
         ],
         "x-typia-jsDocTags": []
       },
+      "IAuthUsecase.RefreshResponse": {
+        "type": "object",
+        "properties": {
+          "access_token": {
+            "type": "string",
+            "nullable": false,
+            "x-typia-required": true
+          }
+        },
+        "nullable": false,
+        "required": [
+          "access_token"
+        ],
+        "x-typia-jsDocTags": []
+      },
       "UserSchema.Detail": {
         "type": "object",
         "properties": {
@@ -352,6 +401,16 @@
             "nullable": false,
             "x-typia-required": true
           },
+          "oauth_type": {
+            "type": "string",
+            "enum": [
+              "google",
+              "github"
+            ],
+            "nullable": false,
+            "description": "oauth server type",
+            "x-typia-required": true
+          },
           "address": {
             "type": "string",
             "nullable": true,
@@ -379,16 +438,6 @@
             ],
             "x-typia-required": true,
             "pattern": "^010-[0-9]{4}-[0-9]{4}$"
-          },
-          "oauth_type": {
-            "type": "string",
-            "enum": [
-              "google",
-              "github"
-            ],
-            "nullable": false,
-            "description": "oauth server type",
-            "x-typia-required": true
           }
         },
         "nullable": false,
@@ -398,9 +447,9 @@
           "id",
           "email",
           "username",
+          "oauth_type",
           "address",
-          "phone",
-          "oauth_type"
+          "phone"
         ],
         "x-typia-jsDocTags": []
       },
@@ -467,7 +516,7 @@
         ],
         "x-typia-jsDocTags": []
       },
-      "Partial_lt_Pick_lt_UserSchema.Aggregate_comma__space__doublequote_username_doublequote__space__or__space__doublequote_address_doublequote__space__or__space__doublequote_phone_doublequote__gt__gt_": {
+      "IUserUsecase.UpdateData": {
         "type": "object",
         "properties": {
           "username": {

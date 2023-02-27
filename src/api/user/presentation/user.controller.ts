@@ -37,7 +37,7 @@ export class UserController {
   @Patch()
   updateProfile(
     @Authorization('bearer') token: string,
-    @Body() body: any,
+    @Body() body: IUserUsecase.UpdateData,
   ): Promise<void> {
     const updateData = typia.assertPrune<IUserUsecase.UpdateData>(body);
     return this.userUsecase.update(token, updateData);
