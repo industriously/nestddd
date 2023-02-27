@@ -1,7 +1,6 @@
 import { UserSchema } from '@INTERFACE/user';
 import { User } from '@PRISMA';
 import { UnaryFunction } from 'rxjs';
-import { asyncUnary } from '@UTIL';
 
 export namespace UserMapper {}
 
@@ -13,8 +12,6 @@ export namespace UserMapper {
     return { ...model, oauth_type } satisfies UserSchema.Aggregate;
   };
 
-  export const toAggregateAsync = asyncUnary(toAggregate);
-
   export const toPublic: UnaryFunction<
     UserSchema.Aggregate,
     UserSchema.Public
@@ -22,8 +19,6 @@ export namespace UserMapper {
     const { id, email, username } = aggregate;
     return { id, email, username } satisfies UserSchema.Public;
   };
-
-  export const toPublicAsync = asyncUnary(toPublic);
 
   export const toDetail: UnaryFunction<
     UserSchema.Aggregate,
@@ -50,5 +45,4 @@ export namespace UserMapper {
       updated_at: updated_at.toISOString(),
     } satisfies UserSchema.Detail;
   };
-  export const toDetailAsync = asyncUnary(toDetail);
 }

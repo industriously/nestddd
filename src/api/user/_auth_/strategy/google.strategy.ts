@@ -50,6 +50,11 @@ export class GoogleStrategy extends Google.AbstractStrategy<
     identity: Google.IdToken<'email' | 'profile'>,
   ): UserSchema.OauthProfile {
     const { name: username, email, sub } = identity;
-    return { username, email, sub, oauth_type: 'google' };
+    return {
+      username,
+      email,
+      sub,
+      oauth_type: 'google',
+    } satisfies UserSchema.OauthProfile;
   }
 }
