@@ -1,4 +1,4 @@
-# NestJS template
+# NestJS DDD template
 
 <div align=center>
 
