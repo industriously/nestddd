@@ -18,12 +18,10 @@ export class AutoAspectExecutor implements OnModuleInit {
 
   onModuleInit() {
     const providers = this.discoveryService.getProviders();
-
     const lazyDecorators = this.lookupLazyDecorators(providers);
     if (lazyDecorators.length === 0) {
       return;
     }
-
     providers
       .filter((wrapper) => wrapper.isDependencyTreeStatic())
       .filter(({ instance }) => instance && Object.getPrototypeOf(instance))
@@ -54,15 +52,11 @@ export class AutoAspectExecutor implements OnModuleInit {
     const methodNames = this.metadataScanner.getAllMethodNames(
       Object.getPrototypeOf(instance),
     );
-
     for (const methodName of methodNames) {
       for (const decorator of decorators) {
         const metadata_key = this.reflector.get(ASPECT, decorator.constructor);
         const metadata = this.reflector.get(metadata_key, instance[methodName]);
-        if (Nullish.is(metadata)) {
-          return;
-        }
-
+        if (Nullish.is(metadata)) continue;
         const method = instance[methodName].bind(instance);
         const wrappedMethod = decorator.wrap({
           instance,

@@ -1,5 +1,5 @@
 import { TRANSACTION_DECORATOR_KEY } from '@COMMON/constants';
-import { applyDecorators, SetMetadata } from '@nestjs/common';
+import { SetMetadata } from '@nestjs/common';
 
 export type TransactionLevel =
   | 'READ UNCOMMITTED'
@@ -10,7 +10,5 @@ export type TransactionLevel =
 export const Transaction: (
   TransactionLevel?: TransactionLevel,
 ) => MethodDecorator = (TransactionLevel = 'REPEATABLE READ') => {
-  return applyDecorators(
-    SetMetadata(TRANSACTION_DECORATOR_KEY, TransactionLevel),
-  );
+  return SetMetadata(TRANSACTION_DECORATOR_KEY, TransactionLevel);
 };

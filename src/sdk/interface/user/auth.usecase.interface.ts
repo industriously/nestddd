@@ -6,10 +6,15 @@ export namespace IAuthUsecase {
     readonly refresh_token: string;
     readonly id_token: string;
   }
+
+  export interface RefreshResponse {
+    readonly access_token: string;
+  }
 }
 
 export interface IAuthUsecase {
   readonly signIn: (
     profile: UserSchema.OauthProfile,
   ) => Promise<IAuthUsecase.SignInResponse>;
+  readonly refresh: (token: string) => Promise<IAuthUsecase.RefreshResponse>;
 }

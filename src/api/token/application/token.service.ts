@@ -1,3 +1,5 @@
+import { ThrowThen } from '@COMMON/decorator/lazy';
+import { HttpExceptionFactory } from '@COMMON/exception';
 import { IEnv } from '@INTERFACE/common';
 import { ITokenService, TokenSchema } from '@INTERFACE/token';
 import { UserSchema } from '@INTERFACE/user';
@@ -6,6 +8,10 @@ import { ConfigService } from '@nestjs/config';
 import { JwtService } from '@nestjs/jwt';
 import typia from 'typia';
 import { TokenMapper } from '../domain/token.mapper';
+
+const throw_if_invalid_token = () => {
+  throw HttpExceptionFactory('BadRequest', '잘못된 토큰입니다.');
+};
 
 @Injectable()
 export class TokenService implements ITokenService {
@@ -38,6 +44,7 @@ export class TokenService implements ITokenService {
     });
   }
 
+  @ThrowThen(throw_if_invalid_token)
   getAccessTokenPayload(token: string): TokenSchema.AccessTokenPayload {
     const payload = this.jwtService.verify(token, {
       publicKey: this.config.get('ACCESS_TOKEN_PUBLIC_KEY'),
@@ -45,17 +52,19 @@ export class TokenService implements ITokenService {
     return typia.assertPrune<TokenSchema.AccessTokenPayload>(payload);
   }
 
-  getIdTokenPayload(token: string): TokenSchema.IdTokenPayload {
-    const payload = this.jwtService.verify(token, {
-      publicKey: this.config.get('ACCESS_TOKEN_PUBLIC_KEY'),
-    });
-    return typia.assertPrune<TokenSchema.IdTokenPayload>(payload);
-  }
-
+  @ThrowThen(throw_if_invalid_token)
   getRefreshTokenPayload(token: string): TokenSchema.RefreshTokenPayload {
     const payload = this.jwtService.verify(token, {
       publicKey: this.config.get('REFRESH_TOKEN_PUBLIC_KEY'),
     });
     return typia.assertPrune<TokenSchema.RefreshTokenPayload>(payload);
+  }
+
+  @ThrowThen(throw_if_invalid_token)
+  getIdTokenPayload(token: string): TokenSchema.IdTokenPayload {
+    const payload = this.jwtService.verify(token, {
+      publicKey: this.config.get('ACCESS_TOKEN_PUBLIC_KEY'),
+    });
+    return typia.assertPrune<TokenSchema.IdTokenPayload>(payload);
   }
 }

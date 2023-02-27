@@ -39,7 +39,8 @@ export class UserController {
     @Authorization('bearer') token: string,
     @Body() body: IUserUsecase.UpdateData,
   ): Promise<void> {
-    return this.userUsecase.update(token, typia.assertPrune(body));
+    const updateData = typia.assertPrune<IUserUsecase.UpdateData>(body);
+    return this.userUsecase.update(token, updateData);
   }
 
   /**

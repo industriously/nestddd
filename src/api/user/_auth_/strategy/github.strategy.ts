@@ -47,6 +47,11 @@ export class GithubStrategy extends Github.AbstractStrategy<
     identity: Github.User & { email: string },
   ): UserSchema.OauthProfile {
     const { login: username, email, id } = identity;
-    return { username, email, sub: id + '', oauth_type: 'github' };
+    return {
+      username,
+      email,
+      sub: id + '',
+      oauth_type: 'github',
+    } satisfies UserSchema.OauthProfile;
   }
 }

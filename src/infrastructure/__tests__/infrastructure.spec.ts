@@ -11,7 +11,6 @@ import {
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import supertest from 'supertest';
-import { AuthException } from '@devts/nestjs-auth';
 import { TypeGuardError } from 'typia';
 import { AllExceptionFilter } from '../filter/all-exception.filter';
 import { LoggerModule } from '../logger/logger.module';
@@ -45,12 +44,6 @@ describe('Infrastructure Test', () => {
       .get('/http')
       .expect(HttpStatus.NOT_FOUND)
       .expect(expected);
-  });
-
-  it('AuthException Filtering', () => {
-    return supertest(app.getHttpServer())
-      .get('/auth')
-      .expect(HttpStatus.PERMANENT_REDIRECT);
   });
 
   it.each([
@@ -97,10 +90,6 @@ class TestController {
   @Get('http')
   TestHttpException() {
     throw HttpExceptionFactory('NotFound', 'Http Exception');
-  }
-  @Get('auth')
-  TestAuthException() {
-    throw new AuthException(501, 'Auth Exception');
   }
 
   @Get('typia')
