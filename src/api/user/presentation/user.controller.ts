@@ -1,6 +1,5 @@
 import { Authorization } from '@COMMON/decorator/http';
 import { IUserUsecase, UserSchema } from '@INTERFACE/user';
-import { TypedParam } from '@nestia/core';
 import { Body, Controller, Delete, Get, Inject, Patch } from '@nestjs/common';
 import { UserUsecaseToken } from '@USER/_constants_';
 import typia from 'typia';
@@ -19,16 +18,6 @@ export class UserController {
     @Authorization('bearer') token: string,
   ): Promise<UserSchema.Detail> {
     return this.userUsecase.getDetail(token);
-  }
-
-  /**
-   * @tag user
-   */
-  @Get(':user_id')
-  getPublicProfile(
-    @TypedParam('user_id', 'uuid') id: string,
-  ): Promise<UserSchema.Public> {
-    return this.userUsecase.getPublic(id);
   }
 
   /**

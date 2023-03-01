@@ -1,6 +1,5 @@
 import { Injectable, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@PRISMA';
-import { Server } from 'src/application';
 
 @Injectable()
 export class PrismaService extends PrismaClient implements OnModuleInit {
@@ -15,9 +14,5 @@ export class PrismaService extends PrismaClient implements OnModuleInit {
   // 최초 연결을 더 빠르게 하기위해 구현
   async onModuleInit() {
     await this.$connect();
-  }
-
-  enableShutdownHooks(server: Server) {
-    this.$on('beforeExit', () => server.end());
   }
 }

@@ -94,9 +94,8 @@ class TestController {
 
   @Get('typia')
   TestTypeGuardException(
-    @TypedQuery('expected', { type: 'string', nullable: false })
-    expected: string,
-    @TypedQuery('path', { type: 'string', nullable: true }) path?: string,
+    @TypedQuery('expected', { optional: false }) expected: string,
+    @TypedQuery('path', { optional: true }) path?: string,
   ) {
     throw new TypeGuardError({
       path,

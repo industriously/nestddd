@@ -1,82 +1,93 @@
-import { identity, pipe } from 'rxjs';
-import {
-  BadRequestException,
-  ExecutionContext,
-  createParamDecorator,
-} from '@nestjs/common';
-import { Nullish, List } from '@UTIL';
+import { assignMetadata, ExecutionContext } from '@nestjs/common';
+import { Nullish } from '@UTIL';
 import type { Request } from 'express';
+import { HttpExceptionFactory } from '@COMMON/exception';
+import {
+  CUSTOM_ROUTE_ARGS_METADATA,
+  ROUTE_ARGS_METADATA,
+} from '@nestjs/common/constants';
 
-type QueryType = 'boolean' | 'number' | 'string' | 'string' | 'uuid';
+type QueryType = 'boolean' | 'number' | 'string' | 'uuid';
 
 interface TypedQueryOptions {
   /**
-   * QueryType : 'boolean' | 'number' | 'string' | 'string' | 'uuid'
+   * QueryType : 'boolean' | 'number' | 'string' | 'uuid'
    */
   type?: QueryType;
   /**
    * If multiple is true, query value is array. default is false.
    */
-  multiple?: boolean;
+  array?: boolean;
   /**
    * If nullable is true, query value can null or undefined, default is false.
    */
-  nullable?: boolean;
+  optional?: boolean;
 }
 
 const UUID_PATTERN =
   /^[0-9A-F]{8}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{4}-[0-9A-F]{12}$/i;
 
-const cast_to_boolean = (val: string): boolean | null => {
-  switch (val) {
-    case 'true':
-    case 'True':
-    case '1':
-      return true;
-    case 'false':
-    case 'False':
-    case '0':
-      return false;
-    default:
-      return null;
-  }
+const isString = (input: unknown): input is string => {
+  return typeof input === 'string';
 };
 
-const cast_to_number = (val: string): number | null => {
-  const num = Number(val);
-  return !isNaN(num) && val !== '' ? num : null;
-};
+const isStringArray = (input: unknown): input is string[] =>
+  Array.isArray(input) && input.every(isString);
 
-const cast_to_uuid = (val: string): string | null => {
-  return UUID_PATTERN.test(val) ? val : null;
-};
-
-export const typeCast = {
-  boolean: cast_to_boolean,
-  number: cast_to_number,
-  uuid: cast_to_uuid,
-  string: identity<string>,
-};
+const castTo = (err: unknown) => ({
+  boolean(val: string): boolean {
+    switch (val.toLowerCase()) {
+      case 'true':
+      case '1':
+        return true;
+      case 'false':
+      case '0':
+        return false;
+      default:
+        throw err;
+    }
+  },
+  number(val: string): number {
+    const num = Number(val);
+    if (isNaN(num) || val == '') {
+      throw err;
+    }
+    return num;
+  },
+  uuid(val: string): string {
+    if (!UUID_PATTERN.test(val)) {
+      throw err;
+    }
+    return val;
+  },
+  string(val: string): string {
+    return val;
+  },
+});
 
 export const query_typecast = (
   key: string,
-  value: string | string[] | undefined,
+  context: ExecutionContext,
   options?: TypedQueryOptions,
 ) => {
-  const { type = 'string', multiple = false, nullable = false } = options ?? {};
+  const { type = 'string', array = false, optional = false } = options ?? {};
+  const value = context.switchToHttp().getRequest<Request>().query[key];
 
-  const type_cast: (val: string) => boolean | number | string | null =
-    typeCast[type];
+  if (!isString(value) && !isStringArray(value) && Nullish.isNot(value)) {
+    throw HttpExceptionFactory('BadRequest', `invalid value of query ${key}`);
+  }
 
-  const throw_if_null = Nullish.throwIf(
-    new BadRequestException(
+  const type_cast: (val: string) => boolean | number | string = castTo(
+    HttpExceptionFactory(
+      'BadRequest',
       `Value of the URL query '${key}' is not a ${type}.`,
     ),
-  );
+  )[type];
 
   if (Nullish.is(value)) {
-    if (!nullable) {
-      throw new BadRequestException(
+    if (!optional) {
+      throw HttpExceptionFactory(
+        'BadRequest',
         `Value of the URL query '${key}' is required.`,
       );
     }
@@ -84,30 +95,16 @@ export const query_typecast = (
   }
 
   if (Array.isArray(value)) {
-    if (!multiple) {
-      throw new BadRequestException(
-        `Value of the URL query '${key}' is not a single.`,
+    if (!array) {
+      throw HttpExceptionFactory(
+        'BadRequest',
+        `Value of the URL query '${key}' should be single.`,
       );
     }
-    const cast_items = List.map(type_cast);
-    const validate_item_type = List.map(throw_if_null);
-
-    return pipe(
-      cast_items,
-
-      validate_item_type,
-    )(value);
+    return value.map(type_cast);
   }
-
-  const cast_to_array = <T>(input: T) => (multiple ? [input] : input);
-
-  return pipe(
-    type_cast,
-
-    throw_if_null,
-
-    cast_to_array,
-  )(value);
+  const casted = type_cast(value);
+  return array ? [casted] : casted;
 };
 
 /**
@@ -126,26 +123,29 @@ export const query_typecast = (
  *
  * @author jiwon ro - https://github.com/rojiwon0325
  */
-export const TypedQuery = (key: string, options?: TypedQueryOptions) =>
-  createParamDecorator((_key: string, ctx: ExecutionContext) => {
-    const extract_query = (context: ExecutionContext) =>
-      context.switchToHttp().getRequest<
-        Request<
-          {
-            [key: string]: string;
-          },
-          any,
-          any,
-          { [key: string]: string | string[] | undefined }
-        >
-      >().query[_key];
-
-    const type_cast_query = (query: string | string[] | undefined) =>
-      query_typecast(_key, query, options);
-
-    return pipe(
-      extract_query,
-
-      type_cast_query,
-    )(ctx);
-  })(key);
+export const TypedQuery = (
+  key: string,
+  options?: TypedQueryOptions,
+): ParameterDecorator => {
+  return (target, propertyKey, index) => {
+    const args =
+      Reflect.getMetadata(
+        ROUTE_ARGS_METADATA,
+        target.constructor,
+        propertyKey,
+      ) || {};
+    Reflect.defineMetadata(
+      ROUTE_ARGS_METADATA,
+      {
+        ...assignMetadata(args, 4, index),
+        [`query${CUSTOM_ROUTE_ARGS_METADATA}:${index}`]: {
+          index,
+          factory: (_: unknown, ctx: ExecutionContext) =>
+            query_typecast(key, ctx, options),
+        },
+      },
+      target.constructor,
+      propertyKey,
+    );
+  };
+};

@@ -8,7 +8,7 @@ import {
   UseFilters,
 } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
-import { HttpExceptionFilter } from 'src/infrastructure/filter/http-exception.filter';
+import { HttpExceptionFilter } from '@INFRA/filter/http-exception.filter';
 import supertest from 'supertest';
 
 describe('TypedQuery decorator Test', () => {
@@ -25,7 +25,7 @@ describe('TypedQuery decorator Test', () => {
     await app.close();
   });
 
-  describe('nullable', () => {
+  describe('optional', () => {
     it('no query', () => {
       return supertest(app.getHttpServer())
         .get('/null')
@@ -60,10 +60,10 @@ describe('TypedQuery decorator Test', () => {
         .expect('testvalue');
     });
 
-    it('multiple query', () => {
+    it('array query', () => {
       const response: ExceptionResponse = {
         statusCode: HttpStatus.BAD_REQUEST,
-        message: "Value of the URL query 'query' is not a single.",
+        message: "Value of the URL query 'query' should be single.",
       };
       return supertest(app.getHttpServer())
         .get('/nooption?query=testvalue1&query=testvalue2')
@@ -111,7 +111,7 @@ describe('TypedQuery decorator Test', () => {
         },
       );
 
-      it.each(['2345', '-1', 'TRUE', 'FALSE', ''])('fail', (query) => {
+      it.each(['2345', '-1', ''])('fail', (query) => {
         const response: ExceptionResponse = {
           statusCode: HttpStatus.BAD_REQUEST,
           message: "Value of the URL query 'query' is not a boolean.",
@@ -148,42 +148,42 @@ describe('TypedQuery decorator Test', () => {
     });
   });
 
-  describe('multiple', () => {
+  describe('array', () => {
     it('fail', () => {
       const response: ExceptionResponse = {
         statusCode: HttpStatus.BAD_REQUEST,
         message: "Value of the URL query 'query' is not a number.",
       };
       return supertest(app.getHttpServer())
-        .get('/multiple/number?query=1234&query=test')
+        .get('/array/number?query=1234&query=test')
         .expect(HttpStatus.BAD_REQUEST)
         .expect(response);
     });
 
     it('string', () => {
       return supertest(app.getHttpServer())
-        .get('/multiple/string?query=test')
+        .get('/array/string?query=test')
         .expect(HttpStatus.OK)
         .expect('string');
     });
 
     it('number', () => {
       return supertest(app.getHttpServer())
-        .get('/multiple/number?query=123')
+        .get('/array/number?query=123')
         .expect(HttpStatus.OK)
         .expect('number');
     });
 
     it('boolean', () => {
       return supertest(app.getHttpServer())
-        .get('/multiple/boolean?query=true')
+        .get('/array/boolean?query=true')
         .expect(HttpStatus.OK)
         .expect('boolean');
     });
 
     it('uuid', () => {
       return supertest(app.getHttpServer())
-        .get('/multiple/uuid?query=7ac1b28a-af67-4094-a458-a23022199a69')
+        .get('/array/uuid?query=7ac1b28a-af67-4094-a458-a23022199a69')
         .expect(HttpStatus.OK)
         .expect('string');
     });
@@ -221,37 +221,37 @@ class TestController {
   }
 
   @Get('null')
-  test6(@TypedQuery(key, { nullable: true }) query?: string) {
+  test6(@TypedQuery(key, { optional: true }) query?: string) {
     return typeof query === 'undefined' ? 'success' : 'fail';
   }
 
-  @Get('multiple/string')
+  @Get('array/string')
   test7(
-    @TypedQuery(key, { type: 'string', multiple: true })
+    @TypedQuery(key, { type: 'string', array: true })
     query: string[],
   ) {
     return Array.isArray(query) ? typeof query[0] : 'fail';
   }
 
-  @Get('multiple/number')
+  @Get('array/number')
   test8(
-    @TypedQuery(key, { type: 'number', multiple: true })
+    @TypedQuery(key, { type: 'number', array: true })
     query: number[],
   ) {
     return Array.isArray(query) ? typeof query[0] : 'fail';
   }
 
-  @Get('multiple/boolean')
+  @Get('array/boolean')
   test9(
-    @TypedQuery(key, { type: 'boolean', multiple: true })
+    @TypedQuery(key, { type: 'boolean', array: true })
     query: boolean[],
   ) {
     return Array.isArray(query) ? typeof query[0] : 'fail';
   }
 
-  @Get('multiple/uuid')
+  @Get('array/uuid')
   test10(
-    @TypedQuery(key, { type: 'uuid', multiple: true })
+    @TypedQuery(key, { type: 'uuid', array: true })
     query: string[],
   ) {
     return Array.isArray(query) ? typeof query[0] : 'fail';

@@ -19,7 +19,8 @@ import type { IAuthUsecase } from "./../../../interface/user/auth.usecase.interf
  */
 export function signInTestCb
     (
-        connection: IConnection
+        connection: IConnection,
+        code: string
     ): Promise<signInTestCb.Output>
 {
     return Fetcher.fetch
@@ -27,11 +28,12 @@ export function signInTestCb
         connection,
         signInTestCb.ENCRYPTED,
         signInTestCb.METHOD,
-        signInTestCb.path()
+        signInTestCb.path(code)
     );
 }
 export namespace signInTestCb
 {
+    export type Query = string;
     export type Output = string;
 
     export const METHOD = "GET" as const;
@@ -41,9 +43,9 @@ export namespace signInTestCb
         response: false,
     };
 
-    export function path(): string
+    export function path(code: string): string
     {
-        return `/sign-in/google`;
+        return `/sign-in/google?${new URLSearchParams(code as any).toString()}`;
     }
 }
 

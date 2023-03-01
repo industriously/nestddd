@@ -2,7 +2,11 @@ import { Module } from '@nestjs/common';
 import { TokenModule } from '@TOKEN';
 import { AuthUsecase, UserUsecase } from './application';
 import { UserRepository } from './infrastructure/user.repository';
-import { AuthController, UserController } from './presentation';
+import {
+  AuthController,
+  UserController,
+  UsersController,
+} from './presentation';
 import {
   GithubStrategy,
   GoogleStrategy,
@@ -33,6 +37,6 @@ import {
       useClass: AuthUsecase,
     },
   ],
-  controllers: [AuthController, UserController],
+  controllers: [AuthController, UserController, UsersController],
 })
 export class UserModule {}
