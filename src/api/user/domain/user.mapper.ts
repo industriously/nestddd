@@ -1,6 +1,7 @@
 import { UserSchema } from '@INTERFACE/user';
 import { User } from '@PRISMA';
 import { UnaryFunction } from 'rxjs';
+import typia from 'typia';
 
 export namespace UserMapper {}
 
@@ -8,7 +9,7 @@ export namespace UserMapper {
   export const toAggregate: UnaryFunction<User, UserSchema.Aggregate> = (
     model,
   ) => {
-    const oauth_type = model.oauth_type as UserSchema.OauthType;
+    const oauth_type = typia.assert<UserSchema.OauthType>(model.oauth_type);
     return { ...model, oauth_type } satisfies UserSchema.Aggregate;
   };
 

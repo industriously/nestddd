@@ -5,3 +5,5 @@ export * from './predicate';
 export * from './edge';
 export * from './list';
 export * from './pipe';
+export * from './is_promise';
+export * from './provider.builder';

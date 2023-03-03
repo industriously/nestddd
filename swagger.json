@@ -132,7 +132,7 @@
             "x-nestia-encrypted": false
           }
         },
-        "description": "",
+        "description": "내 프로필 보기 API",
         "x-nestia-namespace": "user.getProfile",
         "x-nestia-jsDocTags": [
           {
@@ -169,7 +169,7 @@
             "x-nestia-encrypted": false
           }
         },
-        "description": "",
+        "description": "내 정보 수정 API",
         "x-nestia-namespace": "user.updateProfile",
         "x-nestia-jsDocTags": [
           {
@@ -194,7 +194,7 @@
             "x-nestia-encrypted": false
           }
         },
-        "description": "",
+        "description": "내 계정 삭제 API",
         "x-nestia-namespace": "user.inActivate",
         "x-nestia-jsDocTags": [
           {
@@ -239,7 +239,7 @@
             "x-nestia-encrypted": false
           }
         },
-        "description": "",
+        "description": "사용자 프로필 조회 API",
         "x-nestia-namespace": "users.getPulicProfile",
         "x-nestia-jsDocTags": [
           {

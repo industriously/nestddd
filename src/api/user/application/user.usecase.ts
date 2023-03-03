@@ -1,74 +1,53 @@
-import { Inject, Injectable } from '@nestjs/common';
-import { HttpExceptionFactory } from '@COMMON/exception';
-import { IUserRepository, IUserUsecase, UserSchema } from '@INTERFACE/user';
-import { ITokenService } from '@INTERFACE/token';
 import { UserMapper } from '@USER/domain';
-import { UserRepositoryToken } from '@USER/_constants_';
-import { Nullish, pipeAsync } from '@UTIL';
-import { TokenServiceToken } from '@TOKEN';
+import { ProviderBuilder, pipeAsync, Nullish } from '@UTIL';
+import { ITokenService, TokenSchema } from '@INTERFACE/token';
+import { IUserRepository, IUserUsecase } from '@INTERFACE/user';
+import { HttpExceptionFactory } from '@COMMON/exception';
+import { pipe } from 'rxjs';
 
-@Injectable()
-export class UserUsecase implements IUserUsecase {
-  constructor(
-    @Inject(TokenServiceToken)
-    private readonly tokenService: ITokenService,
-    @Inject(UserRepositoryToken)
-    private readonly userRepository: IUserRepository,
-  ) {}
+export const UserUsecaseFactory = (
+  repository: IUserRepository,
+  tokenService: ITokenService,
+): IUserUsecase => {
+  const get_id_from_token = () =>
+    [
+      tokenService.getAccessTokenPayload,
+      ({ id }: TokenSchema.AccessTokenPayload) => id,
+    ] as const;
+  return ProviderBuilder<IUserUsecase>({
+    getPublic(id) {
+      return pipeAsync(
+        repository.findOne(),
 
-  private get_id_from_token = (token: string) =>
-    this.tokenService.getAccessTokenPayload(token).id;
+        Nullish.throwIf(HttpExceptionFactory('NotFound')),
 
-  private find_user = (id: string) => this.userRepository.findOne(id, false);
+        UserMapper.toPublic,
+      )(id);
+    },
 
-  private throw_if_user_not_found = (
-    aggregate: UserSchema.Aggregate | Nullish.Nullish,
-  ): UserSchema.Aggregate =>
-    Nullish.throwIf(HttpExceptionFactory('NotFound'))(aggregate);
+    getDetail(token) {
+      return pipeAsync(
+        ...get_id_from_token(),
 
-  getPublic(id: string): Promise<UserSchema.Public> {
-    const transform_to_public = UserMapper.toPublic;
+        repository.findOne(),
 
-    return pipeAsync(
-      this.find_user,
+        Nullish.throwIf(HttpExceptionFactory('NotFound')),
 
-      this.throw_if_user_not_found,
+        UserMapper.toDetail,
+      )(token);
+    },
 
-      transform_to_public,
-    )(id);
-  }
+    update(token, data) {
+      return pipe(
+        ...get_id_from_token(),
 
-  getDetail(token: string): Promise<UserSchema.Detail> {
-    const transform_to_detail = UserMapper.toDetail;
+        repository.update(data),
+      )(token);
+    },
+    remove: pipe(
+      ...get_id_from_token(),
 
-    return pipeAsync(
-      this.get_id_from_token,
-
-      this.find_user,
-
-      this.throw_if_user_not_found,
-
-      transform_to_detail,
-    )(token);
-  }
-
-  update(token: string, data: IUserUsecase.UpdateData): Promise<void> {
-    const update_user = (id: string) => this.userRepository.update(id, data);
-
-    return pipeAsync(
-      this.get_id_from_token,
-
-      update_user,
-    )(token);
-  }
-
-  remove(token: string): Promise<void> {
-    const delete_user = (id: string) => this.userRepository.remove(id);
-
-    return pipeAsync(
-      this.get_id_from_token,
-
-      delete_user,
-    )(token);
-  }
-}
+      repository.remove,
+    ),
+  }).build();
+};

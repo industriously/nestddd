@@ -11,6 +11,7 @@ export class UserController {
   ) {}
 
   /**
+   * 내 프로필 보기 API
    * @tag user
    */
   @Get()
@@ -21,6 +22,7 @@ export class UserController {
   }
 
   /**
+   * 내 정보 수정 API
    * @tag user
    */
   @Patch()
@@ -33,6 +35,7 @@ export class UserController {
   }
 
   /**
+   * 내 계정 삭제 API
    * @tag user
    */
   @Delete()

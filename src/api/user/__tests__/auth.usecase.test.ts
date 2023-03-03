@@ -1,14 +1,14 @@
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { IAuthUsecase, UserSchema } from '@INTERFACE/user';
-import { TokenService } from '@TOKEN';
-import { AuthUsecase } from '@USER/application';
+import { TokenServiceFactory } from '@TOKEN';
+import { AuthUsecaseFactory } from '@USER/application';
 import { UserBusiness } from '@USER/domain';
 import typia from 'typia';
 import { config, jwtService, userRepository } from './mock';
 
 describe('Authentication Usecase Test', () => {
-  const tokenService = new TokenService(jwtService, config);
-  const usecase: IAuthUsecase = new AuthUsecase(userRepository, tokenService);
+  const tokenService = TokenServiceFactory(jwtService, config);
+  const usecase = AuthUsecaseFactory(userRepository, tokenService);
 
   // test data
   const test_error = Symbol('Error');
@@ -88,7 +88,7 @@ describe('Authentication Usecase Test', () => {
     });
     it('If user not exist', async () => {
       const spyOnFindOne = jest.spyOn(userRepository, 'findOne');
-      spyOnFindOne.mockImplementationOnce(async () => null);
+      spyOnFindOne.mockImplementationOnce(() => async () => null);
 
       const received = usecase.refresh(refresh_token);
 

@@ -22,7 +22,7 @@ describe('Infrastructure Test', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [LoggerModule, FilterModule],
-      controllers: [TestController],
+      controllers: [InfraTestController],
     })
       .overrideProvider(LoggerServiceToken)
       .useValue({ error: jest.fn() })
@@ -86,7 +86,7 @@ describe('Infrastructure Test', () => {
 });
 
 @Controller()
-class TestController {
+class InfraTestController {
   @Get('http')
   TestHttpException() {
     throw HttpExceptionFactory('NotFound', 'Http Exception');

@@ -10,6 +10,8 @@ import type { IConnection } from "@nestia/fetcher";
 import type { UserSchema } from "./../../interface/user/user.schema.interface";
 
 /**
+ * 사용자 프로필 조회 API
+ * 
  * @tag user
  * 
  * @controller UsersController.getPulicProfile()

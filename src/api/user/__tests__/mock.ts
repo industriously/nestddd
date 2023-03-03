@@ -16,7 +16,9 @@ export const userRepository: IUserRepository = {
       updated_at: now,
     };
   },
-  async update() {},
+  update() {
+    return async () => {};
+  },
   async findOneByOauth(filter) {
     const user = typia.random<UserSchema.Aggregate>();
     const now = new Date();
@@ -28,15 +30,17 @@ export const userRepository: IUserRepository = {
       updated_at: now,
     };
   },
-  async findOne(id, include_deleted = false) {
-    const user = typia.random<UserSchema.Aggregate>();
-    const now = new Date();
-    return {
-      ...user,
-      id,
-      is_deleted: include_deleted,
-      created_at: now,
-      updated_at: now,
+  findOne(include_deleted = false) {
+    return async (id) => {
+      const user = typia.random<UserSchema.Aggregate>();
+      const now = new Date();
+      return {
+        ...user,
+        id,
+        is_deleted: include_deleted,
+        created_at: now,
+        updated_at: now,
+      };
     };
   },
   async save(aggregate) {

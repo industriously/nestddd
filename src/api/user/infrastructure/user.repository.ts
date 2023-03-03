@@ -1,114 +1,93 @@
-import { DBManager } from '@INFRA/DB';
-import { IUserRepository, UserSchema } from '@INTERFACE/user';
-import { Injectable } from '@nestjs/common';
-import { Prisma } from '@PRISMA';
 import { UserMapper } from '@USER/domain';
 import { map, pipeAsync } from '@UTIL';
+import { IUserRepository, UserSchema } from '@INTERFACE/user';
 import typia from 'typia';
+import { DBClient } from '@INTERFACE/common';
+import { pipe } from 'rxjs';
 
-@Injectable()
-export class UserRepository implements IUserRepository {
-  constructor(private readonly manager: DBManager) {}
+export const UserRepositoryFactory = (client: DBClient): IUserRepository => {
+  const user = () => client.get().user;
+  return {
+    create(data) {
+      return pipeAsync(
+        // validate input
+        typia.createAssertPrune<IUserRepository.CreateData>(),
+        // create user
+        (data) => user().create({ data }),
+        // transform to aggregate
+        UserMapper.toAggregate,
+      )(data);
+    },
 
-  private get User() {
-    return this.manager.getClient().user;
-  }
+    findOne(include_deleted = false) {
+      return pipeAsync(
+        // validate input
+        (id: string) => typia.assert(id),
+        // find active user by id
+        (id) =>
+          user().findFirst({
+            where: { id, is_deleted: include_deleted ? undefined : false },
+          }),
+        // if user exist, transform to aggregate
+        map(UserMapper.toAggregate),
+      );
+    },
 
-  create(data: IUserRepository.CreateData): Promise<UserSchema.Aggregate> {
-    const validate_input =
-      typia.createAssertPrune<IUserRepository.CreateData>();
+    findOneByOauth(filter) {
+      return pipeAsync(
+        // validate input
+        typia.createAssertPrune<IUserRepository.FindOneByOauthFilter>(),
+        // find user by oauth data or email
+        ({ sub, oauth_type, email }) =>
+          user().findFirst({ where: { OR: [{ email }, { sub, oauth_type }] } }),
+        // if user exist, transform to aggregate
+        map(UserMapper.toAggregate),
+      )(filter);
+    },
 
-    const create_user = (data: Prisma.UserCreateInput) =>
-      this.User.create({ data });
+    update(_data) {
+      // validate update data
+      const data = typia.assertPrune(_data);
+      // curring function
+      return pipe<string, string, Promise<void>>(
+        // validate id
+        typia.createAssert<string>(),
+        // update active user, and return none
+        async (id) => {
+          await user().updateMany({ where: { id, is_deleted: false }, data });
+        },
+      );
+    },
 
-    const transform_to_aggregate = UserMapper.toAggregate;
+    save(aggregate) {
+      return pipe(
+        // valiate input
+        typia.createAssertPrune<UserSchema.Aggregate>(),
+        // extract id & updatable data, and save input(user)
+        // return input(user)
+        async (aggregate) => {
+          const { id, address, email, is_deleted, phone, username } = aggregate;
+          await user().updateMany({
+            where: { id },
+            data: { address, email, is_deleted, phone, username },
+          });
+          return aggregate;
+        },
+      )(aggregate);
+    },
 
-    return pipeAsync(
-      validate_input,
-
-      create_user,
-
-      transform_to_aggregate,
-    )(data);
-  }
-
-  findOne(
-    id: string,
-    include_deleted = false,
-  ): Promise<UserSchema.Aggregate | null> {
-    const validate_input = typia.createAssertPrune<{
-      id: string;
-      is_deleted?: boolean;
-    }>();
-
-    const find_user = (where: Prisma.UserWhereInput) =>
-      this.User.findFirst({ where });
-
-    const transform_to_aggregate_if_user_exists = map(UserMapper.toAggregate);
-
-    return pipeAsync(
-      validate_input,
-
-      find_user,
-
-      transform_to_aggregate_if_user_exists,
-    )({ id, ...(include_deleted ? {} : { is_deleted: false }) });
-  }
-
-  async findOneByOauth(
-    filter: IUserRepository.FindOneByOauthFilter,
-  ): Promise<UserSchema.Aggregate | null> {
-    const validate_input =
-      typia.createAssertPrune<IUserRepository.FindOneByOauthFilter>();
-
-    const transform_to_where_input = ({
-      sub,
-      oauth_type,
-      email,
-    }: IUserRepository.FindOneByOauthFilter): Prisma.UserWhereInput => ({
-      OR: [{ email }, { sub, oauth_type }],
-    });
-
-    const find_user = (where: Prisma.UserWhereInput) =>
-      this.User.findFirst({ where });
-
-    const transform_to_aggregate_if_user_exists = map(UserMapper.toAggregate);
-
-    return pipeAsync(
-      validate_input,
-
-      transform_to_where_input,
-
-      find_user,
-
-      transform_to_aggregate_if_user_exists,
-    )(filter);
-  }
-
-  async update(id: string, data: IUserRepository.UpdateData): Promise<void> {
-    const _id = typia.assert(id);
-    const _data = typia.assertPrune(data);
-    await this.User.updateMany({ where: { id: _id }, data: _data });
-    return;
-  }
-
-  async save(aggregate: UserSchema.Aggregate): Promise<UserSchema.Aggregate> {
-    const { id, email, username, address, phone, is_deleted } =
-      typia.assertPrune<
-        Pick<
-          UserSchema.Aggregate,
-          'id' | 'email' | 'username' | 'address' | 'phone' | 'is_deleted'
-        >
-      >(aggregate);
-
-    await this.User.updateMany({
-      where: { id },
-      data: { email, username, address, phone, is_deleted },
-    });
-    return aggregate;
-  }
-
-  remove(id: string): Promise<void> {
-    return this.update(id, { is_deleted: true });
-  }
-}
+    remove(id) {
+      return pipe(
+        // validate input
+        typia.createAssert<string>(),
+        // inactivate user, and return none(void)
+        async (id) => {
+          await user().updateMany({
+            where: { id },
+            data: { is_deleted: false },
+          });
+        },
+      )(id);
+    },
+  };
+};

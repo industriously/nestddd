@@ -12,6 +12,8 @@ import type { UserSchema } from "./../../interface/user/user.schema.interface";
 import type { IUserUsecase } from "./../../interface/user/user.usecase.interface";
 
 /**
+ * 내 프로필 보기 API
+ * 
  * @tag user
  * 
  * @controller UserController.getProfile()
@@ -49,6 +51,8 @@ export namespace getProfile
 }
 
 /**
+ * 내 정보 수정 API
+ * 
  * @tag user
  * 
  * @controller UserController.updateProfile()
@@ -90,6 +94,8 @@ export namespace updateProfile
 }
 
 /**
+ * 내 계정 삭제 API
+ * 
  * @tag user
  * 
  * @controller UserController.inActivate()
