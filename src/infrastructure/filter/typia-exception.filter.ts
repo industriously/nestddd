@@ -19,14 +19,15 @@ export class TypeGuardErrorFilter implements ExceptionFilter {
       statusCode: HttpStatus.BAD_REQUEST,
       message: createMessage(exception.expected, exception.path),
     };
+    console.log(exception);
     httpAdapter.reply(ctx.getResponse(), body, body.statusCode);
   }
 }
 
 const createMessage = (expected: string, path?: string): string => {
-  if (path == undefined) {
+  const target = path?.split('$input.')[1];
+  if (target == undefined) {
     return `invalid type, expected to be ${expected}`;
   }
-  const target = path.split('$input.')[1];
   return `${target} type is invalid.`;
 };

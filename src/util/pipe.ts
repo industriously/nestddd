@@ -1,4 +1,5 @@
 import { UnaryFunction as RxUnaryFunction } from 'rxjs';
+import { isPromise } from './is_promise';
 
 type UnaryFunction<T, R> = RxUnaryFunction<T, R | Promise<R>>;
 type AsyncUnaryFunction<T, R> = RxUnaryFunction<T, Promise<R>>;
@@ -108,7 +109,7 @@ function pipeFromArray<T, R>(
   return async (input: T): Promise<R> => {
     let value: any = input;
     for (const fn of fns) {
-      value = value instanceof Promise ? fn(await value) : fn(value);
+      value = isPromise(value) ? fn(await value) : fn(value);
     }
     return value;
   };

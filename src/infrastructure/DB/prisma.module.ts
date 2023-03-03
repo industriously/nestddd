@@ -1,6 +1,7 @@
 import { Module, Global } from '@nestjs/common';
 import { APP_INTERCEPTOR } from '@nestjs/core';
-import { DBManager } from './db.manager';
+import { ClientFactory } from './client.prisma';
+import { DBClientToken } from './constants';
 import { PrismaService } from './prisma.service';
 import { TransactionDecorator, TransactionInterceptor } from './transaction';
 
@@ -10,8 +11,12 @@ import { TransactionDecorator, TransactionInterceptor } from './transaction';
     PrismaService,
     TransactionDecorator,
     { provide: APP_INTERCEPTOR, useClass: TransactionInterceptor },
-    DBManager,
+    {
+      provide: DBClientToken,
+      useFactory: ClientFactory,
+      inject: [PrismaService],
+    },
   ],
-  exports: [DBManager],
+  exports: [DBClientToken],
 })
 export class PrismaModule {}

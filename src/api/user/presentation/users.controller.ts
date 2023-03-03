@@ -10,6 +10,7 @@ export class UsersController {
   ) {}
 
   /**
+   * 사용자 프로필 조회 API
    * @tag user
    */
   @Get(':user_id')

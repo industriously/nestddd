@@ -6,12 +6,13 @@ export namespace IUserRepository {
     UserSchema.Aggregate,
     'sub' | 'oauth_type' | 'email' | 'username'
   >;
-  export type UpdateData = Partial<
-    Pick<
-      UserSchema.Aggregate,
-      'email' | 'username' | 'address' | 'phone' | 'is_deleted'
-    >
+  export type UpdatableData = Pick<
+    UserSchema.Aggregate,
+    'address' | 'email' | 'is_deleted' | 'phone' | 'username'
   >;
+
+  export type UpdateData = Partial<Omit<UpdatableData, 'is_deleted'>>;
+
   export type FindOneByOauthFilter = Pick<
     UserSchema.Aggregate,
     'sub' | 'oauth_type' | 'email'
@@ -24,9 +25,8 @@ export interface IUserRepository
     data: IUserRepository.CreateData,
   ) => Promise<UserSchema.Aggregate>;
   readonly update: (
-    id: string,
     data: IUserRepository.UpdateData,
-  ) => Promise<void>;
+  ) => (id: string) => Promise<void>;
   readonly findOneByOauth: (
     filter: IUserRepository.FindOneByOauthFilter,
   ) => Promise<UserSchema.Aggregate | null>;

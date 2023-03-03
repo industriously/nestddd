@@ -57,14 +57,14 @@ export class AutoAspectExecutor implements OnModuleInit {
         const metadata_key = this.reflector.get(ASPECT, decorator.constructor);
         const metadata = this.reflector.get(metadata_key, instance[methodName]);
         if (Nullish.is(metadata)) continue;
-        const method = instance[methodName].bind(instance);
+
         const wrappedMethod = decorator.wrap({
           instance,
           methodName,
-          method,
+          method: instance[methodName],
           metadata,
         });
-        Object.setPrototypeOf(wrappedMethod, method);
+
         Object.getPrototypeOf(instance)[methodName] = wrappedMethod;
       }
     }

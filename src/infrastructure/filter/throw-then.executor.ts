@@ -1,6 +1,6 @@
 import { Aspect, LazyDecorator, WrapParams } from '@toss/nestjs-aop';
 import { THROW_THEN_DECORATOR_KEY } from '@COMMON/constants';
-import typia from 'typia';
+import { isPromise } from '@UTIL';
 
 @Aspect(THROW_THEN_DECORATOR_KEY)
 export class ThrowThenDecorator implements LazyDecorator {
@@ -8,7 +8,7 @@ export class ThrowThenDecorator implements LazyDecorator {
     return (...args: unknown[]) => {
       try {
         const result = method(...args);
-        if (typia.is<Promise<unknown>>(result)) {
+        if (isPromise(result)) {
           return tryAsync(result, metadata);
         }
         return result;
