@@ -1,13 +1,13 @@
 import { HttpExceptionFactory } from '@COMMON/exception';
 import { IUserUsecase, UserSchema } from '@INTERFACE/user';
-import { TokenService } from '@TOKEN';
-import { UserUsecase } from '@USER/application';
+import { TokenServiceFactory } from '@TOKEN';
+import { UserUsecaseFactory } from '@USER/application';
 import typia from 'typia';
 import { config, jwtService, userRepository } from './mock';
 
 describe('User Usecase Test', () => {
-  const tokenService = new TokenService(jwtService, config);
-  const usecase: IUserUsecase = new UserUsecase(tokenService, userRepository);
+  const tokenService = TokenServiceFactory(jwtService, config);
+  const usecase = UserUsecaseFactory(userRepository, tokenService);
 
   // test data
   const test_user: UserSchema.Aggregate = {
@@ -25,7 +25,7 @@ describe('User Usecase Test', () => {
   describe("get user's public data", () => {
     it('If user not exist', async () => {
       const spyOnFindOne = jest.spyOn(userRepository, 'findOne');
-      spyOnFindOne.mockImplementationOnce(async () => null);
+      spyOnFindOne.mockImplementationOnce(() => async () => null);
 
       const received = usecase.getPublic(test_user.id);
 
@@ -52,7 +52,7 @@ describe('User Usecase Test', () => {
     });
     it('If user not exist', async () => {
       const spyOnFindOne = jest.spyOn(userRepository, 'findOne');
-      spyOnFindOne.mockImplementationOnce(async () => null);
+      spyOnFindOne.mockImplementationOnce(() => async () => null);
 
       const received = usecase.getDetail(access_token);
 

@@ -19,7 +19,6 @@ export class TypeGuardErrorFilter implements ExceptionFilter {
       statusCode: HttpStatus.BAD_REQUEST,
       message: createMessage(exception.expected, exception.path),
     };
-    console.log(exception);
     httpAdapter.reply(ctx.getResponse(), body, body.statusCode);
   }
 }

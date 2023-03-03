@@ -22,7 +22,7 @@ export const UserRepositoryFactory = (client: DBClient): IUserRepository => {
     findOne(include_deleted = false) {
       return pipeAsync(
         // validate input
-        typia.createAssert<string>(),
+        (id: string) => typia.assert(id),
         // find active user by id
         (id) =>
           user().findFirst({
