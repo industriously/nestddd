@@ -3,15 +3,15 @@
 <html lang="en">
 
 <head>
-    <title>Code coverage report for infrastructure/filter/typia-exception.filter.ts</title>
+    <title>Code coverage report for util/provider.builder.ts</title>
     <meta charset="utf-8" />
-    <link rel="stylesheet" href="../../prettify.css" />
-    <link rel="stylesheet" href="../../base.css" />
-    <link rel="shortcut icon" type="image/x-icon" href="../../favicon.png" />
+    <link rel="stylesheet" href="../prettify.css" />
+    <link rel="stylesheet" href="../base.css" />
+    <link rel="shortcut icon" type="image/x-icon" href="../favicon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <style type='text/css'>
         .coverage-summary .sorter {
-            background-image: url(../../sort-arrow-sprite.png);
+            background-image: url(../sort-arrow-sprite.png);
         }
     </style>
 </head>
@@ -19,13 +19,13 @@
 <body>
 <div class='wrapper'>
     <div class='pad1'>
-        <h1><a href="../../index.html">All files</a> / <a href="index.html">infrastructure/filter</a> typia-exception.filter.ts</h1>
+        <h1><a href="../index.html">All files</a> / <a href="index.html">util</a> provider.builder.ts</h1>
         <div class='clearfix'>
             
             <div class='fl pad1y space-right2'>
                 <span class="strong">100% </span>
                 <span class="quiet">Statements</span>
-                <span class='fraction'>16/16</span>
+                <span class='fraction'>15/15</span>
             </div>
         
             
@@ -37,9 +37,9 @@
         
             
             <div class='fl pad1y space-right2'>
-                <span class="strong">100% </span>
+                <span class="strong">66.66% </span>
                 <span class="quiet">Functions</span>
-                <span class='fraction'>3/3</span>
+                <span class='fraction'>4/6</span>
             </div>
         
             
@@ -95,69 +95,75 @@
 <a name='L30'></a><a href='#L30'>30</a>
 <a name='L31'></a><a href='#L31'>31</a>
 <a name='L32'></a><a href='#L32'>32</a>
-<a name='L33'></a><a href='#L33'>33</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<a name='L33'></a><a href='#L33'>33</a>
+<a name='L34'></a><a href='#L34'>34</a>
+<a name='L35'></a><a href='#L35'>35</a></td><td class="line-coverage quiet"><span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">2x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">5x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">2x</span>
-<span class="cline-any cline-yes">1x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-yes">1x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
 <span class="cline-any cline-neutral">&nbsp;</span>
-<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { ExceptionResponse } from '@INTERFACE/common';
-import {
-  ArgumentsHost,
-  Catch,
-  ExceptionFilter,
-  HttpStatus,
-} from '@nestjs/common';
-import { HttpAdapterHost } from '@nestjs/core';
-import { TypeGuardError } from 'typia';
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">7x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-yes">4x</span>
+<span class="cline-any cline-neutral">&nbsp;</span>
+<span class="cline-any cline-neutral">&nbsp;</span></td><td class="text"><pre class="prettyprint lang-js">import { FunctionType } from '@INTERFACE/common';
 &nbsp;
-@Catch(TypeGuardError)
-export class TypeGuardErrorFilter implements ExceptionFilter {
-  constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
-&nbsp;
-  catch(exception: TypeGuardError, host: ArgumentsHost) {
-    const { httpAdapter } = this.httpAdapterHost;
-    const ctx = host.switchToHttp();
-    const body: ExceptionResponse = {
-      statusCode: HttpStatus.BAD_REQUEST,
-      message: createMessage(exception.expected, exception.path),
-    };
-    httpAdapter.reply(ctx.getResponse(), body, body.statusCode);
-  }
+export interface ProviderBuilder&lt;T extends object&gt; {
+  readonly build: () =&gt; T;
+  readonly mark: (
+    propertyKey: keyof T,
+    marker: (target: FunctionType) =&gt; void,
+  ) =&gt; ProviderBuilder&lt;T&gt;;
 }
 &nbsp;
-const createMessage = (expected: string, path?: string): string =&gt; {
-  const target = path?.split('$input.')[1];
-  if (target == undefined) {
-    return `invalid type, expected to be ${expected}`;
-  }
-  return `${target} type is invalid.`;
+export const ProviderBuilder = &lt;T extends object&gt;(
+  props: T,
+): ProviderBuilder&lt;T&gt; =&gt; {
+  const builder = {
+    build: <span class="fstat-no" title="function not covered" >() =</span>&gt; {},
+    mark: <span class="fstat-no" title="function not covered" >() =</span>&gt; {},
+  } as unknown as ProviderBuilder&lt;T&gt;;
+&nbsp;
+  const build: ProviderBuilder&lt;T&gt;['build'] = () =&gt;
+    Object.setPrototypeOf({}, props);
+&nbsp;
+  const mark: ProviderBuilder&lt;T&gt;['mark'] = (key, marker) =&gt; {
+    const target = props[key];
+    const isFunction = (input: unknown): input is FunctionType =&gt;
+      typeof input === 'function';
+    if (isFunction(target)) {
+      marker(target);
+    }
+    return builder;
+  };
+  (builder as any).build = build;
+  (builder as any).mark = mark;
+  return builder;
 };
 &nbsp;</pre></td></tr></table></pre>
 
@@ -168,14 +174,14 @@ const createMessage = (expected: string, path?: string): string =&gt; {
                 <a href="https://istanbul.js.org/" target="_blank" rel="noopener noreferrer">istanbul</a>
                 at 2023-03-03T12:00:06.614Z
             </div>
-        <script src="../../prettify.js"></script>
+        <script src="../prettify.js"></script>
         <script>
             window.onload = function () {
                 prettyPrint();
             };
         </script>
-        <script src="../../sorter.js"></script>
-        <script src="../../block-navigation.js"></script>
+        <script src="../sorter.js"></script>
+        <script src="../block-navigation.js"></script>
     </body>
 </html>
     
