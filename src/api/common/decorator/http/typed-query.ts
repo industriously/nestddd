@@ -137,7 +137,7 @@ export const TypedQuery = (
     Reflect.defineMetadata(
       ROUTE_ARGS_METADATA,
       {
-        ...assignMetadata(args, 4, index),
+        ...assignMetadata(args, 4, index, key),
         [`query${CUSTOM_ROUTE_ARGS_METADATA}:${index}`]: {
           index,
           factory: (_: unknown, ctx: ExecutionContext) =>
