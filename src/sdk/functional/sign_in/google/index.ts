@@ -33,7 +33,6 @@ export function signInTestCb
 }
 export namespace signInTestCb
 {
-    export type Query = string;
     export type Output = string;
 
     export const METHOD = "GET" as const;
@@ -45,7 +44,10 @@ export namespace signInTestCb
 
     export function path(code: string): string
     {
-        return `/sign-in/google?${new URLSearchParams(code as any).toString()}`;
+        return `/sign-in/google?${new URLSearchParams(
+        {
+            code
+        } as any).toString()}`;
     }
 }
 
@@ -62,7 +64,8 @@ export namespace signInTestCb
  */
 export function signInGoogle
     (
-        connection: IConnection
+        connection: IConnection,
+        body: IAuthUsecase.SignInBody
     ): Promise<signInGoogle.Output>
 {
     return Fetcher.fetch
@@ -70,11 +73,14 @@ export function signInGoogle
         connection,
         signInGoogle.ENCRYPTED,
         signInGoogle.METHOD,
-        signInGoogle.path()
+        signInGoogle.path(),
+        body,
+        signInGoogle.stringify
     );
 }
 export namespace signInGoogle
 {
+    export type Input = IAuthUsecase.SignInBody;
     export type Output = IAuthUsecase.SignInResponse;
 
     export const METHOD = "POST" as const;

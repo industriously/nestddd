@@ -23,7 +23,8 @@ import type { IAuthUsecase } from "./../../../interface/user/auth.usecase.interf
  */
 export function signInGithub
     (
-        connection: IConnection
+        connection: IConnection,
+        body: IAuthUsecase.SignInBody
     ): Promise<signInGithub.Output>
 {
     return Fetcher.fetch
@@ -31,11 +32,14 @@ export function signInGithub
         connection,
         signInGithub.ENCRYPTED,
         signInGithub.METHOD,
-        signInGithub.path()
+        signInGithub.path(),
+        body,
+        signInGithub.stringify
     );
 }
 export namespace signInGithub
 {
+    export type Input = IAuthUsecase.SignInBody;
     export type Output = IAuthUsecase.SignInResponse;
 
     export const METHOD = "POST" as const;

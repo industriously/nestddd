@@ -18,4 +18,9 @@ export namespace UserBusiness {
     (aggregate as any).is_deleted = false;
     return aggregate;
   };
+
+  export const inActivate: UpdateState = (aggregate) => {
+    (aggregate as any).is_deleted = true;
+    return aggregate;
+  };
 }

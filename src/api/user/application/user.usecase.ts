@@ -44,10 +44,12 @@ export const UserUsecaseFactory = (
         repository.update(data),
       )(token);
     },
-    remove: pipe(
-      ...get_id_from_token(),
+    remove(token) {
+      return pipe(
+        ...get_id_from_token(),
 
-      repository.remove,
-    ),
+        repository.remove,
+      )(token);
+    },
   }).build();
 };

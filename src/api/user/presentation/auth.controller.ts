@@ -3,6 +3,7 @@ import { Controller, Get, Inject, Post, UseGuards } from '@nestjs/common';
 import { GithubGuard, GoogleGuard, OauthProfile } from '@USER/_auth_';
 import { AuthUsecaseToken } from '@USER/_constants_';
 import { Authorization, TypedQuery } from '@COMMON/decorator/http';
+import { TypedBody } from '@nestia/core';
 
 @Controller()
 export class AuthController {
@@ -39,6 +40,7 @@ export class AuthController {
   @UseGuards(GoogleGuard)
   @Post('sign-in/google')
   signInGoogle(
+    @TypedBody() body: IAuthUsecase.SignInBody,
     @OauthProfile() profile: UserSchema.OauthProfile,
   ): Promise<IAuthUsecase.SignInResponse> {
     return this.authUsecase.signIn(profile);
@@ -54,6 +56,7 @@ export class AuthController {
   @UseGuards(GithubGuard)
   @Post('sign-in/github')
   signInGithub(
+    @TypedBody() body: IAuthUsecase.SignInBody,
     @OauthProfile() profile: UserSchema.OauthProfile,
   ): Promise<IAuthUsecase.SignInResponse> {
     return this.authUsecase.signIn(profile);
