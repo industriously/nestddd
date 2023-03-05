@@ -1,4 +1,3 @@
-import { ExceptionResponse } from '@INTERFACE/common';
 import {
   ArgumentsHost,
   Catch,
@@ -15,11 +14,11 @@ export class TypeGuardErrorFilter implements ExceptionFilter {
   catch(exception: TypeGuardError, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const body: ExceptionResponse = {
-      statusCode: HttpStatus.BAD_REQUEST,
-      message: createMessage(exception.expected, exception.path),
-    };
-    httpAdapter.reply(ctx.getResponse(), body, body.statusCode);
+    httpAdapter.reply(
+      ctx.getResponse(),
+      createMessage(exception.expected, exception.path),
+      HttpStatus.BAD_REQUEST,
+    );
   }
 }
 

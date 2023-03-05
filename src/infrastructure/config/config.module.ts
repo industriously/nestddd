@@ -25,10 +25,11 @@ const validationSchema = Joi.object<any, false, IEnv>({
 export const ConfigModule = OriginalConfigModule.forRoot({
   isGlobal: true,
   cache: false,
-  envFilePath: process.env.NODE_ENV === 'test' ? '.env.test' : '.env',
-  ignoreEnvFile: process.env.NODE_ENV === 'production',
+  envFilePath: '.env',
+  ignoreEnvFile: process.env.NODE_ENV !== 'development',
   validationOptions: {
     abortEarly: true,
   },
-  validationSchema,
+  validationSchema:
+    process.env.NODE_ENV === 'test' ? undefined : validationSchema,
 });

@@ -1,5 +1,4 @@
 import { Authorization } from '@COMMON/decorator/http';
-import { ExceptionResponse } from '@INTERFACE/common';
 import {
   Controller,
   Get,
@@ -26,14 +25,10 @@ describe('Authorization doecorator Test', () => {
   });
 
   it('authorization header is required', () => {
-    const response: ExceptionResponse = {
-      statusCode: HttpStatus.FORBIDDEN,
-      message: 'Authorization header is required.',
-    };
     return supertest(app.getHttpServer())
       .get('/basic')
       .expect(HttpStatus.FORBIDDEN)
-      .expect(response);
+      .expect('Authorization header is required.');
   });
 
   it.each([
@@ -46,15 +41,11 @@ describe('Authorization doecorator Test', () => {
     { type: 'bearer', header: 'bearer_ token' },
     { type: 'bearer', header: 'baerer token' },
   ])('invalid format', ({ type, header }) => {
-    const response: ExceptionResponse = {
-      statusCode: HttpStatus.FORBIDDEN,
-      message: `${type} token is invalid.`,
-    };
     return supertest(app.getHttpServer())
       .get(`/${type}`)
       .set('Authorization', header)
       .expect(HttpStatus.FORBIDDEN)
-      .expect(response);
+      .expect(`${type} token is invalid.`);
   });
 
   it.each([

@@ -22,14 +22,14 @@ export const TokenServiceFactory = (
       return pipe(TokenMapper.toAccessTokenPayload, (payload) =>
         jwtService.sign(payload, {
           expiresIn: '8h',
-          privateKey: config.get('ACCESS_TOKEN_PRIVATE_KEY'),
+          privateKey: config.get<string>('ACCESS_TOKEN_PRIVATE_KEY'),
         }),
       )(aggregate);
     },
 
     getAccessTokenPayload(token) {
       const payload = jwtService.verify(token, {
-        publicKey: config.get('ACCESS_TOKEN_PUBLIC_KEY'),
+        publicKey: config.get<string>('ACCESS_TOKEN_PUBLIC_KEY'),
       });
       return typia.assertPrune<TokenSchema.AccessTokenPayload>(payload);
     },
@@ -41,14 +41,14 @@ export const TokenServiceFactory = (
         (payload) =>
           jwtService.sign(payload, {
             expiresIn: '30w',
-            privateKey: config.get('REFRESH_TOKEN_PRIVATE_KEY'),
+            privateKey: config.get<string>('REFRESH_TOKEN_PRIVATE_KEY'),
           }),
       )(aggregate);
     },
 
     getRefreshTokenPayload(token) {
       const payload = jwtService.verify(token, {
-        publicKey: config.get('REFRESH_TOKEN_PUBLIC_KEY'),
+        publicKey: config.get<string>('REFRESH_TOKEN_PUBLIC_KEY'),
       });
 
       return typia.assertPrune<TokenSchema.RefreshTokenPayload>(payload);
@@ -61,14 +61,14 @@ export const TokenServiceFactory = (
         (payload) =>
           jwtService.sign(payload, {
             expiresIn: '1d',
-            privateKey: config.get('ACCESS_TOKEN_PRIVATE_KEY'),
+            privateKey: config.get<string>('ACCESS_TOKEN_PRIVATE_KEY'),
           }),
       )(aggregate);
     },
 
     getIdTokenPayload(token) {
       const payload = jwtService.verify(token, {
-        publicKey: config.get('ACCESS_TOKEN_PUBLIC_KEY'),
+        publicKey: config.get<string>('ACCESS_TOKEN_PUBLIC_KEY'),
       });
 
       return typia.assertPrune<TokenSchema.IdTokenPayload>(payload);

@@ -1,5 +1,4 @@
 import { TypedQuery } from '@COMMON/decorator/http';
-import { ExceptionResponse } from '@INTERFACE/common';
 import {
   Controller,
   Get,
@@ -43,14 +42,10 @@ describe('TypedQuery decorator Test', () => {
 
   describe('default option', () => {
     it('no query', () => {
-      const response: ExceptionResponse = {
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: "Value of the URL query 'query' is required.",
-      };
       return supertest(app.getHttpServer())
         .get('/nooption')
         .expect(HttpStatus.BAD_REQUEST)
-        .expect(response);
+        .expect("Value of the URL query 'query' is required.");
     });
 
     it('single query', () => {
@@ -61,14 +56,10 @@ describe('TypedQuery decorator Test', () => {
     });
 
     it('array query', () => {
-      const response: ExceptionResponse = {
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: "Value of the URL query 'query' should be single.",
-      };
       return supertest(app.getHttpServer())
         .get('/nooption?query=testvalue1&query=testvalue2')
         .expect(HttpStatus.BAD_REQUEST)
-        .expect(response);
+        .expect("Value of the URL query 'query' should be single.");
     });
   });
 
@@ -89,14 +80,10 @@ describe('TypedQuery decorator Test', () => {
       });
 
       it.each(['false', 'a', ''])('fail', (query) => {
-        const response: ExceptionResponse = {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: "Value of the URL query 'query' is not a number.",
-        };
         return supertest(app.getHttpServer())
           .get(`/number?query=${query}`)
           .expect(HttpStatus.BAD_REQUEST)
-          .expect(response);
+          .expect("Value of the URL query 'query' is not a number.");
       });
     });
 
@@ -112,14 +99,10 @@ describe('TypedQuery decorator Test', () => {
       );
 
       it.each(['2345', '-1', ''])('fail', (query) => {
-        const response: ExceptionResponse = {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: "Value of the URL query 'query' is not a boolean.",
-        };
         return supertest(app.getHttpServer())
           .get(`/boolean?query=${query}`)
           .expect(HttpStatus.BAD_REQUEST)
-          .expect(response);
+          .expect("Value of the URL query 'query' is not a boolean.");
       });
     });
 
@@ -136,28 +119,20 @@ describe('TypedQuery decorator Test', () => {
       });
 
       it('fail', () => {
-        const response: ExceptionResponse = {
-          statusCode: HttpStatus.BAD_REQUEST,
-          message: "Value of the URL query 'query' is not a uuid.",
-        };
         return supertest(app.getHttpServer())
           .get(`/uuid?query=string`)
           .expect(HttpStatus.BAD_REQUEST)
-          .expect(response);
+          .expect("Value of the URL query 'query' is not a uuid.");
       });
     });
   });
 
   describe('array', () => {
     it('fail', () => {
-      const response: ExceptionResponse = {
-        statusCode: HttpStatus.BAD_REQUEST,
-        message: "Value of the URL query 'query' is not a number.",
-      };
       return supertest(app.getHttpServer())
         .get('/array/number?query=1234&query=test')
         .expect(HttpStatus.BAD_REQUEST)
-        .expect(response);
+        .expect("Value of the URL query 'query' is not a number.");
     });
 
     it('string', () => {

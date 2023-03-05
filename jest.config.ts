@@ -4,7 +4,6 @@ const config: Config = {
   coverageDirectory: '<rootDir>/coverage',
   testEnvironment: 'node',
   testEnvironmentOptions: { NODE_ENV: 'test' },
-  setupFiles: ['dotenv/config'],
   testMatch: ['**/__tests__/**/*.(spec|test).ts'],
   transform: {
     '^.+\\.ts$': [

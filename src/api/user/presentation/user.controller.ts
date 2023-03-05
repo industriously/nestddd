@@ -13,6 +13,9 @@ export class UserController {
   /**
    * 내 프로필 보기 API
    * @tag user
+   * @returns 사용자 상세 정보 응답
+   * @throw 400 잘못된 토큰입니다.
+   * @throw 404 일치하는 대상을 찾지 못했습니다.
    */
   @Get()
   getProfile(
@@ -24,6 +27,9 @@ export class UserController {
   /**
    * 내 정보 수정 API
    * @tag user
+   * @param body 수정할 정보를 포함합니다.
+   * @returns
+   * @throw 400 잘못된 토큰입니다.
    */
   @Patch()
   updateProfile(
@@ -35,8 +41,14 @@ export class UserController {
   }
 
   /**
-   * 내 계정 삭제 API
+   * 내 계정 비활성화 API
+   *
+   * 사용자는 로그인을 통해 계정을 활성화할 수 있습니다.
+   *
+   * 비활성화된 계정은 조회되지 않습니다.
    * @tag user
+   * @returns
+   * @throw 400 잘못된 토큰입니다.
    */
   @Delete()
   inActivate(@Authorization('bearer') token: string): Promise<void> {

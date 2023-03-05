@@ -1,4 +1,3 @@
-import { ExceptionResponse } from '@INTERFACE/common';
 import {
   ExceptionFilter,
   Catch,
@@ -14,10 +13,10 @@ export class HttpExceptionFilter implements ExceptionFilter {
   catch(exception: HttpException, host: ArgumentsHost) {
     const { httpAdapter } = this.httpAdapterHost;
     const ctx = host.switchToHttp();
-    const body: ExceptionResponse = {
-      statusCode: exception.getStatus(),
-      message: exception.message,
-    };
-    httpAdapter.reply(ctx.getResponse(), body, body.statusCode);
+    httpAdapter.reply(
+      ctx.getResponse(),
+      exception.message,
+      exception.getStatus(),
+    );
   }
 }
