@@ -5,8 +5,8 @@
 ![NestJS](https://img.shields.io/badge/nestjs-%23E0234E.svg?style=for-the-badge&logo=nestjs&logoColor=white)
 ![Prisma](https://img.shields.io/badge/Prisma-3982CE?style=for-the-badge&logo=Prisma&logoColor=white)
 
-[![Test Status](https://github.com/industriously/account-server/actions/workflows/push_test_report.yml/badge.svg)](https://github.com/industriously/account-server/actions/workflows/push_test_report.yml)
-[![Test Report](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/industriously/6c52fea04bb0438d9557e0959bbec5ec/raw/coverage_account.json)](https://industriously.github.io/account-server)
+[![Test Status](https://github.com/industriously/account-server/actions/workflows/push_test_report.yml/badge.svg)](https://github.com/industriously/nestddd/actions/workflows/push_test_report.yml)
+[![Test Report](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/industriously/6c52fea04bb0438d9557e0959bbec5ec/raw/coverage_account.json)](https://industriously.github.io/nestddd)
 
 </div>
 
@@ -37,4 +37,4 @@ GIST_ID
 
 ## API 문서
 
-- [View in the `Swagger Editor`](https://editor.swagger.io/?url=https://raw.githubusercontent.com/industriously/account-server/main/swagger.json)
+- [View in the `Swagger Editor`](https://editor.swagger.io/?url=https://raw.githubusercontent.com/industriously/nestddd/main/swagger.json)
