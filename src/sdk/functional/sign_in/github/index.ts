@@ -13,9 +13,16 @@ import type { IAuthUsecase } from "./../../../interface/user/auth.usecase.interf
 /**
  * 로그인 API
  * 
- * 깃헙 oauth2 인증을 통해 얻은 code를 body를 통해 제공해야 합니다.
+ * 새로운 사용자가 로그인을 진행하면 github oauth 서버에서 제공한 사용자 정보를 토대로
+ * 사용자 계정을 생성합니다.
+ * 
+ * 비활성화된 사용자의 경우, 다시 활성화됩니다.
  * 
  * @tag authentication
+ * @param connection connection Information of the remote HTTP(s) server with headers (+encryption password)
+ * @param body token 요청 권한을 가진 code를 포함한다.
+ * @returns access_token, refresh_token, id_token을 포함한 객체를 응답
+ * @throw 401 사용자 인증에 실패했습니다.
  * 
  * @controller AuthController.signInGithub()
  * @path POST /sign-in/github

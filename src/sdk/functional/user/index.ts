@@ -15,6 +15,9 @@ import type { IUserUsecase } from "./../../interface/user/user.usecase.interface
  * 내 프로필 보기 API
  * 
  * @tag user
+ * @returns 사용자 상세 정보 응답
+ * @throw 400 잘못된 토큰입니다.
+ * @throw 404 일치하는 대상을 찾지 못했습니다.
  * 
  * @controller UserController.getProfile()
  * @path GET /user
@@ -54,6 +57,9 @@ export namespace getProfile
  * 내 정보 수정 API
  * 
  * @tag user
+ * @param connection connection Information of the remote HTTP(s) server with headers (+encryption password)
+ * @param body 수정할 정보를 포함합니다.
+ * @throw 400 잘못된 토큰입니다.
  * 
  * @controller UserController.updateProfile()
  * @path PATCH /user
@@ -94,9 +100,14 @@ export namespace updateProfile
 }
 
 /**
- * 내 계정 삭제 API
+ * 내 계정 비활성화 API
+ * 
+ * 사용자는 로그인을 통해 계정을 활성화할 수 있습니다.
+ * 
+ * 비활성화된 계정은 조회되지 않습니다.
  * 
  * @tag user
+ * @throw 400 잘못된 토큰입니다.
  * 
  * @controller UserController.inActivate()
  * @path DELETE /user

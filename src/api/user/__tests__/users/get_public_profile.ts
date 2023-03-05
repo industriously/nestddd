@@ -1,3 +1,4 @@
+import { HttpExceptionMessage } from '@COMMON/exception';
 import { ExceptionResponse } from '@INTERFACE/common';
 import { UserSchema } from '@INTERFACE/user';
 import { IConnection } from '@nestia/fetcher';
@@ -24,7 +25,7 @@ export namespace getPublic {
       expect(err.status).toBe(HttpStatus.NOT_FOUND);
       expect(received).toEqual<ExceptionResponse>({
         statusCode: HttpStatus.NOT_FOUND,
-        message: '일치하는 대상을 찾지 못했습니다.',
+        message: HttpExceptionMessage.NF,
       });
     });
 

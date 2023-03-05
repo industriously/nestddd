@@ -15,6 +15,9 @@ import type { IAuthUsecase } from "./../../../interface/user/auth.usecase.interf
  * Authorization header로 refresh_token을 전달헤야 합니다.
  * 
  * @tag authentication
+ * @returns 재발행된 access_token을 응답합니다.
+ * @throw 400 잘못된 토큰입니다.
+ * @throw 404 일치하는 대상을 찾지 못했습니다.
  * 
  * @controller AuthController.refreshToken()
  * @path GET /token/refresh
