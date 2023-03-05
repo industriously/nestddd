@@ -1,4 +1,3 @@
-import type { ExceptionResponse } from '@INTERFACE/common';
 import { TypedQuery } from '@COMMON/decorator/http';
 import { HttpExceptionFactory, HttpExceptionMessage } from '@COMMON/exception';
 import { FilterModule } from '../filter/filter.module';
@@ -36,52 +35,38 @@ describe('Infrastructure Test', () => {
   });
 
   it('HttpException Filtering', () => {
-    const expected: ExceptionResponse = {
-      statusCode: HttpStatus.NOT_FOUND,
-      message: 'Http Exception',
-    };
     return supertest(app.getHttpServer())
       .get('/http')
       .expect(HttpStatus.NOT_FOUND)
-      .expect(expected);
+      .expect('Http Exception');
   });
 
   it.each([
     { expected: 'cat', path: '$input.dog' },
     { expected: 'cat', path: undefined },
   ])('typia Exception Filtering', ({ expected, path }) => {
-    const response: ExceptionResponse = {
-      statusCode: HttpStatus.BAD_REQUEST,
-      message: path
-        ? `${path.split('$input.')[1]} type is invalid.`
-        : `invalid type, expected to be ${expected}`,
-    };
     return supertest(app.getHttpServer())
       .get(`/typia?expected=${expected}&${path ? 'path=' + path : ''}`)
       .expect(HttpStatus.BAD_REQUEST)
-      .expect(response);
+      .expect(
+        path
+          ? `${path.split('$input.')[1]} type is invalid.`
+          : `invalid type, expected to be ${expected}`,
+      );
   });
 
   it('ise', () => {
-    const expected: ExceptionResponse = {
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: HttpExceptionMessage.ISE,
-    };
     return supertest(app.getHttpServer())
       .get('/ise')
       .expect(HttpStatus.INTERNAL_SERVER_ERROR)
-      .expect(expected);
+      .expect(HttpExceptionMessage.ISE);
   });
 
   it('the Other Error Filtering', () => {
-    const expected: ExceptionResponse = {
-      statusCode: HttpStatus.INTERNAL_SERVER_ERROR,
-      message: HttpExceptionMessage.ISE,
-    };
     return supertest(app.getHttpServer())
       .get('/unknwon')
       .expect(HttpStatus.INTERNAL_SERVER_ERROR)
-      .expect(expected);
+      .expect(HttpExceptionMessage.ISE);
   });
 });
 

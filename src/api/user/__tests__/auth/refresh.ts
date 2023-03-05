@@ -1,5 +1,4 @@
 import { HttpExceptionMessage } from '@COMMON/exception';
-import { ExceptionResponse } from '@INTERFACE/common';
 import { IConnection } from '@nestia/fetcher';
 import { HttpStatus } from '@nestjs/common';
 import { test_error, validator_invalid_token } from 'src/api/__tests__/common';
@@ -26,12 +25,7 @@ export namespace refresh {
 
   export const test_user_not_exist = (connection: IConnection) =>
     test_error(test_success(connection))((err) => {
-      const received = typia.assertParse<ExceptionResponse>(err.message);
-
       expect(err.status).toBe(HttpStatus.NOT_FOUND);
-      expect(received).toEqual<ExceptionResponse>({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: HttpExceptionMessage.NF,
-      });
+      expect(err.message).toEqual(HttpExceptionMessage.NF);
     });
 }

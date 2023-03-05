@@ -2,7 +2,6 @@ import { HttpStatus } from '@nestjs/common';
 import { IConnection } from '@nestia/fetcher';
 import typia from 'typia';
 import { user } from 'src/sdk/functional';
-import { ExceptionResponse } from '@INTERFACE/common';
 import { HttpExceptionMessage } from '@COMMON/exception';
 import { test_error, validator_invalid_token } from 'src/api/__tests__/common';
 
@@ -27,12 +26,7 @@ export namespace getProfile {
 
   export const test_user_not_found = (connection: IConnection) =>
     test_error(api(connection))((err) => {
-      const received = typia.assertParse<ExceptionResponse>(err.message);
-
       expect(err.status).toBe(HttpStatus.NOT_FOUND);
-      expect(received).toEqual<ExceptionResponse>({
-        statusCode: HttpStatus.NOT_FOUND,
-        message: HttpExceptionMessage.NF,
-      });
+      expect(err.message).toEqual(HttpExceptionMessage.NF);
     });
 }
