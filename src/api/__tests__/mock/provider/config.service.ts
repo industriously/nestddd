@@ -10,6 +10,8 @@ export const config: ConfigService<IEnv, true> = {
       case 'ACCESS_TOKEN_PUBLIC_KEY':
       case 'REFRESH_TOKEN_PUBLIC_KEY':
         return process.env.ACCESS_TOKEN_PUBLIC_KEY;
+      case 'PORT':
+        return '3000';
     }
     return 'test_env';
   },

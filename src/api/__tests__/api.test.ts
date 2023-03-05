@@ -16,7 +16,7 @@ import { TestAuth } from '@USER/__tests__/auth';
 
 describe('API Test', () => {
   const connection = {
-    host: `http://localhost:${process.env.PORT}`,
+    host: `http://localhost:${config.get<string>('PORT')}`,
   } satisfies IConnection;
 
   let app: INestApplication | null = null;
@@ -33,8 +33,9 @@ describe('API Test', () => {
       .compile();
 
     app = TestingModule.createNestApplication();
+
     await app.init();
-    await app.listen(process.env.PORT);
+    await app.listen(config.get<string>('PORT'));
   });
 
   afterAll(async () => {
