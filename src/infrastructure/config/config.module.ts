@@ -26,7 +26,7 @@ export const ConfigModule = OriginalConfigModule.forRoot({
   isGlobal: true,
   cache: false,
   envFilePath: '.env',
-  ignoreEnvFile: process.env.NODE_ENV !== 'development',
+  ignoreEnvFile: process.env.NODE_ENV === 'production',
   validationOptions: {
     abortEarly: true,
   },

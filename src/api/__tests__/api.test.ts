@@ -20,6 +20,7 @@ describe('API Test', () => {
   } satisfies IConnection;
 
   let app: INestApplication | null = null;
+
   beforeAll(async () => {
     const TestingModule = await Test.createTestingModule({
       imports: [ConfigModule, FilterModule, AopModule, ApiModule],
